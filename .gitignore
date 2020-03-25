@@ -1,0 +1,8 @@
+target
+.idea
+.vscode
+.settings
+service/.project
+service/.classpath
+api/.project
+api/.classpath

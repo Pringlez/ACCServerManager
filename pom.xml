@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.accmanager</groupId>
+    <artifactId>acc-manager</artifactId>
+    <version>0.0.1</version>
+    <packaging>pom</packaging>
+
+    <name>ACC Manager :: Parent</name>
+    <description>The parent pom for the acc manager service</description>
+
+    <properties>
+        <swagger.code.generation.base.package>org.accmanager</swagger.code.generation.base.package>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <linkXRef>false</linkXRef>
+        <input.yaml.file>acc-manager.yaml</input.yaml.file>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-parent</artifactId>
+            <version>2.2.4.RELEASE</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+
+    <modules>
+        <module>api</module>
+        <module>service</module>
+    </modules>
+
+</project>

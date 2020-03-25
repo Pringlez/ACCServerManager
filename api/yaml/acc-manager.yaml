@@ -1,0 +1,693 @@
+openapi: 3.0.0
+info:
+  description: API specification
+  version: 0.0.1
+  title: ACC Manager Service
+tags:
+  - name: auth
+    description: Authentication
+  - name: events
+    description: Manage events
+  - name: instances
+    description: Manage server instances
+paths:
+  /login:
+    post:
+      summary: Authenticate by username and password
+      operationId: authenticate
+      tags:
+        - auth
+      requestBody:
+        description: User credentials to be assessed
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: JWT token with claims
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security: []
+  /instances:
+    get:
+      summary: List all available ACC instances
+      operationId: getInstances
+      tags:
+        - instances
+      parameters:
+        - name: name
+          in: query
+          description: Filter by name
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/InstanceState"
+      responses:
+        '200':
+          description: An array of instances
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Instances"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create ACC instance by id
+      operationId: createInstance
+      tags:
+        - instances
+      requestBody:
+        description: Create instance using unique id
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Instance'
+      responses:
+        '201':
+          description: Successfully created instance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Instance"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /instances/{instanceId}:
+    get:
+      summary: Get ACC instance by id
+      operationId: getInstanceById
+      tags:
+        - instances
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an instance to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Instance"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Update ACC instance by id
+      operationId: updateInstanceById
+      tags:
+        - instances
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an instance to retrieve
+          schema:
+            type: string
+      requestBody:
+        description: A JSON object containing the instance
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Instance'
+      responses:
+        '201':
+          description: Successfully updated configuration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Instance"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete ACC instance by id
+      operationId: deleteInstanceById
+      tags:
+        - instances
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an instance to delete
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Empty response
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /instances/{instanceId}/start:
+    get:
+      summary: Start ACC instance by id
+      operationId: startInstanceById
+      tags:
+        - instances
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an instance to start
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /instances/{instanceId}/stop:
+    get:
+      summary: Stop ACC instance by id
+      operationId: stopInstanceById
+      tags:
+        - instances
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an instance to stop
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /instances/{instanceId}/restart:
+    get:
+      summary: Restart ACC instance by id
+      operationId: pauseInstanceById
+      tags:
+        - instances
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an instance to restart
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /events:
+    get:
+      summary: List all events
+      operationId: getEvents
+      tags:
+        - events
+      parameters:
+        - name: name
+          in: query
+          description: Filter by name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An array of events
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Events"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create an event
+      operationId: createEvent
+      tags:
+        - events
+      requestBody:
+        description: Create a new event
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        '201':
+          description: Successfully created event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /event/{eventId}:
+    get:
+      summary: Get event by id
+      operationId: getEventById
+      tags:
+        - events
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          description: The id of the event to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Update an event
+      operationId: updateEventById
+      tags:
+        - events
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          description: The id of the event to retrieve
+          schema:
+            type: string
+      requestBody:
+        description: Update an event passing the required parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        '201':
+          description: Successfully updated event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        default:
+          description: Unexpected error occurred occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete event by id
+      operationId: deleteEventById
+      tags:
+        - events
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          description: The id of the event to delete
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Empty response
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    User:
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Instance:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        state:
+          $ref: "#/components/schemas/InstanceState"
+        container:
+          type: string
+        event:
+          $ref: "#/components/schemas/Event"
+        config:
+          $ref: "#/components/schemas/Config"
+        settings:
+          $ref: "#/components/schemas/Settings"
+    Instances:
+      type: array
+      items:
+        $ref: "#/components/schemas/Instance"
+    InstanceState:
+      type: string
+      enum: [stopped, running, crashed, paused, unknown]
+    SystemInfo:
+      type: object
+      properties:
+        version:
+          type: string
+        accVersion:
+          type: string
+        supportedAccVersion:
+          type: string
+    Error:
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Config:
+      type: object
+      properties:
+        tcpPort:
+          type: integer
+          format: int32
+          description: ACC clients will use this port to establish a connection to the server
+        udpPort:
+          type: integer
+          format: int32
+          description: Connected clients will use this Port to stream the car positions and is used for the ping test. In case you never see your server getting a ping value, this indicates that the udpPort is not accessible
+        registerToLobby:
+          type: integer
+          format: int32
+          description: When 0, this server won’t register to the backend. Is useful for LAN sessions. If 0, the server is declared “Private Multiplayer”.
+        maxConnections:
+          type: integer
+          format: int32
+          description: Replaces “maxClients”. The maximum amount of connections a server will accept at a time. If you own the hardware server, you can just set any high integer you want. If you rented a 16 or 24 slot server, your Hosting Provider probably has set this here and doesn’t give you write-access to this configuration file.
+        lanDiscovery:
+          type: integer
+          format: int32
+          description: Defines if the server will listen to LAN discovery requests. Can be turned off for dedicated servers.
+        configVersion:
+          type: integer
+          format: int32
+          description: Config version
+          enum: [1]
+    Settings:
+      type: object
+      properties:
+        serverName:
+          type: string
+          description: The server name displayed in the ACC UI pages
+        adminPassword:
+          type: string
+          description: Password to elevate via “Server admin commands”
+        trackMedalsRequirement:
+          type: integer
+          format: int32
+          description: Defines the amount of track medals that a user has to have for the given track (values 0, 1, 2, 3)
+        safetyRatingRequirement:
+          type: integer
+          format: int32
+          description: Defines the Safety Rating (SA) that a user must have to join this server (values -1, 0, .... 99)
+        racecraftRatingRequirement:
+          type: integer
+          format: int32
+          description: Defines the Safety Rating (RC) that a user must have to join this server (values -1, 0, .... 99)
+        password:
+          type: string
+          description: Password required to enter this server. If a password is set, the server is declared “Private Multiplayer”.
+        spectatorPassword:
+          type: string
+          description: Password to enter the server as spectator. Must be different to “password” if both is set.
+        maxCarSlots:
+          type: integer
+          format: int32
+          description: Replaces “maxClientsOverride” and “spectatorSlots”. Defines the amount of car slots the server can occupy; this value is overridden if the pit count of the track is lower, or with 30 for public MP. The gap between maxCarSlots and maxConnections defines how many spectators or other irregular connections (ie entry list entries) can be on the server.
+        dumpLeaderboards:
+          type: integer
+          format: int32
+          description: If set to 1, any session will write down the result leaderboard in a “results” folder (must be manually created). See ”Session results”
+        isRaceLocked:
+          type: integer
+          format: int32
+          description: If set to 0, the server will allow joining during a race session. Is not useful in “Public Multiplayer”, as the user-server matching will ignore ongoing race sessions.
+        randomizeTrackWhenEmpty:
+          type: integer
+          format: int32
+          description: If set to 1, the server will change to a random track when the last drivers leaves (which causes a reset to FP1). The “track” property will only define the default state for the first session.
+        centralEntryListPath:
+          type: integer
+          format: int32
+          description: Can override the default entryList path “cfg/entrylist.json”, so multiple ACC servers on the machine can use the same entrylist (and custom car files). Set a full path like “C:/customEntryListSeriesA/”, where the entrylist is stored. Attention - The path seperators have to be slashes (/), backslashes (\) will not work.
+        allowAutoDQ:
+          type: integer
+          format: int32
+          description: If set to 0, the server won’t automatically disqualify drivers, and instead hand out Stop&Go (30s) penalties. This way a server admin / race director has 3 laps time to review the incident, and either use /dq or /clear based on his judgement.
+        shortFormationLap:
+          type: integer
+          format: int32
+          description: Toggles the short and long formation lap. Long formation is only usable on private servers.
+        dumpEntryList:
+          type: integer
+          format: int32
+          description: Will save an entry list at the end of any Qualifying session. This can be a quick way to collect a starting point to build an entry list, and is a way to save the defaultGridPositions which can be used to run a race without Qualifying session and predefined grid. Also see the corresponding admin command.
+        formationLapType:
+          type: integer
+          format: int32
+          description: Toggles the formation lap type that is permanently used on this server. 3 – default formation lap with position control and UI. 0 – old limiter lap. 1 – free (replaces /manual start), only usable for private servers
+        configVersion:
+          type: integer
+          format: int32
+          description: Config version
+          enum: [1]
+    Event:
+      properties:
+        id:
+          type: string
+          description: Unique id for track event
+        name:
+          type: string
+          description: Name of the track event
+        track:
+          type: string
+          enum: [barcelona, barcelona_2019, brands_hatch, brands_hatch_2019, hungaroring, hungaroring_2019, misano, misano_2019, monza, monza_2019, 
+          nurburgring, nurburgring_2019, paul_ricard, paul_ricard_2019, silverstone, silverstone_2019, spa, spa_2019, zandvoort, 
+          zandvoort_2019, zolder, zolder_2019, mount_panorama_2019, kyalami_2019, suzuka_2019, laguna_seca_2019]
+          description: The track we run, see “Track name list”. Setting a wrong value will also print out the available track keys in the log. With the 1.1 update containing the 2019 season content, each track has a _2019 variant. Using this track will set the BoP and track grip correspondingly.
+        preRaceWaitingTimeSeconds:
+          type: integer
+          format: int32
+          description: Preparation time before a race. Cannot be less than 30s.
+          minimum: 30
+        sessionOverTimeSeconds:
+          type: integer
+          format: int32
+          description: Time after that a session is forcibly closing after the timer reached 0:00. Something like 107% of the expected laptime is recommended (careful - default 2 minutes does not properly cover tracks like Spa or Silverstone).
+        ambientTemp:
+          type: integer
+          format: int32
+          description: Sets the baseline ambient temperature in °C
+        trackTemp:
+          type: integer
+          format: int32
+          description: Obsolete - Track temperatures are always simulated based on ambient temperature, sun angle, clouds and other aspects.
+        cloudLevel:
+          type: number
+          format: float
+          description: Sets the baseline cloud level. Values (0.0, 0.1, .... 1.0)
+          minimum: 0.0
+          maximum: 1.0
+        rain:
+          type: integer
+          format: float
+          description: If weather randomness is off, defines the static rain level. With dynamic weather, it increases the rain chance. Values (0.0, 0.1, .... 1.0)
+          minimum: 0.0
+          maximum: 1.0
+        weatherRandomness:
+          type: integer
+          format: int32
+          description: If weather randomness is off, defines the static rain level. With dynamic weather, it increases the rain chance.
+        postQualySeconds:
+          type: integer
+          format: int32
+          description: The time after the last driver is finished (or the sessionOverTimeSeconds passed) in Q sessions and the race start. Should not be set to 0, otherwise grid spawning is not secure.
+        postRaceSeconds:
+          type: integer
+          format: int32
+          description: Additional time after the race ended for everyone, before the next race weekend starts.
+        metaData:
+          type: string
+          description: A user defined string that will be transferred to the result outputs.
+        sessions:
+          $ref: "#/components/schemas/Sessions"
+          description: A list of session objects
+        configVersion:
+          type: integer
+          format: int32
+          description: Config version
+          enum: [1]
+    EventRules:
+      properties:
+        qualifyStandingType:
+          type: integer
+          format: int32
+          description: 1 = fastest lap, 2 = average lap (running Endurance mode for multiple Q sessions) . Use 1, averaging Qualy is not yet officially supported
+        pitWindowLengthSec:
+          type: integer
+          format: int32
+          description: Defines a pit window at the middle of the race. Obviously covers the Sprint series format. -1 will disable the pit window. Use this combined with a mandatoryPitstopCount = 1.
+        driverStintTimeSec:
+          type: integer
+          format: int32
+          description: Defines the maximum time a driver can stay out without getting a penalty. Can be used to balance fuel efficient cars in endurance races. The stint time resets in the pitlane, no real stop is required. -1 will disable the stint times.
+        mandatoryPitstopCount:
+          type: integer
+          format: int32
+          description: Defines the basic mandatory pit stops. If the value is greater zero, any car that did not execute the mandatory pitstops will be disqualified at the end of the race. The necessary actions can be further configured using the “isMandatoryPitstopXYRequired” properties. A value of zero disables the feature.
+        maxTotalDrivingTime:
+          type: integer
+          format: int32
+          description: Restricts the maximum driving time for a single driver. Is only useful for driver swap situations and allows to enforce a minimum driving time for each driver. (IRL this is used to make sure mixed teams like Pro/Am have a fair distributions of the slower drivers). -1 disables the feature.
+        maxDriversCount:
+          type: integer
+          format: int32
+          description: In driver swap situations, set this to the maximum integer of drivers on a car. When an entry has fewer drivers than maxDriversCount, maxTotalDrivingTime is automatically compensated so that those "smaller" entries are also able to complete the race.
+        isRefuellingAllowedInRace:
+          type: boolean
+          description: Defines if refuelling is allowed during the race pitstops.
+        isRefuellingTimeFixed:
+          type: boolean
+          description: If set to true, any refuelling will take the same amount of time. If turned off, refuelling will consume time linear to the amount refuelled. Very useful setting to balance fuel efficient cars, especially if combined with other features.
+        isMandatoryPitstopRefuellingRequired:
+          type: boolean
+          description: Defines if a mandatory pitstop requires refuelling.
+        isMandatoryPitstopTyreChangeRequired:
+          type: boolean
+          description: Defines if a mandatory pitstop requires changing tyres.
+        isMandatoryPitstopSwapDriverRequired:
+          type: boolean
+          description: Defines if a mandatory pitstop requires a driver swap. Will only be effective for cars in driver swap situations; even in a mixed field this will be skipped for cars with a team size of 1 driver.
+    AssistRules:
+      properties:
+        stabilityControlLevelMax:
+          type: integer
+          format: int32
+          description: Set’s the maximum % of SC that can be used. In case a client has a higher SC set than allowed by the server, he will only run what is allowed (25% in this example). Obviously setting this property to 0 removes all SC, including mouse and keyboard.
+        disableAutosteer:
+          type: integer
+          format: int32
+          description: Disables the steering aid that is only available for gamepad controllers. Unlike SC, this works inside the physics and does not allow unrealistic driving behaviour.
+        disableAutoLights:
+          type: integer
+          format: int32
+          description: Forces the equivalent assist option to “off”
+        disableAutoWiper:
+          type: integer
+          format: int32
+          description: Forces the equivalent assist option to “off”
+        disableAutoEngineStart:
+          type: integer
+          format: int32
+          description: Forces the equivalent assist option to “off”
+        disableAutoPitLimiter:
+          type: integer
+          format: int32
+          description: Forces the equivalent assist option to “off”
+        disableAutoGear:
+          type: integer
+          format: int32
+          description: Forces the equivalent assist option to “off”
+        disableAutoClutch:
+          type: integer
+          format: int32
+          description: Forces the equivalent assist option to “off”
+        disableIdealLine:
+          type: integer
+          format: int32
+          description: Forces the equivalent assist option to “off”
+    Events:
+      type: array
+      items:
+        $ref: "#/components/schemas/Event"
+    Sessions:
+      type: array
+      items:
+        $ref: "#/components/schemas/Session"
+    Session:
+      type: object
+      properties:
+        hourOfDay:
+          type: integer
+          format: int32
+        dayOfWeekend:
+          type: integer
+          format: int32
+        timeMultiplier:
+          type: integer
+          format: int32
+        sessionType:
+          type: string
+          enum: [P, Q, R]
+        sessionDurationMinutes:
+          type: integer
+          format: int32
+  securitySchemes:
+    auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - auth: []
