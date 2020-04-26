@@ -2,6 +2,7 @@ target
 .idea
 .vscode
 .settings
+.project
 service/.project
 service/.classpath
 api/.project
