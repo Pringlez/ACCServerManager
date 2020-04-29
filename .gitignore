@@ -3,6 +3,7 @@ target
 .vscode
 .settings
 .project
+.factorypath
 service/.project
 service/.classpath
 api/.project
