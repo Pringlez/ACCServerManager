@@ -1,5 +1,8 @@
 package org.accmanager.service.api;
 
-public class AuthApiImpl {
+import org.accmanager.api.AuthApi;
 
+public class AuthApiImpl implements AuthApi {
+
+    
 }

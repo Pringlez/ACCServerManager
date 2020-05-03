@@ -1,5 +1,8 @@
 package org.accmanager.service.api;
 
-public class InstancesApiImpl {
+import org.accmanager.api.InstancesApi;
 
+public class InstancesApiImpl implements InstancesApi {
+
+    
 }

@@ -28,6 +28,10 @@
 			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
+					<groupId>org.openapitools</groupId>
+					<artifactId>openapi-generator</artifactId>
+				</exclusion>
+				<exclusion>
 					<groupId>javax.servlet</groupId>
 					<artifactId>servlet-api</artifactId>
 				</exclusion>

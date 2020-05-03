@@ -1,5 +1,8 @@
 package org.accmanager.service.api;
 
-public class EventsApiImpl {
+import org.accmanager.api.EventsApi;
+
+public class EventsApiImpl implements EventsApi {
+
 
 }

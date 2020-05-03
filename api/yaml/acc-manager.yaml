@@ -1,15 +1,27 @@
-openapi: 3.0.2
+openapi: 3.0.3
 info:
-  description: API specification
-  version: 0.0.2
   title: ACC Manager Service
+  description: API specification
+  version: 0.0.3
+  contact:
+    name: GitHub Issues
+    url: https://github.com/Pringlez/ACCServerManager/issues
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
 tags:
   - name: auth
-    description: Authentication
-  - name: events
-    description: Manage events
+    description: Authentication to application
   - name: instances
     description: Manage server instances
+  - name: entries
+    description: Manage entries for server instance
+  - name: events
+    description: Manage events for server instance
+  - name: assists
+    description: Manage assists for server instance
+  - name: bop
+    description: Manage BoP for server instance
 paths:
   /login:
     post:
@@ -53,6 +65,7 @@ paths:
             type: string
         - name: state
           in: query
+          description: Filter by instance state
           required: false
           schema:
             $ref: "#/components/schemas/InstanceState"
@@ -75,7 +88,7 @@ paths:
       tags:
         - instances
       requestBody:
-        description: Create instance using unique id
+        description: A JSON object containing the ACC instance to create
         required: true
         content:
           application/json:
@@ -104,7 +117,7 @@ paths:
         - name: instanceId
           in: path
           required: true
-          description: The id of an instance to retrieve
+          description: The id of an ACC instance
           schema:
             type: string
       responses:
@@ -129,11 +142,11 @@ paths:
         - name: instanceId
           in: path
           required: true
-          description: The id of an instance to retrieve
+          description: The id of an ACC instance
           schema:
             type: string
       requestBody:
-        description: A JSON object containing the instance
+        description: A JSON object containing the ACC instance to update
         required: true
         content:
           application/json:
@@ -161,7 +174,7 @@ paths:
         - name: instanceId
           in: path
           required: true
-          description: The id of an instance to delete
+          description: The id of an ACC instance
           schema:
             type: string
       responses:
@@ -183,7 +196,7 @@ paths:
         - name: instanceId
           in: path
           required: true
-          description: The id of an instance to start
+          description: The id of an ACC instance
           schema:
             type: string
       responses:
@@ -205,7 +218,7 @@ paths:
         - name: instanceId
           in: path
           required: true
-          description: The id of an instance to stop
+          description: The id of an ACC instance
           schema:
             type: string
       responses:
@@ -220,14 +233,14 @@ paths:
   /instances/{instanceId}/restart:
     get:
       summary: Restart ACC instance by id
-      operationId: pauseInstanceById
+      operationId: restartInstanceById
       tags:
         - instances
       parameters:
         - name: instanceId
           in: path
           required: true
-          description: The id of an instance to restart
+          description: The id of an ACC instance
           schema:
             type: string
       responses:
@@ -239,26 +252,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /events:
+  /entries/{instanceId}:
     get:
-      summary: List all events
-      operationId: getEvents
+      summary: Get entries for ACC instance by id
+      operationId: getEntriesByInstanceId
       tags:
-        - events
+        - entries
       parameters:
-        - name: name
-          in: query
-          description: Filter by name
-          required: false
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
           schema:
             type: string
       responses:
         '200':
-          description: An array of events
+          description: Expected response to a valid request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Events"
+                $ref: "#/components/schemas/Entries"
         default:
           description: Unexpected error occurred
           content:
@@ -266,41 +279,107 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     post:
-      summary: Create an event
-      operationId: createEvent
+      summary: Create new entries for ACC instance by id
+      operationId: createEntriesByInstanceId
       tags:
-        - events
+        - entries
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
       requestBody:
-        description: Create a new event
+        description: A JSON object containing the entries to create
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: '#/components/schemas/Entries'
       responses:
         '201':
-          description: Successfully created event
+          description: Successfully updated configuration
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: "#/components/schemas/Entries"
         default:
           description: Unexpected error occurred
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /event/{eventId}:
+    put:
+      summary: Update entries for ACC instance by id
+      operationId: updateEntriesByInstanceId
+      tags:
+        - entries
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+      requestBody:
+        description: A JSON object containing the entries to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Entries'
+      responses:
+        '201':
+          description: Successfully updated configuration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Entries"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete entries by instance id
+      operationId: deleteEntriesByInstanceId
+      tags:
+        - entries
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Empty response
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /event/{instanceId}:
     get:
-      summary: Get event by id
-      operationId: getEventById
+      summary: Get event for ACC instance by event id
+      operationId: getInstanceEventById
       tags:
         - events
       parameters:
-        - name: eventId
+        - name: instanceId
           in: path
           required: true
-          description: The id of the event to retrieve
+          description: The id of an ACC instance
+          schema:
+            type: string
+        - name: eventId
+          in: query
+          description: Filter by event id
+          required: false
           schema:
             type: string
       responses:
@@ -317,19 +396,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     put:
-      summary: Update an event
-      operationId: updateEventById
+      summary: Update an event for ACC instance by event id
+      operationId: updateInstanceEventById
       tags:
         - events
       parameters:
-        - name: eventId
+        - name: instanceId
           in: path
           required: true
-          description: The id of the event to retrieve
+          description: The id of an ACC instance
+          schema:
+            type: string
+        - name: eventId
+          in: query
+          description: Event id to update
+          required: true
           schema:
             type: string
       requestBody:
-        description: Update an event passing the required parameters
+        description: A JSON object containing the Event for ACC instance
         required: true
         content:
           application/json:
@@ -349,15 +434,179 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     delete:
-      summary: Delete event by id
-      operationId: deleteEventById
+      summary: Delete event for ACC instance by event id
+      operationId: deleteInstanceEventById
       tags:
         - events
       parameters:
-        - name: eventId
+        - name: instanceId
           in: path
           required: true
-          description: The id of the event to delete
+          description: The id of an ACC instance
+          schema:
+            type: string
+        - name: eventId
+          in: query
+          description: Event id to update
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Empty response
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /assists/{instanceId}:
+    get:
+      summary: Get assist rules by instance id
+      operationId: getAssistRulesByInstanceId
+      tags:
+        - assists
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved assist rules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistRules"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Update assist rules by instance id
+      operationId: updateAssistRulesByInstanceId
+      tags:
+        - assists
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+      requestBody:
+        description: A JSON object containing the AssistRules for the ACC instance
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssistRules'
+      responses:
+        '201':
+          description: Successfully updated assist rules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistRules"
+        default:
+          description: Unexpected error occurred occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete assist rules by instance id
+      operationId: deleteAssistRulesByInstanceId
+      tags:
+        - assists
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Empty response
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /bop/{instanceId}:
+    get:
+      summary: Get BoP for ACC instance by id
+      operationId: getBoPByInstanceId
+      tags:
+        - bop
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoP"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Update BoP for ACC instance by id
+      operationId: updateBoPByInstanceId
+      tags:
+        - bop
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+      requestBody:
+        description: A JSON object containing the BoP for entries
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoP'
+      responses:
+        '201':
+          description: Successfully updated configuration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoP"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete BoP by instance id
+      operationId: deleteBoPByInstanceId
+      tags:
+        - bop
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
           schema:
             type: string
       responses:
@@ -385,12 +634,18 @@ components:
           type: string
         name:
           type: string
-        state:
-          $ref: "#/components/schemas/InstanceState"
         container:
           type: string
+        state:
+          $ref: "#/components/schemas/InstanceState"
         event:
           $ref: "#/components/schemas/Event"
+        entries:
+          $ref: "#/components/schemas/Entries"
+        assists:
+          $ref: "#/components/schemas/AssistRules"
+        bop:
+          $ref: "#/components/schemas/BoP"
         config:
           $ref: "#/components/schemas/Config"
         settings:

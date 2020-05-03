@@ -25,6 +25,7 @@ sudo docker run -d -p 80:8080 -t acc-manager:latest
 ```
 
 ## Configuration
+TODO
 
 ## Docker
 If you wish to build your own docker image, just run the following command to package everything into a docker image:
@@ -45,6 +46,26 @@ To contribute to the project you need to setup a basic development environment. 
  * React Tools
 
 Use whatever development tools you feel comfortable to use, for example I normally use VS Code & Intellij for most of my work.
+
+### API Spec
+The [API specification](api/yaml/acc-manager.yaml) is used at compile time to generate a number of interfaces & java classes used within the application.
+The project adheres to [OpenAPI 3.0.3 specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#infoObject) where possible.
+
+### Complie & Test
+To complie and test the application locally, run the following command:
+```
+mvn clean install
+```
+I would advise to run tests frequently to make sure everything works as expected.
+
+### Running Locally
+You can easily run the spring boot application using a simple java command:
+```
+java -jar service/target/acc-manager-service-X.X.X.jar org.acmanager.ACCManagerApplication
+```
+
+Once in the project's root directory, update specified jar with version number.
+The second parameter must point towards the main java class.
 
 ## ToDo Features
 Docker: Development of docker integration to spin up new containers using spring.
