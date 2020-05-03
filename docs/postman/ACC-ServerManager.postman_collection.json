@@ -1,0 +1,793 @@
+{
+	"info": {
+		"_postman_id": "04feb30b-c6dd-485b-8ade-99140c050d23",
+		"name": "ACC-ServerManager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Instances",
+			"item": [
+				{
+					"name": "Instances - Get all instances",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Instances - Filter by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances?name=acc-server-1",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "acc-server-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Instances - Filter by instance state",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances?state=running",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances"
+							],
+							"query": [
+								{
+									"key": "state",
+									"value": "running"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Instances - Filter by name & state",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances?name=acc-server-1&state=running",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "acc-server-1"
+								},
+								{
+									"key": "state",
+									"value": "running"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Instances - Get instance by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Instances - Create instance",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db\",\n  \"name\": \"acc-server-1\",\n  \"container\": \"container-name\",\n  \"state\": \"running\",\n  \"event\": {\n    \"id\": \"84d2d4da-93e1-4fa9-88e3-313d6c659c95\",\n    \"name\": \"acc-event-1\",\n    \"track\": \"laguna_seca_2019\",\n    \"preRaceWaitingTimeSeconds\": 30,\n    \"sessionOverTimeSeconds\": 120,\n    \"ambientTemp\": 25,\n    \"trackTemp\": 30,\n    \"cloudLevel\": 0.3,\n    \"rain\": 0.0,\n    \"weatherRandomness\": 1,\n    \"postQualySeconds\": 90,\n    \"postRaceSeconds\": 120,\n    \"metaData\": \"userString\",\n    \"sessions\": [\n      {\n        \"hourOfDay\": 8,\n        \"dayOfWeekend\": 2,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"Q\",\n        \"sessionDurationMinutes\": 10\n      },\n      {\n        \"hourOfDay\": 12,\n        \"dayOfWeekend\": 3,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"R\",\n        \"sessionDurationMinutes\": 20\n      }\n    ]\n  },\n  \"entriesList\": {\n    \"entries\": [\n      {\n        \"drivers\": [\n          {\n            \"playerID\": \"S765611xxxxxxxxxx1\"\n          }\n        ],\n        \"raceNumber\": 88,\n        \"forcedCarModel\": -1,\n        \"overrideDriverInfo\": 0,\n        \"isServerAdmin\": 1\n      },\n      {\n        \"drivers\": [\n          {\n            \"firstName\": \"First\",\n            \"lastName\": \"Driver\",\n            \"shortName\": \"NO1\",\n            \"driverCategory\": 2,\n            \"playerID\": \"S765611xxxxxxxxxx3\"\n          },\n          {\n            \"firstName\": \"Another\",\n            \"lastName\": \"Person\",\n            \"shortName\": \"NO2\",\n            \"driverCategory\": 1,\n            \"playerID\": \"S765611xxxxxxxxxx4\"\n          }\n        ],\n        \"raceNumber\": 114,\n        \"forcedCarModel\": -1,\n        \"overrideDriverInfo\": 0,\n        \"customCar\": \"exampleCar.json\",\n        \"overrideCarModelForCustomCar\": 1,\n        \"isServerAdmin\": 0,\n        \"defaultGridPosition\": -1,\n        \"ballastKg\": 0,\n        \"restrictor\": 0\n      }\n    ],\n    \"forceEntryList\": 0,\n    \"configVersion\": 1\n  },\n  \"assists\": {\n    \"stabilityControlLevelMax\": 25,\n    \"disableAutosteer\": 1,\n    \"disableAutoLights\": 0,\n    \"disableAutoWiper\": 0,\n    \"disableAutoEngineStart\": 0,\n    \"disableAutoPitLimiter\": 0,\n    \"disableAutoGear\": 0,\n    \"disableAutoClutch\": 0,\n    \"disableIdealLine\": 0,\n    \"configVersion\": 1\n  },\n  \"bop\": {\n    \"entries\": [\n      {\n        \"track\": \"zolder\",\n        \"carModel\": 7,\n        \"ballast\": 1,\n        \"restrictor\": 2\n      },\n      {\n        \"track\": \"silverstone_2019\",\n        \"carModel\": 2,\n        \"restrictor\": 5\n      }\n    ],\n    \"disableAutosteer\": 1,\n    \"disableAutoLights\": 0,\n    \"disableAutoWiper\": 0\n  },\n  \"config\": {\n    \"udpPort\": 9201,\n    \"tcpPort\": 9201,\n    \"maxConnections\": 85,\n    \"lanDiscovery\": 1,\n    \"registerToLobby\": 1,\n    \"configVersion\": 1\n  },\n  \"settings\": {\n    \"serverName\": \"Kunos Test Server #03\",\n    \"adminPassword\": \" adminPw123\",\n    \"trackMedalsRequirement\": 3,\n    \"safetyRatingRequirement\": 49,\n    \"racecraftRatingRequirement\": -1,\n    \"password\": \"accessPw123\",\n    \"spectatorPassword\": \"spectPw432\",\n    \"maxCarSlots\": 30,\n    \"dumpLeaderboards\": 0,\n    \"isRaceLocked\": 1,\n    \"randomizeTrackWhenEmpty\": 0,\n    \"centralEntryListPath\": \"\",\n    \"allowAutoDQ\": 1,\n    \"shortFormationLap\": 0,\n    \"dumpEntryList\": 0,\n    \"formationLapType\": 3,\n    \"configVersion\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Instances - Update instance",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db\",\n  \"name\": \"acc-server-1\",\n  \"container\": \"4c01db0b339c\",\n  \"state\": \"running\",\n  \"event\": {\n    \"id\": \"84d2d4da-93e1-4fa9-88e3-313d6c659c95\",\n    \"name\": \"acc-event-1\",\n    \"track\": \"laguna_seca_2019\",\n    \"preRaceWaitingTimeSeconds\": 30,\n    \"sessionOverTimeSeconds\": 120,\n    \"ambientTemp\": 25,\n    \"trackTemp\": 30,\n    \"cloudLevel\": 0.3,\n    \"rain\": 0.0,\n    \"weatherRandomness\": 1,\n    \"postQualySeconds\": 90,\n    \"postRaceSeconds\": 120,\n    \"metaData\": \"userString\",\n    \"sessions\": [\n      {\n        \"hourOfDay\": 8,\n        \"dayOfWeekend\": 2,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"Q\",\n        \"sessionDurationMinutes\": 10\n      },\n      {\n        \"hourOfDay\": 12,\n        \"dayOfWeekend\": 3,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"R\",\n        \"sessionDurationMinutes\": 20\n      }\n    ]\n  },\n  \"entriesList\": {\n    \"entries\": [\n      {\n        \"drivers\": [\n          {\n            \"playerID\": \"S765611xxxxxxxxxx1\"\n          }\n        ],\n        \"raceNumber\": 88,\n        \"forcedCarModel\": -1,\n        \"overrideDriverInfo\": 0,\n        \"isServerAdmin\": 1\n      },\n      {\n        \"drivers\": [\n          {\n            \"firstName\": \"First\",\n            \"lastName\": \"Driver\",\n            \"shortName\": \"NO1\",\n            \"driverCategory\": 2,\n            \"playerID\": \"S765611xxxxxxxxxx3\"\n          },\n          {\n            \"firstName\": \"Another\",\n            \"lastName\": \"Person\",\n            \"shortName\": \"NO2\",\n            \"driverCategory\": 1,\n            \"playerID\": \"S765611xxxxxxxxxx4\"\n          }\n        ],\n        \"raceNumber\": 114,\n        \"forcedCarModel\": -1,\n        \"overrideDriverInfo\": 0,\n        \"customCar\": \"exampleCar.json\",\n        \"overrideCarModelForCustomCar\": 1,\n        \"isServerAdmin\": 0,\n        \"defaultGridPosition\": -1,\n        \"ballastKg\": 0,\n        \"restrictor\": 0\n      }\n    ],\n    \"forceEntryList\": 0,\n    \"configVersion\": 1\n  },\n  \"assists\": {\n    \"stabilityControlLevelMax\": 25,\n    \"disableAutosteer\": 1,\n    \"disableAutoLights\": 0,\n    \"disableAutoWiper\": 0,\n    \"disableAutoEngineStart\": 0,\n    \"disableAutoPitLimiter\": 0,\n    \"disableAutoGear\": 0,\n    \"disableAutoClutch\": 0,\n    \"disableIdealLine\": 0,\n    \"configVersion\": 1\n  },\n  \"bop\": {\n    \"entries\": [\n      {\n        \"track\": \"zolder\",\n        \"carModel\": 7,\n        \"ballast\": 1,\n        \"restrictor\": 2\n      },\n      {\n        \"track\": \"silverstone_2019\",\n        \"carModel\": 2,\n        \"restrictor\": 5\n      }\n    ],\n    \"disableAutosteer\": 1,\n    \"disableAutoLights\": 0,\n    \"disableAutoWiper\": 0\n  },\n  \"config\": {\n    \"udpPort\": 9201,\n    \"tcpPort\": 9201,\n    \"maxConnections\": 85,\n    \"lanDiscovery\": 1,\n    \"registerToLobby\": 1,\n    \"configVersion\": 1\n  },\n  \"settings\": {\n    \"serverName\": \"Kunos Test Server #03\",\n    \"adminPassword\": \" adminPw123\",\n    \"trackMedalsRequirement\": 3,\n    \"safetyRatingRequirement\": 49,\n    \"racecraftRatingRequirement\": -1,\n    \"password\": \"accessPw123\",\n    \"spectatorPassword\": \"spectPw432\",\n    \"maxCarSlots\": 30,\n    \"dumpLeaderboards\": 0,\n    \"isRaceLocked\": 1,\n    \"randomizeTrackWhenEmpty\": 0,\n    \"centralEntryListPath\": \"\",\n    \"allowAutoDQ\": 1,\n    \"shortFormationLap\": 0,\n    \"dumpEntryList\": 0,\n    \"formationLapType\": 3,\n    \"configVersion\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Instances - Start instance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db/start",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Instances - Restart instance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db/restart",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+								"restart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Instances - Stop instance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db/stop",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instances",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+								"stop"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Entries",
+			"item": [
+				{
+					"name": "Entries - Get entries by instance id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entries",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Entries - Create entries by instance id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"entries\": [\n    {\n      \"drivers\": [\n        {\n          \"playerID\": \"S765611xxxxxxxxxx1\"\n        }\n      ],\n      \"raceNumber\": 88,\n      \"forcedCarModel\": -1,\n      \"overrideDriverInfo\": 0,\n      \"isServerAdmin\": 1\n    },\n    {\n      \"drivers\": [\n        {\n          \"firstName\": \"First\",\n          \"lastName\": \"Driver\",\n          \"shortName\": \"NO1\",\n          \"driverCategory\": 2,\n          \"playerID\": \"S765611xxxxxxxxxx3\"\n        },\n        {\n          \"firstName\": \"Another\",\n          \"lastName\": \"Person\",\n          \"shortName\": \"NO2\",\n          \"driverCategory\": 1,\n          \"playerID\": \"S765611xxxxxxxxxx4\"\n        }\n      ],\n      \"raceNumber\": 114,\n      \"forcedCarModel\": -1,\n      \"overrideDriverInfo\": 0,\n      \"customCar\": \"exampleCar.json\",\n      \"overrideCarModelForCustomCar\": 1,\n      \"isServerAdmin\": 0,\n      \"defaultGridPosition\": -1,\n      \"ballastKg\": 0,\n      \"restrictor\": 0\n    }\n  ],\n  \"forceEntryList\": 0,\n  \"configVersion\": 1\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entries",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Entries - Update entries by instance id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"entries\": [\n    {\n      \"drivers\": [\n        {\n          \"playerID\": \"S765611xxxxxxxxxx1\"\n        }\n      ],\n      \"raceNumber\": 88,\n      \"forcedCarModel\": -1,\n      \"overrideDriverInfo\": 0,\n      \"isServerAdmin\": 1\n    },\n    {\n      \"drivers\": [\n        {\n          \"firstName\": \"First\",\n          \"lastName\": \"Driver\",\n          \"shortName\": \"NO1\",\n          \"driverCategory\": 2,\n          \"playerID\": \"S765611xxxxxxxxxx3\"\n        },\n        {\n          \"firstName\": \"Another\",\n          \"lastName\": \"Person\",\n          \"shortName\": \"NO2\",\n          \"driverCategory\": 1,\n          \"playerID\": \"S765611xxxxxxxxxx4\"\n        }\n      ],\n      \"raceNumber\": 114,\n      \"forcedCarModel\": -1,\n      \"overrideDriverInfo\": 0,\n      \"customCar\": \"exampleCar.json\",\n      \"overrideCarModelForCustomCar\": 1,\n      \"isServerAdmin\": 0,\n      \"defaultGridPosition\": -1,\n      \"ballastKg\": 0,\n      \"restrictor\": 0\n    }\n  ],\n  \"forceEntryList\": 0,\n  \"configVersion\": 1\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entries",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Entries - Delete entries by instance id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entries",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Events - Get events by instance id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"events",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Events - Create events by instance id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"event\": {\n    \"id\": \"84d2d4da-93e1-4fa9-88e3-313d6c659c95\",\n    \"name\": \"acc-event-1\",\n    \"track\": \"laguna_seca_2019\",\n    \"preRaceWaitingTimeSeconds\": 30,\n    \"sessionOverTimeSeconds\": 120,\n    \"ambientTemp\": 25,\n    \"trackTemp\": 30,\n    \"cloudLevel\": 0.3,\n    \"rain\": 0.0,\n    \"weatherRandomness\": 1,\n    \"postQualySeconds\": 90,\n    \"postRaceSeconds\": 120,\n    \"metaData\": \"userString\",\n    \"sessions\": [\n      {\n        \"hourOfDay\": 8,\n        \"dayOfWeekend\": 2,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"Q\",\n        \"sessionDurationMinutes\": 10\n      },\n      {\n        \"hourOfDay\": 12,\n        \"dayOfWeekend\": 3,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"R\",\n        \"sessionDurationMinutes\": 20\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"events",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Events - Update events by instance id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"event\": {\n    \"id\": \"84d2d4da-93e1-4fa9-88e3-313d6c659c95\",\n    \"name\": \"acc-event-1\",\n    \"track\": \"laguna_seca_2019\",\n    \"preRaceWaitingTimeSeconds\": 30,\n    \"sessionOverTimeSeconds\": 120,\n    \"ambientTemp\": 25,\n    \"trackTemp\": 30,\n    \"cloudLevel\": 0.3,\n    \"rain\": 0.0,\n    \"weatherRandomness\": 1,\n    \"postQualySeconds\": 90,\n    \"postRaceSeconds\": 120,\n    \"metaData\": \"userString\",\n    \"sessions\": [\n      {\n        \"hourOfDay\": 8,\n        \"dayOfWeekend\": 2,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"Q\",\n        \"sessionDurationMinutes\": 10\n      },\n      {\n        \"hourOfDay\": 12,\n        \"dayOfWeekend\": 3,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"R\",\n        \"sessionDurationMinutes\": 20\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"events",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Events - Delete events by instance id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"events",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Auth - Authenticate by username & password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"User\",\n\t\"password\": \"Password\"\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/login",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "BoP",
+			"item": [
+				{
+					"name": "BoP - Get BoP by instance id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bop",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BoP - Create BoP by instance id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"entries\": [\n    {\n      \"track\": \"zolder\",\n      \"carModel\": 7,\n      \"ballast\": 1,\n      \"restrictor\": 2\n    },\n    {\n      \"track\": \"silverstone_2019\",\n      \"carModel\": 2,\n      \"restrictor\": 5\n    }\n  ],\n  \"disableAutosteer\": 1,\n  \"disableAutoLights\": 0,\n  \"disableAutoWiper\": 0\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bop",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BoP - Update BoP by instance id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"entries\": [\n    {\n      \"track\": \"zolder\",\n      \"carModel\": 7,\n      \"ballast\": 1,\n      \"restrictor\": 2\n    },\n    {\n      \"track\": \"silverstone_2019\",\n      \"carModel\": 2,\n      \"restrictor\": 5\n    }\n  ],\n  \"disableAutosteer\": 1,\n  \"disableAutoLights\": 0,\n  \"disableAutoWiper\": 0\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bop",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BoP - Delete BoP by instance id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bop",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Assists",
+			"item": [
+				{
+					"name": "Assists - Get assists by instance id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"assists",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assists - Create assists by instance id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"stabilityControlLevelMax\": 25,\n  \"disableAutosteer\": 1,\n  \"disableAutoLights\": 0,\n  \"disableAutoWiper\": 0,\n  \"disableAutoEngineStart\": 0,\n  \"disableAutoPitLimiter\": 0,\n  \"disableAutoGear\": 0,\n  \"disableAutoClutch\": 0,\n  \"disableIdealLine\": 0,\n  \"configVersion\": 1\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"assists",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assists - Update assists by instance id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"stabilityControlLevelMax\": 25,\n  \"disableAutosteer\": 1,\n  \"disableAutoLights\": 0,\n  \"disableAutoWiper\": 0,\n  \"disableAutoEngineStart\": 0,\n  \"disableAutoPitLimiter\": 0,\n  \"disableAutoGear\": 0,\n  \"disableAutoClutch\": 0,\n  \"disableIdealLine\": 0,\n  \"configVersion\": 1\n}"
+						},
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"assists",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assists - Delete assists by instance id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/api/v1/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"assists",
+								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

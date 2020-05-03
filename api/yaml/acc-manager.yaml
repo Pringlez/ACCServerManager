@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: ACC Manager Service
   description: API specification
-  version: 0.0.3
+  version: 0.0.4
   contact:
     name: GitHub Issues
     url: https://github.com/Pringlez/ACCServerManager/issues
@@ -68,7 +68,8 @@ paths:
           description: Filter by instance state
           required: false
           schema:
-            $ref: "#/components/schemas/InstanceState"
+            type: string
+            enum: [stopped, running, crashed, paused, unknown]
       responses:
         '200':
           description: An array of instances
@@ -271,7 +272,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Entries"
+                $ref: "#/components/schemas/EntriesList"
         default:
           description: Unexpected error occurred
           content:
@@ -296,14 +297,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Entries'
+              $ref: '#/components/schemas/EntriesList'
       responses:
         '201':
           description: Successfully updated configuration
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Entries"
+                $ref: "#/components/schemas/EntriesList"
         default:
           description: Unexpected error occurred
           content:
@@ -328,14 +329,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Entries'
+              $ref: '#/components/schemas/EntriesList'
       responses:
         '201':
           description: Successfully updated configuration
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Entries"
+                $ref: "#/components/schemas/EntriesList"
         default:
           description: Unexpected error occurred
           content:
@@ -391,6 +392,44 @@ paths:
                 $ref: "#/components/schemas/Event"
         default:
           description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create an event for ACC instance by event id
+      operationId: createInstanceEventById
+      tags:
+        - events
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+        - name: eventId
+          in: query
+          description: Event id to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A JSON object containing the Event for ACC instance
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        '201':
+          description: Successfully updated event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        default:
+          description: Unexpected error occurred occurred
           content:
             application/json:
               schema:
@@ -486,6 +525,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+    post:
+      summary: Create assist rules by instance id
+      operationId: createAssistRulesByInstanceId
+      tags:
+        - assists
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+      requestBody:
+        description: A JSON object containing the AssistRules for the ACC instance
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssistRules'
+      responses:
+        '201':
+          description: Successfully updated assist rules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistRules"
+        default:
+          description: Unexpected error occurred occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     put:
       summary: Update assist rules by instance id
       operationId: updateAssistRulesByInstanceId
@@ -555,6 +626,38 @@ paths:
       responses:
         '200':
           description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoP"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create BoP for ACC instance by id
+      operationId: createBoPByInstanceId
+      tags:
+        - bop
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+      requestBody:
+        description: A JSON object containing the BoP for entries
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoP'
+      responses:
+        '201':
+          description: Successfully updated configuration
           content:
             application/json:
               schema:
@@ -640,8 +743,8 @@ components:
           $ref: "#/components/schemas/InstanceState"
         event:
           $ref: "#/components/schemas/Event"
-        entries:
-          $ref: "#/components/schemas/Entries"
+        entriesList:
+          $ref: "#/components/schemas/EntriesList"
         assists:
           $ref: "#/components/schemas/AssistRules"
         bop:
@@ -931,6 +1034,11 @@ components:
           description: Will reject drivers that are not in the entry list. Default is 0, which allows the partial definition of entries in a “normal” server configuration. Cannot be used on public servers.
           minimum: 0
           maximum: 1
+        configVersion:
+          type: integer
+          format: int32
+          description: Config version
+          enum: [1]
     Entries:
       type: array
       items:
@@ -977,7 +1085,7 @@ components:
           type: integer
           format: int32
           description: If set to a value of 1 or greater, this car will obtain this grid position if a race starts without any qualifying session before (e.g. P -> R).
-          minimum: 0
+          minimum: -1
         ballastKg:
           type: integer
           format: int32
@@ -1098,6 +1206,8 @@ components:
           type: integer
           format: int32
           description: If weather randomness is off, defines the static rain level. With dynamic weather, it increases the rain chance.
+          minimum: 0
+          maximum: 7
         postQualySeconds:
           type: integer
           format: int32
