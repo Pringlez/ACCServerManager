@@ -4,6 +4,7 @@ target
 .settings
 .project
 .factorypath
+*.iml
 service/.project
 service/.classpath
 api/.project
