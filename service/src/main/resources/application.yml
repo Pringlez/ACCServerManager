@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: acc-manager
+  profiles:
+    active: h2
+  h2:
+    console:
+      enabled: false
+      path: /h2-console
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  servlet:
+    context-path: /accmanager
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: ['health', 'info', 'env', 'configprops']
+  endpoint:
+    health:
+      show-details: when_authorized
+      roles: 'ROLE_ADMIN'
+  info:
+    git:
+      mode: full

@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    schema: classpath:database/schema.sql
+    data: classpath:database/data.sql
+    platform: h2
+    driver-class-name: org.h2.Driver
+    username: accmanager
+    password: accmanager
+    url: jdbc:h2:mem:accdb;DB_CLOSE_DELAY=-1
+logging:
+  level:
+    log:
+      hibernate:
+        SQL: debug
+        type: trace
