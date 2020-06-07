@@ -2,7 +2,7 @@ spring:
   application:
     name: acc-manager
   profiles:
-    active: h2
+    active: local
   h2:
     console:
       enabled: false
