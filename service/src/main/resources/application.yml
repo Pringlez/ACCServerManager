@@ -17,8 +17,7 @@ spring:
       hibernate:
         format_sql: true
 server:
-  servlet:
-    context-path: /accmanager
+  port: 8080
 management:
   endpoints:
     web:

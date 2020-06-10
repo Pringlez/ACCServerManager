@@ -13,7 +13,7 @@ public class ACCManagerFunctionalBaseTest {
 	@Value("${system.app.url:http://localhost:}")
 	private String appUrl;
 	
-	@Value("${server.servlet.context-path:/accmanager}")
+	@Value("${server.servlet.context-path:}")
 	private String appContextPath;
 
 	@Value("${management.endpoints.web.base-path}")
