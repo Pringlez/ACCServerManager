@@ -20,12 +20,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances",
+							"raw": "{{acc-manager-host}}/instances",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances"
 							]
 						}
@@ -38,12 +37,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances?name=acc-server-1",
+							"raw": "{{acc-manager-host}}/instances?name=acc-server-1",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances"
 							],
 							"query": [
@@ -62,12 +60,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances?state=running",
+							"raw": "{{acc-manager-host}}/instances?state=running",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances"
 							],
 							"query": [
@@ -86,12 +83,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances?name=acc-server-1&state=running",
+							"raw": "{{acc-manager-host}}/instances?name=acc-server-1&state=running",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances"
 							],
 							"query": [
@@ -120,12 +116,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -149,12 +144,11 @@
 							"raw": "{\n  \"id\": \"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db\",\n  \"name\": \"acc-server-1\",\n  \"container\": \"container-name\",\n  \"state\": \"running\",\n  \"event\": {\n    \"id\": \"84d2d4da-93e1-4fa9-88e3-313d6c659c95\",\n    \"name\": \"acc-event-1\",\n    \"track\": \"laguna_seca_2019\",\n    \"preRaceWaitingTimeSeconds\": 30,\n    \"sessionOverTimeSeconds\": 120,\n    \"ambientTemp\": 25,\n    \"trackTemp\": 30,\n    \"cloudLevel\": 0.3,\n    \"rain\": 0.0,\n    \"weatherRandomness\": 1,\n    \"postQualySeconds\": 90,\n    \"postRaceSeconds\": 120,\n    \"metaData\": \"userString\",\n    \"sessions\": [\n      {\n        \"hourOfDay\": 8,\n        \"dayOfWeekend\": 2,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"Q\",\n        \"sessionDurationMinutes\": 10\n      },\n      {\n        \"hourOfDay\": 12,\n        \"dayOfWeekend\": 3,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"R\",\n        \"sessionDurationMinutes\": 20\n      }\n    ]\n  },\n  \"entriesList\": {\n    \"entries\": [\n      {\n        \"drivers\": [\n          {\n            \"playerID\": \"S765611xxxxxxxxxx1\"\n          }\n        ],\n        \"raceNumber\": 88,\n        \"forcedCarModel\": -1,\n        \"overrideDriverInfo\": 0,\n        \"isServerAdmin\": 1\n      },\n      {\n        \"drivers\": [\n          {\n            \"firstName\": \"First\",\n            \"lastName\": \"Driver\",\n            \"shortName\": \"NO1\",\n            \"driverCategory\": 2,\n            \"playerID\": \"S765611xxxxxxxxxx3\"\n          },\n          {\n            \"firstName\": \"Another\",\n            \"lastName\": \"Person\",\n            \"shortName\": \"NO2\",\n            \"driverCategory\": 1,\n            \"playerID\": \"S765611xxxxxxxxxx4\"\n          }\n        ],\n        \"raceNumber\": 114,\n        \"forcedCarModel\": -1,\n        \"overrideDriverInfo\": 0,\n        \"customCar\": \"exampleCar.json\",\n        \"overrideCarModelForCustomCar\": 1,\n        \"isServerAdmin\": 0,\n        \"defaultGridPosition\": -1,\n        \"ballastKg\": 0,\n        \"restrictor\": 0\n      }\n    ],\n    \"forceEntryList\": 0,\n    \"configVersion\": 1\n  },\n  \"assists\": {\n    \"stabilityControlLevelMax\": 25,\n    \"disableAutosteer\": 1,\n    \"disableAutoLights\": 0,\n    \"disableAutoWiper\": 0,\n    \"disableAutoEngineStart\": 0,\n    \"disableAutoPitLimiter\": 0,\n    \"disableAutoGear\": 0,\n    \"disableAutoClutch\": 0,\n    \"disableIdealLine\": 0,\n    \"configVersion\": 1\n  },\n  \"bop\": {\n    \"entries\": [\n      {\n        \"track\": \"zolder\",\n        \"carModel\": 7,\n        \"ballast\": 1,\n        \"restrictor\": 2\n      },\n      {\n        \"track\": \"silverstone_2019\",\n        \"carModel\": 2,\n        \"restrictor\": 5\n      }\n    ],\n    \"disableAutosteer\": 1,\n    \"disableAutoLights\": 0,\n    \"disableAutoWiper\": 0\n  },\n  \"config\": {\n    \"udpPort\": 9201,\n    \"tcpPort\": 9201,\n    \"maxConnections\": 85,\n    \"lanDiscovery\": 1,\n    \"registerToLobby\": 1,\n    \"configVersion\": 1\n  },\n  \"settings\": {\n    \"serverName\": \"Kunos Test Server #03\",\n    \"adminPassword\": \" adminPw123\",\n    \"trackMedalsRequirement\": 3,\n    \"safetyRatingRequirement\": 49,\n    \"racecraftRatingRequirement\": -1,\n    \"password\": \"accessPw123\",\n    \"spectatorPassword\": \"spectPw432\",\n    \"maxCarSlots\": 30,\n    \"dumpLeaderboards\": 0,\n    \"isRaceLocked\": 1,\n    \"randomizeTrackWhenEmpty\": 0,\n    \"centralEntryListPath\": \"\",\n    \"allowAutoDQ\": 1,\n    \"shortFormationLap\": 0,\n    \"dumpEntryList\": 0,\n    \"formationLapType\": 3,\n    \"configVersion\": 1\n  }\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances",
+							"raw": "{{acc-manager-host}}/instances",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances"
 							]
 						}
@@ -177,12 +171,11 @@
 							"raw": "{\n  \"id\": \"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db\",\n  \"name\": \"acc-server-1\",\n  \"container\": \"4c01db0b339c\",\n  \"state\": \"running\",\n  \"event\": {\n    \"id\": \"84d2d4da-93e1-4fa9-88e3-313d6c659c95\",\n    \"name\": \"acc-event-1\",\n    \"track\": \"laguna_seca_2019\",\n    \"preRaceWaitingTimeSeconds\": 30,\n    \"sessionOverTimeSeconds\": 120,\n    \"ambientTemp\": 25,\n    \"trackTemp\": 30,\n    \"cloudLevel\": 0.3,\n    \"rain\": 0.0,\n    \"weatherRandomness\": 1,\n    \"postQualySeconds\": 90,\n    \"postRaceSeconds\": 120,\n    \"metaData\": \"userString\",\n    \"sessions\": [\n      {\n        \"hourOfDay\": 8,\n        \"dayOfWeekend\": 2,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"Q\",\n        \"sessionDurationMinutes\": 10\n      },\n      {\n        \"hourOfDay\": 12,\n        \"dayOfWeekend\": 3,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"R\",\n        \"sessionDurationMinutes\": 20\n      }\n    ]\n  },\n  \"entriesList\": {\n    \"entries\": [\n      {\n        \"drivers\": [\n          {\n            \"playerID\": \"S765611xxxxxxxxxx1\"\n          }\n        ],\n        \"raceNumber\": 88,\n        \"forcedCarModel\": -1,\n        \"overrideDriverInfo\": 0,\n        \"isServerAdmin\": 1\n      },\n      {\n        \"drivers\": [\n          {\n            \"firstName\": \"First\",\n            \"lastName\": \"Driver\",\n            \"shortName\": \"NO1\",\n            \"driverCategory\": 2,\n            \"playerID\": \"S765611xxxxxxxxxx3\"\n          },\n          {\n            \"firstName\": \"Another\",\n            \"lastName\": \"Person\",\n            \"shortName\": \"NO2\",\n            \"driverCategory\": 1,\n            \"playerID\": \"S765611xxxxxxxxxx4\"\n          }\n        ],\n        \"raceNumber\": 114,\n        \"forcedCarModel\": -1,\n        \"overrideDriverInfo\": 0,\n        \"customCar\": \"exampleCar.json\",\n        \"overrideCarModelForCustomCar\": 1,\n        \"isServerAdmin\": 0,\n        \"defaultGridPosition\": -1,\n        \"ballastKg\": 0,\n        \"restrictor\": 0\n      }\n    ],\n    \"forceEntryList\": 0,\n    \"configVersion\": 1\n  },\n  \"assists\": {\n    \"stabilityControlLevelMax\": 25,\n    \"disableAutosteer\": 1,\n    \"disableAutoLights\": 0,\n    \"disableAutoWiper\": 0,\n    \"disableAutoEngineStart\": 0,\n    \"disableAutoPitLimiter\": 0,\n    \"disableAutoGear\": 0,\n    \"disableAutoClutch\": 0,\n    \"disableIdealLine\": 0,\n    \"configVersion\": 1\n  },\n  \"bop\": {\n    \"entries\": [\n      {\n        \"track\": \"zolder\",\n        \"carModel\": 7,\n        \"ballast\": 1,\n        \"restrictor\": 2\n      },\n      {\n        \"track\": \"silverstone_2019\",\n        \"carModel\": 2,\n        \"restrictor\": 5\n      }\n    ],\n    \"disableAutosteer\": 1,\n    \"disableAutoLights\": 0,\n    \"disableAutoWiper\": 0\n  },\n  \"config\": {\n    \"udpPort\": 9201,\n    \"tcpPort\": 9201,\n    \"maxConnections\": 85,\n    \"lanDiscovery\": 1,\n    \"registerToLobby\": 1,\n    \"configVersion\": 1\n  },\n  \"settings\": {\n    \"serverName\": \"Kunos Test Server #03\",\n    \"adminPassword\": \" adminPw123\",\n    \"trackMedalsRequirement\": 3,\n    \"safetyRatingRequirement\": 49,\n    \"racecraftRatingRequirement\": -1,\n    \"password\": \"accessPw123\",\n    \"spectatorPassword\": \"spectPw432\",\n    \"maxCarSlots\": 30,\n    \"dumpLeaderboards\": 0,\n    \"isRaceLocked\": 1,\n    \"randomizeTrackWhenEmpty\": 0,\n    \"centralEntryListPath\": \"\",\n    \"allowAutoDQ\": 1,\n    \"shortFormationLap\": 0,\n    \"dumpEntryList\": 0,\n    \"formationLapType\": 3,\n    \"configVersion\": 1\n  }\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -202,12 +195,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db/start",
+							"raw": "{{acc-manager-host}}/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db/start",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 								"start"
@@ -228,12 +220,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db/restart",
+							"raw": "{{acc-manager-host}}/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db/restart",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 								"restart"
@@ -254,12 +245,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db/stop",
+							"raw": "{{acc-manager-host}}/instances/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db/stop",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"instances",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 								"stop"
@@ -286,12 +276,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"entries",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -315,12 +304,11 @@
 							"raw": "{\n  \"entries\": [\n    {\n      \"drivers\": [\n        {\n          \"playerID\": \"S765611xxxxxxxxxx1\"\n        }\n      ],\n      \"raceNumber\": 88,\n      \"forcedCarModel\": -1,\n      \"overrideDriverInfo\": 0,\n      \"isServerAdmin\": 1\n    },\n    {\n      \"drivers\": [\n        {\n          \"firstName\": \"First\",\n          \"lastName\": \"Driver\",\n          \"shortName\": \"NO1\",\n          \"driverCategory\": 2,\n          \"playerID\": \"S765611xxxxxxxxxx3\"\n        },\n        {\n          \"firstName\": \"Another\",\n          \"lastName\": \"Person\",\n          \"shortName\": \"NO2\",\n          \"driverCategory\": 1,\n          \"playerID\": \"S765611xxxxxxxxxx4\"\n        }\n      ],\n      \"raceNumber\": 114,\n      \"forcedCarModel\": -1,\n      \"overrideDriverInfo\": 0,\n      \"customCar\": \"exampleCar.json\",\n      \"overrideCarModelForCustomCar\": 1,\n      \"isServerAdmin\": 0,\n      \"defaultGridPosition\": -1,\n      \"ballastKg\": 0,\n      \"restrictor\": 0\n    }\n  ],\n  \"forceEntryList\": 0,\n  \"configVersion\": 1\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"entries",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -344,12 +332,11 @@
 							"raw": "{\n  \"entries\": [\n    {\n      \"drivers\": [\n        {\n          \"playerID\": \"S765611xxxxxxxxxx1\"\n        }\n      ],\n      \"raceNumber\": 88,\n      \"forcedCarModel\": -1,\n      \"overrideDriverInfo\": 0,\n      \"isServerAdmin\": 1\n    },\n    {\n      \"drivers\": [\n        {\n          \"firstName\": \"First\",\n          \"lastName\": \"Driver\",\n          \"shortName\": \"NO1\",\n          \"driverCategory\": 2,\n          \"playerID\": \"S765611xxxxxxxxxx3\"\n        },\n        {\n          \"firstName\": \"Another\",\n          \"lastName\": \"Person\",\n          \"shortName\": \"NO2\",\n          \"driverCategory\": 1,\n          \"playerID\": \"S765611xxxxxxxxxx4\"\n        }\n      ],\n      \"raceNumber\": 114,\n      \"forcedCarModel\": -1,\n      \"overrideDriverInfo\": 0,\n      \"customCar\": \"exampleCar.json\",\n      \"overrideCarModelForCustomCar\": 1,\n      \"isServerAdmin\": 0,\n      \"defaultGridPosition\": -1,\n      \"ballastKg\": 0,\n      \"restrictor\": 0\n    }\n  ],\n  \"forceEntryList\": 0,\n  \"configVersion\": 1\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"entries",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -369,12 +356,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/entries/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"entries",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -400,12 +386,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"events",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -429,12 +414,11 @@
 							"raw": "{\n  \"event\": {\n    \"id\": \"84d2d4da-93e1-4fa9-88e3-313d6c659c95\",\n    \"name\": \"acc-event-1\",\n    \"track\": \"laguna_seca_2019\",\n    \"preRaceWaitingTimeSeconds\": 30,\n    \"sessionOverTimeSeconds\": 120,\n    \"ambientTemp\": 25,\n    \"trackTemp\": 30,\n    \"cloudLevel\": 0.3,\n    \"rain\": 0.0,\n    \"weatherRandomness\": 1,\n    \"postQualySeconds\": 90,\n    \"postRaceSeconds\": 120,\n    \"metaData\": \"userString\",\n    \"sessions\": [\n      {\n        \"hourOfDay\": 8,\n        \"dayOfWeekend\": 2,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"Q\",\n        \"sessionDurationMinutes\": 10\n      },\n      {\n        \"hourOfDay\": 12,\n        \"dayOfWeekend\": 3,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"R\",\n        \"sessionDurationMinutes\": 20\n      }\n    ]\n  }\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"events",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -458,12 +442,11 @@
 							"raw": "{\n  \"event\": {\n    \"id\": \"84d2d4da-93e1-4fa9-88e3-313d6c659c95\",\n    \"name\": \"acc-event-1\",\n    \"track\": \"laguna_seca_2019\",\n    \"preRaceWaitingTimeSeconds\": 30,\n    \"sessionOverTimeSeconds\": 120,\n    \"ambientTemp\": 25,\n    \"trackTemp\": 30,\n    \"cloudLevel\": 0.3,\n    \"rain\": 0.0,\n    \"weatherRandomness\": 1,\n    \"postQualySeconds\": 90,\n    \"postRaceSeconds\": 120,\n    \"metaData\": \"userString\",\n    \"sessions\": [\n      {\n        \"hourOfDay\": 8,\n        \"dayOfWeekend\": 2,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"Q\",\n        \"sessionDurationMinutes\": 10\n      },\n      {\n        \"hourOfDay\": 12,\n        \"dayOfWeekend\": 3,\n        \"timeMultiplier\": 5,\n        \"sessionType\": \"R\",\n        \"sessionDurationMinutes\": 20\n      }\n    ]\n  }\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"events",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -483,12 +466,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/events/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"events",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -518,12 +500,11 @@
 							"raw": "{\n\t\"username\": \"User\",\n\t\"password\": \"Password\"\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/login",
+							"raw": "{{acc-manager-host}}/login",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"login"
 							]
 						}
@@ -548,12 +529,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"bop",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -577,12 +557,11 @@
 							"raw": "{\n  \"entries\": [\n    {\n      \"track\": \"zolder\",\n      \"carModel\": 7,\n      \"ballast\": 1,\n      \"restrictor\": 2\n    },\n    {\n      \"track\": \"silverstone_2019\",\n      \"carModel\": 2,\n      \"restrictor\": 5\n    }\n  ],\n  \"disableAutosteer\": 1,\n  \"disableAutoLights\": 0,\n  \"disableAutoWiper\": 0\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"bop",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -606,12 +585,11 @@
 							"raw": "{\n  \"entries\": [\n    {\n      \"track\": \"zolder\",\n      \"carModel\": 7,\n      \"ballast\": 1,\n      \"restrictor\": 2\n    },\n    {\n      \"track\": \"silverstone_2019\",\n      \"carModel\": 2,\n      \"restrictor\": 5\n    }\n  ],\n  \"disableAutosteer\": 1,\n  \"disableAutoLights\": 0,\n  \"disableAutoWiper\": 0\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"bop",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -631,12 +609,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/bop/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"bop",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -662,12 +639,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"assists",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -691,12 +667,11 @@
 							"raw": "{\n  \"stabilityControlLevelMax\": 25,\n  \"disableAutosteer\": 1,\n  \"disableAutoLights\": 0,\n  \"disableAutoWiper\": 0,\n  \"disableAutoEngineStart\": 0,\n  \"disableAutoPitLimiter\": 0,\n  \"disableAutoGear\": 0,\n  \"disableAutoClutch\": 0,\n  \"disableIdealLine\": 0,\n  \"configVersion\": 1\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"assists",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -720,12 +695,11 @@
 							"raw": "{\n  \"stabilityControlLevelMax\": 25,\n  \"disableAutosteer\": 1,\n  \"disableAutoLights\": 0,\n  \"disableAutoWiper\": 0,\n  \"disableAutoEngineStart\": 0,\n  \"disableAutoPitLimiter\": 0,\n  \"disableAutoGear\": 0,\n  \"disableAutoClutch\": 0,\n  \"disableIdealLine\": 0,\n  \"configVersion\": 1\n}"
 						},
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"assists",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
@@ -745,12 +719,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{acc-manager-host}}/accmanager/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
+							"raw": "{{acc-manager-host}}/assists/b1d15ac4-2e46-4bce-a5c4-f11e4dff18db",
 							"host": [
 								"{{acc-manager-host}}"
 							],
 							"path": [
-								"accmanager",
 								"assists",
 								"b1d15ac4-2e46-4bce-a5c4-f11e4dff18db"
 							]
