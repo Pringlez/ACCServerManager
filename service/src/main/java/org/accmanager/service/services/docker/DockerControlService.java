@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DockerControlServices {
+public class DockerControlService {
 
     private final DockerClient dockerClient;
 
     @Autowired
-    public DockerControlServices(DockerClient dockerClient) {
+    public DockerControlService(DockerClient dockerClient) {
         this.dockerClient = dockerClient;
     }
 
