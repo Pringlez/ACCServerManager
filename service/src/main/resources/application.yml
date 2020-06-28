@@ -1,14 +1,11 @@
 spring:
   application:
     name: acc-manager
-  profiles:
-    active: local
   h2:
     console:
       enabled: false
       path: /h2-console
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: none
       naming:
@@ -16,8 +13,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-server:
-  port: 8080
 management:
   endpoints:
     web:
@@ -26,8 +21,7 @@ management:
         include: ['health', 'info', 'env', 'configprops']
   endpoint:
     health:
-      show-details: when_authorized
-      roles: 'ROLE_ADMIN'
+      show-details: always
   info:
     git:
       mode: full

@@ -1,4 +1,4 @@
-package org.accmanager.service.config;
+package org.accmanager.service.config.rest;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
