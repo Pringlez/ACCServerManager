@@ -1,0 +1,18 @@
+{
+  "serverName": "Testing Server 1",
+  "adminPassword": "adminPassword123",
+  "carGroup": "FreeForAll",
+  "trackMedalsRequirement": 0,
+  "safetyRatingRequirement": -1,
+  "racecraftRatingRequirement": -1,
+  "password": "",
+  "spectatorPassword": "",
+  "dumpLeaderboards": 0,
+  "dumpEntryList": 0,
+  "isRaceLocked": 1,
+  "shortFormationLap": 1,
+  "formationLapType": 3,
+  "doDriverSwapBroadcast": 1,
+  "centralEntryListPath": "",
+  "configVersion": 1
+}

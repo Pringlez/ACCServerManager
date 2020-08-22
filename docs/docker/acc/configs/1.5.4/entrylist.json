@@ -1,0 +1,47 @@
+{
+  "configVersion": 1,
+  "entries": [
+    {
+      "drivers": [
+        {
+          "firstName": "ExampleOne",
+          "lastName": "Example",
+          "shortName": "NicknameOne",
+          "driverCategory": 3,
+          "playerID": "s*****************"
+        },
+        {
+          "firstName": "ExampleTwo",
+          "lastName": "Example",
+          "shortName": "NicknameTwo",
+          "driverCategory": 3,
+          "playerID": "s*****************"
+        }
+      ],
+      "raceNumber": -1,
+      "forcedCarModel": -1,
+      "overrideDriverInfo": 1,
+      "isServerAdmin": 1,
+      "customCar": "9-200321-103118.json",
+      "overrideCarModelForCustomCar": 0
+    },
+    {
+      "drivers": [
+        {
+          "firstName": "ExampleThree",
+          "lastName": "Example",
+          "shortName": "NicknameThree",
+          "driverCategory": 0,
+          "playerID": "s*****************"
+        }
+      ],
+      "raceNumber": -1,
+      "forcedCarModel": -1,
+      "overrideDriverInfo": 1,
+      "isServerAdmin": 1,
+      "customCar": "9-200321-103118.json",
+      "overrideCarModelForCustomCar": 0
+    }
+  ],
+  "forceEntryList": 0
+}
