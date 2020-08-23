@@ -737,8 +737,10 @@ components:
           type: string
         name:
           type: string
+          default: "ACC Instance Name"
         dockerImage:
           type: string
+          default: "acc-server-1.5.4"
         state:
           $ref: "#/components/schemas/InstanceState"
         event:
@@ -814,7 +816,6 @@ components:
           default: 1
           format: int32
           description: Config version
-          enum: [1]
     Settings:
       type: object
       properties:
@@ -935,7 +936,6 @@ components:
           default: 1
           format: int32
           description: Config version
-          enum: [1]
     EventRules:
       type: object
       properties:
@@ -1119,7 +1119,6 @@ components:
           default: 1
           format: int32
           description: Config version
-          enum: [1]
     Entries:
       type: array
       items:
@@ -1338,7 +1337,6 @@ components:
           default: 1
           format: int32
           description: Config version
-          enum: [1]
     Sessions:
       type: array
       items:
