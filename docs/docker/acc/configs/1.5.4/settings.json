@@ -7,12 +7,16 @@
   "racecraftRatingRequirement": -1,
   "password": "",
   "spectatorPassword": "",
+  "maxCarSlots": 30,
   "dumpLeaderboards": 0,
   "dumpEntryList": 0,
   "isRaceLocked": 1,
+  "isPrepPhaseLocked": 0,
+  "randomizeTrackWhenEmpty": 1,
+  "centralEntryListPath": "",
+  "allowAutoDQ": 0,
   "shortFormationLap": 1,
   "formationLapType": 3,
   "doDriverSwapBroadcast": 1,
-  "centralEntryListPath": "",
   "configVersion": 1
 }

@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: ACC Manager Service
   description: API specification
-  version: 0.0.5
+  version: 0.0.6
   contact:
     name: GitHub Issues
     url: https://github.com/Pringlez/ACCServerManager/issues
@@ -737,7 +737,7 @@ components:
           type: string
         name:
           type: string
-        container:
+        dockerImage:
           type: string
         state:
           $ref: "#/components/schemas/InstanceState"
@@ -763,12 +763,12 @@ components:
     SystemInfo:
       type: object
       properties:
-        version:
+        accManagerVersion:
           type: string
-        accVersion:
-          type: string
+          default: "0.0.6"
         supportedAccVersion:
           type: string
+          default: "1.5.4"
     Error:
       type: object
       properties:
@@ -782,30 +782,36 @@ components:
       properties:
         tcpPort:
           type: integer
+          default: 9232
           format: int32
           description: ACC clients will use this port to establish a connection to the server
         udpPort:
           type: integer
+          default: 9231
           format: int32
           description: Connected clients will use this Port to stream the car positions and is used for the ping test. In case you never see your server getting a ping value, this indicates that the udpPort is not accessible
         registerToLobby:
           type: integer
           format: int32
+          default: 1
           description: When 0, this server won’t register to the backend. Is useful for LAN sessions. If 0, the server is declared “Private Multiplayer”.
           minimum: 0
           maximum: 1
         maxConnections:
           type: integer
+          default: 85
           format: int32
           description: Replaces “maxClients”. The maximum amount of connections a server will accept at a time. If you own the hardware server, you can just set any high integer you want. If you rented a 16 or 24 slot server, your Hosting Provider probably has set this here and doesn’t give you write-access to this configuration file.
         lanDiscovery:
           type: integer
+          default: 1
           format: int32
           description: Defines if the server will listen to LAN discovery requests. Can be turned off for dedicated servers.
           minimum: 0
           maximum: 1
         configVersion:
           type: integer
+          default: 1
           format: int32
           description: Config version
           enum: [1]
@@ -814,18 +820,27 @@ components:
       properties:
         serverName:
           type: string
+          default: "ACC Game Server"
           description: The server name displayed in the ACC UI pages
         adminPassword:
           type: string
+          default: "changeMe!"
           description: Password to elevate via “Server admin commands”
+        carGroup:
+          type: string
+          default: "FreeForAll"
+          description: Defines the car group for this server.
+          enum: [FreeForAll, GT3, GT4, Cup, ST]
         trackMedalsRequirement:
           type: integer
+          default: 1
           format: int32
           description: Defines the amount of track medals that a user has to have for the given track (values 0, 1, 2, 3)
           minimum: 0
           maximum: 3
         safetyRatingRequirement:
           type: integer
+          default: 50
           format: int32
           description: Defines the Safety Rating (SA) that a user must have to join this server (values -1, 0, .... 99)
           minimum: -1
@@ -833,6 +848,7 @@ components:
         racecraftRatingRequirement:
           type: integer
           format: int32
+          default: 10
           description: Defines the Safety Rating (RC) that a user must have to join this server (values -1, 0, .... 99)
           minimum: -1
           maximum: 99
@@ -844,55 +860,79 @@ components:
           description: Password to enter the server as spectator. Must be different to “password” if both is set.
         maxCarSlots:
           type: integer
+          default: 30
           format: int32
           description: Replaces “maxClientsOverride” and “spectatorSlots”. Defines the amount of car slots the server can occupy; this value is overridden if the pit count of the track is lower, or with 30 for public MP. The gap between maxCarSlots and maxConnections defines how many spectators or other irregular connections (ie entry list entries) can be on the server.
         dumpLeaderboards:
           type: integer
+          default: 0
           format: int32
           description: If set to 1, any session will write down the result leaderboard in a “results” folder (must be manually created). See ”Session results”
           minimum: 0
           maximum: 1
         isRaceLocked:
           type: integer
+          default: 0
           format: int32
           description: If set to 0, the server will allow joining during a race session. Is not useful in “Public Multiplayer”, as the user-server matching will ignore ongoing race sessions.
+          minimum: 0
+          maximum: 1
+        isPrepPhaseLocked:
+          type: integer
+          default: 0
+          format: int32
+          description: If set to 0, the server will allow clients to join during the preparation phase.
           minimum: 0
           maximum: 1
         randomizeTrackWhenEmpty:
           type: integer
           format: int32
+          default: 1
           description: If set to 1, the server will change to a random track when the last drivers leaves (which causes a reset to FP1). The “track” property will only define the default state for the first session.
           minimum: 0
           maximum: 1
         centralEntryListPath:
           type: string
+          default: ""
           description: Can override the default entryList path “cfg/entrylist.json”, so multiple ACC servers on the machine can use the same entrylist (and custom car files). Set a full path like “C:/customEntryListSeriesA/”, where the entrylist is stored. Attention - The path seperators have to be slashes (/), backslashes (\) will not work.
         allowAutoDQ:
           type: integer
+          default: 0
           format: int32
           description: If set to 0, the server won’t automatically disqualify drivers, and instead hand out Stop&Go (30s) penalties. This way a server admin / race director has 3 laps time to review the incident, and either use /dq or /clear based on his judgement.
           minimum: 0
           maximum: 1
         shortFormationLap:
           type: integer
+          default: 0
           format: int32
           description: Toggles the short and long formation lap. Long formation is only usable on private servers.
           minimum: 0
           maximum: 1
         dumpEntryList:
           type: integer
+          default: 1
           format: int32
           description: Will save an entry list at the end of any Qualifying session. This can be a quick way to collect a starting point to build an entry list, and is a way to save the defaultGridPositions which can be used to run a race without Qualifying session and predefined grid. Also see the corresponding admin command.
           minimum: 0
           maximum: 1
         formationLapType:
           type: integer
+          default: 3
           format: int32
           description: Toggles the formation lap type that is permanently used on this server. 3 – default formation lap with position control and UI. 0 – old limiter lap. 1 – free (replaces /manual start), only usable for private servers
           minimum: 0
           maximum: 3
+        doDriverSwapBroadcast:
+          type: integer
+          default: 1
+          format: int32
+          description: Broadcast driver swaps to other competitors.
+          minimum: 0
+          maximum: 1
         configVersion:
           type: integer
+          default: 1
           format: int32
           description: Config version
           enum: [1]
@@ -901,100 +941,136 @@ components:
       properties:
         qualifyStandingType:
           type: integer
+          default: 1
           format: int32
           description: 1 = fastest lap, 2 = average lap (running Endurance mode for multiple Q sessions) . Use 1, averaging Qualy is not yet officially supported
           minimum: 1
           maximum: 2
+        superpoleMaxCar:
+          type: integer
+          default: -1
+          format: int32
+          description: Top qualifiers are put in a short two-lap shootout for the best grid position
+          minimum: -1
         pitWindowLengthSec:
           type: integer
+          default: -1
           format: int32
           description: Defines a pit window at the middle of the race. Obviously covers the Sprint series format. -1 will disable the pit window. Use this combined with a mandatoryPitstopCount = 1.
           minimum: -1
         driverStintTimeSec:
           type: integer
+          default: -1
           format: int32
           description: Defines the maximum time a driver can stay out without getting a penalty. Can be used to balance fuel efficient cars in endurance races. The stint time resets in the pitlane, no real stop is required. -1 will disable the stint times.
           minimum: -1
         mandatoryPitstopCount:
           type: integer
+          default: 0
           format: int32
           description: Defines the basic mandatory pit stops. If the value is greater zero, any car that did not execute the mandatory pitstops will be disqualified at the end of the race. The necessary actions can be further configured using the “isMandatoryPitstopXYRequired” properties. A value of zero disables the feature.
+          minimum: 0
         maxTotalDrivingTime:
           type: integer
+          default: -1
           format: int32
           description: Restricts the maximum driving time for a single driver. Is only useful for driver swap situations and allows to enforce a minimum driving time for each driver. (IRL this is used to make sure mixed teams like Pro/Am have a fair distributions of the slower drivers). -1 disables the feature.
+          minimum: -1
         maxDriversCount:
           type: integer
+          default: 1
           format: int32
           description: In driver swap situations, set this to the maximum integer of drivers on a car. When an entry has fewer drivers than maxDriversCount, maxTotalDrivingTime is automatically compensated so that those "smaller" entries are also able to complete the race.
+          minimum: 1
         isRefuellingAllowedInRace:
           type: boolean
+          default: true
           description: Defines if refuelling is allowed during the race pitstops.
         isRefuellingTimeFixed:
           type: boolean
+          default: false
           description: If set to true, any refuelling will take the same amount of time. If turned off, refuelling will consume time linear to the amount refuelled. Very useful setting to balance fuel efficient cars, especially if combined with other features.
         isMandatoryPitstopRefuellingRequired:
           type: boolean
+          default: false
           description: Defines if a mandatory pitstop requires refuelling.
         isMandatoryPitstopTyreChangeRequired:
           type: boolean
+          default: false
           description: Defines if a mandatory pitstop requires changing tyres.
         isMandatoryPitstopSwapDriverRequired:
           type: boolean
+          default: false
           description: Defines if a mandatory pitstop requires a driver swap. Will only be effective for cars in driver swap situations; even in a mixed field this will be skipped for cars with a team size of 1 driver.
+        tyreSetCount:
+          type: integer
+          default: 50
+          format: int32
+          description: The amount of tyres available for the race weekend.
+          minimum: -1
+          maximum: 100
     AssistRules:
       type: object
       properties:
         stabilityControlLevelMax:
           type: integer
+          default: 25
           format: int32
           description: Set’s the maximum % of SC that can be used. In case a client has a higher SC set than allowed by the server, he will only run what is allowed (25% in this example). Obviously setting this property to 0 removes all SC, including mouse and keyboard.
           minimum: 0
           maximum: 100
         disableAutosteer:
           type: integer
+          default: 1
           format: int32
           description: Disables the steering aid that is only available for gamepad controllers. Unlike SC, this works inside the physics and does not allow unrealistic driving behaviour.
           minimum: 0
           maximum: 1
         disableAutoLights:
           type: integer
+          default: 0
           format: int32
           description: Forces the equivalent assist option to “off”
           minimum: 0
           maximum: 1
         disableAutoWiper:
           type: integer
+          default: 0
           format: int32
           description: Forces the equivalent assist option to “off”
           minimum: 0
           maximum: 1
         disableAutoEngineStart:
           type: integer
+          default: 0
           format: int32
           description: Forces the equivalent assist option to “off”
           minimum: 0
           maximum: 1
         disableAutoPitLimiter:
           type: integer
+          default: 0
           format: int32
           description: Forces the equivalent assist option to “off”
           minimum: 0
           maximum: 1
         disableAutoGear:
           type: integer
+          default: 0
           format: int32
           description: Forces the equivalent assist option to “off”
           minimum: 0
           maximum: 1
         disableAutoClutch:
           type: integer
+          default: 0
           format: int32
           description: Forces the equivalent assist option to “off”
           minimum: 0
           maximum: 1
         disableIdealLine:
           type: integer
+          default: 0
           format: int32
           description: Forces the equivalent assist option to “off”
           minimum: 0
@@ -1007,18 +1083,21 @@ components:
           description: A list of BoP entry objects
         disableAutosteer:
           type: integer
+          default: 1
           format: int32
           description: Disables the steering aid that is only available for gamepad controllers. Unlike SC, this works inside the physics and does not allow unrealistic driving behaviour.
           minimum: 0
           maximum: 1
         disableAutoLights:
           type: integer
+          default: 0
           format: int32
           description: Forces the equivalent assist option to “off”
           minimum: 0
           maximum: 1
         disableAutoWiper:
           type: integer
+          default: 0
           format: int32
           description: Forces the equivalent assist option to “off”
           minimum: 0
@@ -1030,12 +1109,14 @@ components:
           description: A list of entry objects
         forceEntryList:
           type: integer
+          default: 0
           format: int32
           description: Will reject drivers that are not in the entry list. Default is 0, which allows the partial definition of entries in a “normal” server configuration. Cannot be used on public servers.
           minimum: 0
           maximum: 1
         configVersion:
           type: integer
+          default: 1
           format: int32
           description: Config version
           enum: [1]
@@ -1051,49 +1132,59 @@ components:
           description: List of drivers, see next table. Must at least contain one driver with the SteamId
         raceNumber:
           type: integer
+          default: 1
           format: int32
           description: If not set to -1, the user cannot join with a different car.
           minimum: -1
           maximum: 998
         forcedCarModel:
           type: integer
+          default: -1
           format: int32
           description: If set to 1, the driver’s name and category will be overridden by what is setup in the entry list. If set to 0, it’s up to the client joining.
           minimum: -1
           maximum: 23
         overrideDriverInfo:
           type: integer
+          default: 0
           format: int32
           description: If set to a filename, the car, team and appearance will be used no matter what the user chose (Exception - overrideCarModelForCustomCar). This is useful forleagues and events, where we want consistent car appearance and the chosen car model for the corresponding driver/team. The custom car file has to be located in a “cars” folder next to the entrylist.json (alsoworks for centralEntryListPath). Leave blank (“”, =default) to let the user chose the car viacar selection UI.
           minimum: 0
           maximum: 1
         customCar:
           type: string
+          default: ""
+          description: The custom car path & filename to json file
         overrideCarModelForCustomCar:
           type: integer
+          default: 0
           format: int32
           description: If customCar is used, this setting will apply the car model configured if the value is set to 1 (which is the default). If set to 0, all values except the carModel are applied, so the user is free to pick a car but while team name and appearance will be applied.
           minimum: 0
           maximum: 1
         isServerAdmin:
           type: integer
+          default: 0
           format: int32
           description: If set to 1, that user will be automatically elevated to server admin when he joins.
           minimum: 0
           maximum: 1
         defaultGridPosition:
           type: integer
+          default: -1
           format: int32
           description: If set to a value of 1 or greater, this car will obtain this grid position if a race starts without any qualifying session before (e.g. P -> R).
           minimum: -1
         ballastKg:
           type: integer
+          default: 0
           format: int32
           description: Assigns ballast in kg for this car. Will be additive to ballast for the car model (via bop.json), and can be overridden by the admin command /ballast. Range is 0 to 100.
           minimum: 0
           maximum: 100
         restrictor:
           type: integer
+          default: 0
           format: int32
           description: Assigns restrictor in % for this car. Will be additive to restrictor for the car model (via bop.json), and can be overridden by the admin command /restrictor. Range is 0 to 20.
           minimum: 0
@@ -1107,21 +1198,26 @@ components:
       properties:
         firstName:
           type: string
+          default: "First Name"
           description: First name of the driver, if “overrideDriverInfo” is set to 1
         lastName:
           type: string
+          default: "Last Name"
           description: Last name of the driver, if “overrideDriverInfo” is set to 1
         shortName:
           type: string
+          default: "Short Name"
           description: Short name of the driver, if “overrideDriverInfo” is set to 1
         driverCategory:
           type: integer
+          default: 0
           format: int32
           description: Bronze/Silver/Gold/Platinum category, if “overrideDriverInfo” is set to 1. See “Driver Category list” for values
           minimum: 0
           maximum: 3
         playerID:
           type: string
+          default: "Steam Id"
           description: Steam64 Id for this client; Add a “S” in the front
     EntriesBoP:
       type: array
@@ -1132,24 +1228,28 @@ components:
       properties:
         track:
           type: string
+          default: "mount_panorama_2019"
           description: Name of track to apply BoP
           enum: [barcelona, barcelona_2019, brands_hatch, brands_hatch_2019, hungaroring, hungaroring_2019, misano, misano_2019, monza, monza_2019, 
           nurburgring, nurburgring_2019, paul_ricard, paul_ricard_2019, silverstone, silverstone_2019, spa, spa_2019, zandvoort, 
           zandvoort_2019, zolder, zolder_2019, mount_panorama_2019, kyalami_2019, suzuka_2019, laguna_seca_2019]
         carModel:
           type: integer
+          default: 0
           format: int32
           description: Car model to apply BoP
           minimum: 0
-          maximum: 23
+          maximum: 61
         ballast:
           type: integer
+          default: 0
           format: int32
           description: The amount of ballast added to the car in kgs, reducing handling capabilities
           minimum: 0
           maximum: 100
         restrictor:
           type: integer
+          default: 0
           format: int32
           description: The restriction placed on the engine, reducing power output
           minimum: 0
@@ -1166,54 +1266,65 @@ components:
           description: Unique id for track event
         name:
           type: string
+          default: "ACC Event Name"
           description: Name of the track event
         track:
           type: string
+          default: "mount_panorama_2019"
           description: The track we run, see “Track name list”. Setting a wrong value will also print out the available track keys in the log. With the 1.1 update containing the 2019 season content, each track has a _2019 variant. Using this track will set the BoP and track grip correspondingly.
           enum: [barcelona, barcelona_2019, brands_hatch, brands_hatch_2019, hungaroring, hungaroring_2019, misano, misano_2019, monza, monza_2019, 
           nurburgring, nurburgring_2019, paul_ricard, paul_ricard_2019, silverstone, silverstone_2019, spa, spa_2019, zandvoort, 
           zandvoort_2019, zolder, zolder_2019, mount_panorama_2019, kyalami_2019, suzuka_2019, laguna_seca_2019]
         preRaceWaitingTimeSeconds:
           type: integer
+          default: 120
           format: int32
           description: Preparation time before a race. Cannot be less than 30s.
           minimum: 30
         sessionOverTimeSeconds:
           type: integer
+          default: 180
           format: int32
           description: Time after that a session is forcibly closing after the timer reached 0:00. Something like 107% of the expected laptime is recommended (careful - default 2 minutes does not properly cover tracks like Spa or Silverstone).
         ambientTemp:
           type: integer
+          default: 30
           format: int32
           description: Sets the baseline ambient temperature in °C
         trackTemp:
           type: integer
+          deprecated: true
           format: int32
           description: Obsolete - Track temperatures are always simulated based on ambient temperature, sun angle, clouds and other aspects.
         cloudLevel:
           type: number
+          default: 0.1
           format: float
           description: Sets the baseline cloud level. Values (0.0, 0.1, .... 1.0)
           minimum: 0.0
           maximum: 1.0
         rain:
           type: integer
+          default: 0.0
           format: float
           description: If weather randomness is off, defines the static rain level. With dynamic weather, it increases the rain chance. Values (0.0, 0.1, .... 1.0)
           minimum: 0.0
           maximum: 1.0
         weatherRandomness:
           type: integer
+          default: 1
           format: int32
           description: If weather randomness is off, defines the static rain level. With dynamic weather, it increases the rain chance.
           minimum: 0
           maximum: 7
         postQualySeconds:
           type: integer
+          default: 90
           format: int32
           description: The time after the last driver is finished (or the sessionOverTimeSeconds passed) in Q sessions and the race start. Should not be set to 0, otherwise grid spawning is not secure.
         postRaceSeconds:
           type: integer
+          default: 120
           format: int32
           description: Additional time after the race ended for everyone, before the next race weekend starts.
         metaData:
@@ -1224,6 +1335,7 @@ components:
           description: A list of session objects
         configVersion:
           type: integer
+          default: 1
           format: int32
           description: Config version
           enum: [1]
@@ -1236,28 +1348,33 @@ components:
       properties:
         hourOfDay:
           type: integer
+          default: 9
           format: int32
           description: Session starting hour of the day (values 0 - 23)
           minimum: 0
           maximum: 23
         dayOfWeekend:
           type: integer
+          default: 3
           format: int32
           description: Race day (1 = Friday, 2 = Saturday, 3 = Sunday) – relevant to the grip and weather simulation.
           minimum: 1
           maximum: 3
         timeMultiplier:
           type: integer
+          default: 3
           format: int32
           description: Rate at which the session time advances in realtime. Values 0, 1, ... 24
           minimum: 0
           maximum: 24
         sessionType:
           type: string
+          default: "R"
           description: Race session type - P, Q, R for (P)ractice, (Q)ualy, (R)ace
           enum: [P, Q, R]
         sessionDurationMinutes:
           type: integer
+          default: 20
           format: int32
           description: Session duration in minutes
     Cars:

@@ -3,5 +3,6 @@
   "tcpPort": 9232,
   "maxConnections": 85,
   "registerToLobby": 1,
+  "lanDiscovery": 1,
   "configVersion": 1
 }

@@ -5,7 +5,7 @@
 
     <groupId>org.accmanager</groupId>
     <artifactId>acc-manager</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <packaging>pom</packaging>
 
     <name>ACC Manager :: Parent</name>
