@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: ACC Manager Service
   description: API specification
-  version: 0.0.6
+  version: 1.0.0
   contact:
     name: GitHub Issues
     url: https://github.com/Pringlez/ACCServerManager/issues

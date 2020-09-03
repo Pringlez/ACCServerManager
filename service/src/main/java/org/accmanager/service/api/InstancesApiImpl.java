@@ -4,7 +4,7 @@ import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import org.accmanager.api.InstancesApi;
 import org.accmanager.model.Instance;
-import org.accmanager.service.services.docker.DockerControlService;
+import org.accmanager.service.services.docker.ContainerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +17,10 @@ public class InstancesApiImpl implements InstancesApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InstancesApiImpl.class);
 
-    private final DockerControlService dockerControlService;
+    private final ContainerService containerService;
 
-    public InstancesApiImpl(DockerControlService dockerControlService) {
-        this.dockerControlService = dockerControlService;
+    public InstancesApiImpl(ContainerService containerService) {
+        this.containerService = containerService;
     }
 
     @Override
@@ -30,13 +30,13 @@ public class InstancesApiImpl implements InstancesApi {
 
     @Override
     public ResponseEntity<Instance> getInstanceById(String instanceId) {
-        InspectContainerResponse containerResponse = dockerControlService.inspectContainer(instanceId);
+        InspectContainerResponse containerResponse = containerService.inspectContainer(instanceId);
         return ResponseEntity.ok(buildInstance(containerResponse));
     }
 
     @Override
     public ResponseEntity<Instance> createInstance(Instance instance) {
-        CreateContainerResponse createContainerResponse = dockerControlService.createDockerContainer(instance);
+        CreateContainerResponse createContainerResponse = containerService.createDockerContainer(instance);
         return ResponseEntity.ok(buildInstance(createContainerResponse.getId()));
     }
 
@@ -61,25 +61,25 @@ public class InstancesApiImpl implements InstancesApi {
 
     @Override
     public ResponseEntity<Void> deleteInstanceById(String instanceId) {
-        dockerControlService.killContainer(instanceId);
+        containerService.killContainer(instanceId);
         return null;
     }
 
     @Override
     public ResponseEntity<Void> startInstanceById(String instanceId) {
-        dockerControlService.startContainer(instanceId);
+        containerService.startContainer(instanceId);
         return null;
     }
 
     @Override
     public ResponseEntity<Void> restartInstanceById(String instanceId) {
-        dockerControlService.restartContainer(instanceId);
+        containerService.restartContainer(instanceId);
         return null;
     }
 
     @Override
     public ResponseEntity<Void> stopInstanceById(String instanceId) {
-        dockerControlService.stopContainer(instanceId);
+        containerService.stopContainer(instanceId);
         return null;
     }
 }

@@ -8,24 +8,33 @@ import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.Volume;
 import org.accmanager.model.Instance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DockerControlService {
+public class ContainerService {
+
+    private static final String VOLUME_PATH_HOST = "/home/%s/acc-manager/servers/%s/config";
+    private static final String VOLUME_PATH_CONTAINER = ":/home/server/config";
 
     private final DockerClient dockerClient;
 
+    @Value("${docker.username:accmanager}")
+    private String dockerUsername;
+
     @Autowired
-    public DockerControlService(DockerClient dockerClient) {
+    public ContainerService(DockerClient dockerClient) {
         this.dockerClient = dockerClient;
     }
 
     public CreateContainerResponse createDockerContainer(Instance instance) {
-        return dockerClient.createContainerCmd("acc-server-1.4.4-wine")
+        return dockerClient.createContainerCmd(instance.getDockerImage())
                 .withCmd("--net=host")
-                .withName("acc-server-1")
-                .withVolumes(new Volume("/home/john/Projects/Docker/Projects/ACC/Configs/server-1:/home/server/config"))
-                .withExposedPorts(new ExposedPort(9231), new ExposedPort(9232)).exec();
+                .withName(instance.getId())
+                .withVolumes(new Volume(String.format(
+                        VOLUME_PATH_HOST, dockerUsername, instance.getId()) + VOLUME_PATH_CONTAINER))
+                .withExposedPorts(new ExposedPort(instance.getConfig().getTcpPort()),
+                        new ExposedPort(instance.getConfig().getUdpPort())).exec();
     }
 
     public void startContainer(String instanceId) {

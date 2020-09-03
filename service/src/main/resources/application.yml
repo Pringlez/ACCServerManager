@@ -1,6 +1,11 @@
+docker:
+  host: tcp://localhost:2375
+  verify: false
+  username: john
 spring:
   application:
     name: acc-manager
+    version: 0.1.0
   h2:
     console:
       enabled: false
