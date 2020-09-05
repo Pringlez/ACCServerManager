@@ -12,6 +12,8 @@ public class DirectoryReader {
 
     public Optional<String[]> getAllServerDirectories() {
         File file = new File(VOLUME_PATH_HOST_INSTANCES.toString());
-        return Optional.ofNullable(file.list((current, name) -> new File(current, name).isDirectory()));
+
+        String[] directories = file.list((current, name) -> new File(current, name).isDirectory());
+        return Optional.ofNullable(directories);
     }
 }
