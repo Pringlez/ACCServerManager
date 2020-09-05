@@ -24,8 +24,8 @@ public class InstancesApiImpl implements InstancesApi {
     }
 
     @Override
-    public ResponseEntity<List<Instance>> getInstances(String name, String state) {
-        return null;
+    public ResponseEntity<List<Instance>> getAllInstances() {
+        return ResponseEntity.ok(containerService.listOfContainers());
     }
 
     @Override

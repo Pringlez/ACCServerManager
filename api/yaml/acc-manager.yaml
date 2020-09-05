@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: ACC Manager Service
   description: API specification
-  version: 1.0.0
+  version: 1.1.0
   contact:
     name: GitHub Issues
     url: https://github.com/Pringlez/ACCServerManager/issues
@@ -18,6 +18,8 @@ tags:
     description: Manage entries for server instance
   - name: events
     description: Manage events for server instance
+  - name: eventRules
+    description: Manage events rules for server instance
   - name: assists
     description: Manage assists for server instance
   - name: bop
@@ -53,23 +55,9 @@ paths:
   /instances:
     get:
       summary: List all available ACC instances
-      operationId: getInstances
+      operationId: getAllInstances
       tags:
         - instances
-      parameters:
-        - name: name
-          in: query
-          description: Filter by name
-          required: false
-          schema:
-            type: string
-        - name: state
-          in: query
-          description: Filter by instance state
-          required: false
-          schema:
-            type: string
-            enum: [stopped, running, crashed, paused, unknown]
       responses:
         '200':
           description: An array of instances
@@ -499,6 +487,141 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /eventrules/{instanceId}:
+    get:
+      summary: Get event rules for ACC instance by event rules id
+      operationId: getInstanceEventRulesById
+      tags:
+        - eventRules
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+        - name: eventRulesId
+          in: query
+          description: Filter by event rules id
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved event rules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventRules"
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create an event rules for ACC instance by event rules id
+      operationId: createInstanceEventRulesById
+      tags:
+        - eventRules
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+        - name: eventRulesId
+          in: query
+          description: Event rules id to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A JSON object containing the Event Rules for ACC instance
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRules'
+      responses:
+        '201':
+          description: Successfully updated event rules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventRules"
+        default:
+          description: Unexpected error occurred occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Update an event rules for ACC instance by event rules id
+      operationId: updateInstanceEventRulesById
+      tags:
+        - eventRules
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+        - name: eventRulesId
+          in: query
+          description: Event rules id to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A JSON object containing the Event Rules for ACC instance
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRules'
+      responses:
+        '201':
+          description: Successfully updated event rules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventRules"
+        default:
+          description: Unexpected error occurred occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete event rules for ACC instance by event rules id
+      operationId: deleteInstanceEventRulesById
+      tags:
+        - eventRules
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          description: The id of an ACC instance
+          schema:
+            type: string
+        - name: eventRulesId
+          in: query
+          description: Event rules id to update
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Empty response
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /assists/{instanceId}:
     get:
       summary: Get assist rules by instance id
@@ -740,11 +863,13 @@ components:
           default: "ACC Instance Name"
         dockerImage:
           type: string
-          default: "acc-server-1.5.4"
+          default: "acc-server-X.X.X"
         state:
           $ref: "#/components/schemas/InstanceState"
         event:
           $ref: "#/components/schemas/Event"
+        eventRules:
+          $ref: "#/components/schemas/EventRules"
         entriesList:
           $ref: "#/components/schemas/EntriesList"
         assists:
