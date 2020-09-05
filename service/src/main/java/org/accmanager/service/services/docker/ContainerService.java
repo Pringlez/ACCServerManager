@@ -91,6 +91,7 @@ public class ContainerService {
     private Instance buildInstance(String instanceId) {
         Instance instance = new Instance();
         instance.setEvent(fileReaderService.readEventFile(instanceId).get());
+        instance.setEventRules(fileReaderService.readEventRulesFile(instanceId).get());
         instance.setEntriesList(fileReaderService.readEntriesListFile(instanceId).get());
         instance.setAssists(fileReaderService.readAssistRulesFile(instanceId).get());
         instance.setBop(fileReaderService.readBopFile(instanceId).get());

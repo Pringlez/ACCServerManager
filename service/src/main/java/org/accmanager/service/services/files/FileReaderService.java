@@ -41,6 +41,15 @@ public class FileReaderService {
         return Optional.empty();
     }
 
+    public Optional<EventRules> readEventRulesFile(String instanceId) {
+        try {
+            return Optional.of(objectMapper.readValue(createNewFile(instanceId, EVENT_RULES_JSON.toString()), EventRules.class));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     public Optional<EntriesList> readEntriesListFile(String instanceId) {
         try {
             return Optional.of(objectMapper.readValue(createNewFile(instanceId, ENTRY_LIST_JSON.toString()), EntriesList.class));
@@ -77,14 +86,6 @@ public class FileReaderService {
         return Optional.empty();
     }
 
-    public Optional<EventRules> readEventRulesFile(String instanceId) {
-        try {
-            return Optional.of(objectMapper.readValue(createNewFile(instanceId, EVENT_RULES_JSON.toString()), EventRules.class));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
-    }
 
     public Optional<Settings> readSettingsFile(String instanceId) {
         try {
