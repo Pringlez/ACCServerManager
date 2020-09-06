@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.accmanager.service.enums.VolumePaths.VOLUME_PATH_CONTAINER_CONFIGS;
 import static org.accmanager.service.enums.VolumePaths.VOLUME_PATH_HOST_CONFIGS;
@@ -69,12 +69,12 @@ public class ContainerService {
     }
 
     public List<Instance> listOfContainers() {
-        Optional<String[]> serverDirectories = directoryReader.getAllServerDirectories();
+        List<Path> serverDirectories = directoryReader.getAllServerDirectories(dockerUsername);
         List<String> accServerDirectories = new ArrayList<>();
-        if (serverDirectories.isPresent()) {
-            for (String directory : serverDirectories.get()) {
-                if (directory.matches(GUID_REGEX)) {
-                    accServerDirectories.add(directory);
+        if (!serverDirectories.isEmpty()) {
+            for (Path directory : serverDirectories) {
+                if (directory.toString().matches(GUID_REGEX)) {
+                    accServerDirectories.add(directory.toString());
                 }
             }
         }
