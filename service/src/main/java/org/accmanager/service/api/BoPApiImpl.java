@@ -9,22 +9,22 @@ import org.springframework.stereotype.Controller;
 public class BoPApiImpl implements BopApi {
 
     @Override
-    public ResponseEntity<BoP> getBoPByInstanceId(String instanceId) {
+    public ResponseEntity<BoP> createBoPByInstanceId(String instanceId, BoP boP, String bopId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<BoP> createBoPByInstanceId(String instanceId, BoP boP) {
+    public ResponseEntity<Void> deleteBoPByInstanceId(String instanceId, String bopId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<BoP> updateBoPByInstanceId(String instanceId, BoP boP) {
+    public ResponseEntity<BoP> getBoPByInstanceId(String instanceId, String bopId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Void> deleteBoPByInstanceId(String instanceId) {
+    public ResponseEntity<BoP> updateBoPByInstanceId(String instanceId, BoP boP, String bopId) {
         return null;
     }
 }

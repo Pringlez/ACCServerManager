@@ -9,22 +9,22 @@ import org.springframework.stereotype.Controller;
 public class AssistsApiImpl implements AssistsApi {
 
     @Override
-    public ResponseEntity<AssistRules> getAssistRulesByInstanceId(String instanceId) {
+    public ResponseEntity<AssistRules> createAssistRulesByInstanceId(String instanceId, AssistRules assistRules, String assistsId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<AssistRules> createAssistRulesByInstanceId(String instanceId, AssistRules assistRules) {
+    public ResponseEntity<Void> deleteAssistRulesByInstanceId(String instanceId, String assistsId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<AssistRules> updateAssistRulesByInstanceId(String instanceId, AssistRules assistRules) {
+    public ResponseEntity<AssistRules> getAssistRulesByInstanceId(String instanceId, String assistsId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Void> deleteAssistRulesByInstanceId(String instanceId) {
+    public ResponseEntity<AssistRules> updateAssistRulesByInstanceId(String instanceId, AssistRules assistRules, String assistsId) {
         return null;
     }
 }

@@ -254,6 +254,12 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
+        - name: entriesId
+          in: query
+          description: Filter by entries id
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Expected response to a valid request
@@ -277,6 +283,12 @@ paths:
           in: path
           required: true
           description: The id of an ACC instance
+          schema:
+            type: string
+        - name: entriesId
+          in: query
+          description: Filter by entries id
+          required: false
           schema:
             type: string
       requestBody:
@@ -311,6 +323,12 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
+        - name: entriesId
+          in: query
+          description: Filter by entries id
+          required: false
+          schema:
+            type: string
       requestBody:
         description: A JSON object containing the entries to update
         required: true
@@ -343,6 +361,12 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
+        - name: entriesId
+          in: query
+          description: Filter by entries id
+          required: false
+          schema:
+            type: string
       responses:
         '204':
           description: Empty response
@@ -352,7 +376,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /event/{instanceId}:
+  /events/{instanceId}:
     get:
       summary: Get event for ACC instance by event id
       operationId: getInstanceEventById
@@ -635,6 +659,12 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
+        - name: assistsId
+          in: query
+          description: Filter by assists id
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successfully retrieved assist rules
@@ -658,6 +688,12 @@ paths:
           in: path
           required: true
           description: The id of an ACC instance
+          schema:
+            type: string
+        - name: assistsId
+          in: query
+          description: Filter by assists id
+          required: false
           schema:
             type: string
       requestBody:
@@ -692,6 +728,12 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
+        - name: assistsId
+          in: query
+          description: Filter by assists id
+          required: false
+          schema:
+            type: string
       requestBody:
         description: A JSON object containing the AssistRules for the ACC instance
         required: true
@@ -724,6 +766,12 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
+        - name: assistsId
+          in: query
+          description: Filter by assists id
+          required: false
+          schema:
+            type: string
       responses:
         '204':
           description: Empty response
@@ -744,6 +792,12 @@ paths:
           in: path
           required: true
           description: The id of an ACC instance
+          schema:
+            type: string
+        - name: bopId
+          in: query
+          description: Filter by bop id
+          required: false
           schema:
             type: string
       responses:
@@ -769,6 +823,12 @@ paths:
           in: path
           required: true
           description: The id of an ACC instance
+          schema:
+            type: string
+        - name: bopId
+          in: query
+          description: Filter by bop id
+          required: false
           schema:
             type: string
       requestBody:
@@ -803,6 +863,12 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
+        - name: bopId
+          in: query
+          description: Filter by bop id
+          required: false
+          schema:
+            type: string
       requestBody:
         description: A JSON object containing the BoP for entries
         required: true
@@ -835,6 +901,12 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
+        - name: bopId
+          in: query
+          description: Filter by bop id
+          required: false
+          schema:
+            type: string
       responses:
         '204':
           description: Empty response
@@ -858,6 +930,7 @@ components:
       properties:
         id:
           type: string
+          description: Unique id for ACC instance
         name:
           type: string
           default: "ACC Instance Name"
@@ -907,6 +980,9 @@ components:
     Config:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique id for configuration
         tcpPort:
           type: integer
           default: 9232
@@ -944,6 +1020,9 @@ components:
     Settings:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique id for settings
         serverName:
           type: string
           default: "ACC Game Server"
@@ -1064,6 +1143,9 @@ components:
     EventRules:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique id for event rules
         qualifyStandingType:
           type: integer
           default: 1
@@ -1137,6 +1219,9 @@ components:
     AssistRules:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique id for assist rules
         stabilityControlLevelMax:
           type: integer
           default: 25
@@ -1203,6 +1288,9 @@ components:
     BoP:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique id for bop
         entries:
           $ref: "#/components/schemas/EntriesBoP"
           description: A list of BoP entry objects
@@ -1229,6 +1317,9 @@ components:
           maximum: 1
     EntriesList:
       properties:
+        id:
+          type: string
+          description: Unique id for entries list
         entries:
           $ref: "#/components/schemas/Entries"
           description: A list of entry objects
