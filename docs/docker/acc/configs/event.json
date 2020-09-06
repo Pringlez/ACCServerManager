@@ -1,7 +1,6 @@
 {
   "track": "mount_panorama_2019",
   "metaData": "mount_panorama_2019",
-  "eventType": "E_6h",
   "preRaceWaitingTimeSeconds": 80,
   "postQualySeconds": 10,
   "postRaceSeconds": 15,

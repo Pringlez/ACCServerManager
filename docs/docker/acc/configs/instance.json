@@ -1,0 +1,179 @@
+{
+  "id": "ae85423a-b502-4833-bcc2-a424d3f8281e",
+  "name": "ACC Instance Name",
+  "dockerImage": "acc-server-X.X.X",
+  "state": null,
+  "event": {
+    "id": null,
+    "name": "ACC Event Name",
+    "track": "mount_panorama_2019",
+    "preRaceWaitingTimeSeconds": 80,
+    "sessionOverTimeSeconds": 120,
+    "ambientTemp": 22,
+    "trackTemp": 30,
+    "cloudLevel": 0.1,
+    "rain": 0,
+    "weatherRandomness": 1,
+    "postQualySeconds": 10,
+    "postRaceSeconds": 15,
+    "metaData": "mount_panorama_2019",
+    "sessions": [
+      {
+        "hourOfDay": 6,
+        "dayOfWeekend": 2,
+        "timeMultiplier": 1,
+        "sessionType": "P",
+        "sessionDurationMinutes": 10
+      },
+      {
+        "hourOfDay": 12,
+        "dayOfWeekend": 2,
+        "timeMultiplier": 1,
+        "sessionType": "Q",
+        "sessionDurationMinutes": 10
+      },
+      {
+        "hourOfDay": 18,
+        "dayOfWeekend": 3,
+        "timeMultiplier": 2,
+        "sessionType": "R",
+        "sessionDurationMinutes": 20
+      }
+    ],
+    "configVersion": 1
+  },
+  "eventRules": {
+    "id": null,
+    "qualifyStandingType": 1,
+    "superpoleMaxCar": -1,
+    "pitWindowLengthSec": -1,
+    "driverStintTimeSec": -1,
+    "mandatoryPitstopCount": 0,
+    "maxTotalDrivingTime": -1,
+    "maxDriversCount": 1,
+    "isRefuellingAllowedInRace": true,
+    "isRefuellingTimeFixed": false,
+    "isMandatoryPitstopRefuellingRequired": false,
+    "isMandatoryPitstopTyreChangeRequired": false,
+    "isMandatoryPitstopSwapDriverRequired": false,
+    "tyreSetCount": 50
+  },
+  "entriesList": {
+    "id": null,
+    "entries": [
+      {
+        "drivers": [
+          {
+            "firstName": "ExampleOne",
+            "lastName": "Example",
+            "shortName": "NicknameOne",
+            "driverCategory": 3,
+            "playerID": "s*****************"
+          },
+          {
+            "firstName": "ExampleTwo",
+            "lastName": "Example",
+            "shortName": "NicknameTwo",
+            "driverCategory": 3,
+            "playerID": "s*****************"
+          }
+        ],
+        "raceNumber": -1,
+        "forcedCarModel": -1,
+        "overrideDriverInfo": 1,
+        "customCar": "9-200321-103118.json",
+        "overrideCarModelForCustomCar": 0,
+        "isServerAdmin": 1,
+        "defaultGridPosition": -1,
+        "ballastKg": 0,
+        "restrictor": 0
+      },
+      {
+        "drivers": [
+          {
+            "firstName": "ExampleThree",
+            "lastName": "Example",
+            "shortName": "NicknameThree",
+            "driverCategory": 0,
+            "playerID": "s*****************"
+          }
+        ],
+        "raceNumber": -1,
+        "forcedCarModel": -1,
+        "overrideDriverInfo": 1,
+        "customCar": "9-200321-103118.json",
+        "overrideCarModelForCustomCar": 0,
+        "isServerAdmin": 1,
+        "defaultGridPosition": -1,
+        "ballastKg": 0,
+        "restrictor": 0
+      }
+    ],
+    "forceEntryList": 0,
+    "configVersion": 1
+  },
+  "assists": {
+    "id": null,
+    "stabilityControlLevelMax": 25,
+    "disableAutosteer": 1,
+    "disableAutoLights": 0,
+    "disableAutoWiper": 0,
+    "disableAutoEngineStart": 0,
+    "disableAutoPitLimiter": 0,
+    "disableAutoGear": 0,
+    "disableAutoClutch": 0,
+    "disableIdealLine": 0
+  },
+  "bop": {
+    "id": null,
+    "entries": [
+      {
+        "track": "zolder",
+        "carModel": 7,
+        "ballast": 1,
+        "restrictor": 2
+      },
+      {
+        "track": "silverstone_2019",
+        "carModel": 2,
+        "ballast": 0,
+        "restrictor": 5
+      }
+    ],
+    "disableAutosteer": 1,
+    "disableAutoLights": 0,
+    "disableAutoWiper": 0
+  },
+  "config": {
+    "id": null,
+    "tcpPort": 9232,
+    "udpPort": 9231,
+    "registerToLobby": 1,
+    "maxConnections": 85,
+    "lanDiscovery": 1,
+    "configVersion": 1
+  },
+  "settings": {
+    "id": null,
+    "serverName": "Testing Server 1",
+    "adminPassword": "adminPassword123",
+    "carGroup": "FreeForAll",
+    "trackMedalsRequirement": 0,
+    "safetyRatingRequirement": -1,
+    "racecraftRatingRequirement": -1,
+    "password": "",
+    "spectatorPassword": "",
+    "maxCarSlots": 30,
+    "dumpLeaderboards": 0,
+    "isRaceLocked": 1,
+    "isPrepPhaseLocked": 0,
+    "randomizeTrackWhenEmpty": 1,
+    "centralEntryListPath": "",
+    "allowAutoDQ": 0,
+    "shortFormationLap": 1,
+    "dumpEntryList": 0,
+    "formationLapType": 3,
+    "doDriverSwapBroadcast": 1,
+    "configVersion": 1
+  }
+}

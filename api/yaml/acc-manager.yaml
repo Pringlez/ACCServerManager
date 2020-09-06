@@ -965,10 +965,10 @@ components:
       properties:
         accManagerVersion:
           type: string
-          default: "0.0.6"
+          default: "0.3.0"
         supportedAccVersion:
           type: string
-          default: "1.5.4"
+          default: "1.5.5"
     Error:
       type: object
       properties:
