@@ -14,14 +14,14 @@ First, you'll need to install docker on your hosting machine. I'll assume your u
 ### Running the ACCManager
 Running the pre-built container by executing:
 ```
-sudo docker run -d -p 80:8080 -t acc-manager:latest
+sudo docker run -d -p 80:8080 -t acc-manager:0.3.0
 ```
 
 The application should respond on port 80 from your machines ip/domain address.
 
 You can also run in `-it` attached mode to verify the application is starting up correctly:
 ```
-sudo docker run -it -p 80:8080 -t acc-manager:latest
+docker run -it -p 80:8080 -t acc-manager:0.3.0
 ```
 
 ## Configuration
@@ -31,7 +31,7 @@ TODO
 If you wish to build your own docker image, just run the following command in the __root__ project directory to package 
 everything into a docker image:
 ```
-sudo docker build -t acc-manager:X.X.X .
+docker build -t acc-manager:0.3.0 .
 ```
 I'd recommend running production maven build to package the optimized jar for docker builds.
 
@@ -60,7 +60,7 @@ Instead, you could run the production maven build by adding `-Pprod` flag. This 
 ### Running Locally
 You can easily run the spring boot application using a simple java command:
 ```
-java -jar service/target/acc-manager-service-X.X.X.jar org.acmanager.ACCManagerApplication
+java -jar -Dspring.profiles.active=local,h2 acc-manager-service-0.3.0.jar
 ```
 
 Once in the project's root directory, update specified jar with version number.

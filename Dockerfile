@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk-alpine
 
 # Built application jar
-ARG JAR_FILE=service/target/*.jar
+ARG JAR_FILE=service/target/acc-manager-service-0.3.0.jar
 
 # App working directory
 WORKDIR /opt/app
@@ -10,4 +10,4 @@ WORKDIR /opt/app
 COPY ${JAR_FILE} app.jar
 
 # Start springboot application
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=local,h2","-jar","app.jar"]
