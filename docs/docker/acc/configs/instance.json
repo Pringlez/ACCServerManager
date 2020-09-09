@@ -1,8 +1,8 @@
 {
   "id": "ae85423a-b502-4833-bcc2-a424d3f8281e",
   "name": "ACC Instance Name",
-  "dockerImage": "acc-server-X.X.X",
-  "state": null,
+  "dockerImage": "acc-server-1.5.5-wine",
+  "state": "running",
   "event": {
     "id": null,
     "name": "ACC Event Name",
@@ -19,6 +19,7 @@
     "metaData": "mount_panorama_2019",
     "sessions": [
       {
+        "id": "1",
         "hourOfDay": 6,
         "dayOfWeekend": 2,
         "timeMultiplier": 1,
@@ -26,6 +27,7 @@
         "sessionDurationMinutes": 10
       },
       {
+        "id": "2",
         "hourOfDay": 12,
         "dayOfWeekend": 2,
         "timeMultiplier": 1,
@@ -33,6 +35,7 @@
         "sessionDurationMinutes": 10
       },
       {
+        "id": "3",
         "hourOfDay": 18,
         "dayOfWeekend": 3,
         "timeMultiplier": 2,
@@ -64,6 +67,7 @@
       {
         "drivers": [
           {
+            "id": "1",
             "firstName": "ExampleOne",
             "lastName": "Example",
             "shortName": "NicknameOne",
@@ -71,6 +75,7 @@
             "playerID": "s*****************"
           },
           {
+            "id": "2",
             "firstName": "ExampleTwo",
             "lastName": "Example",
             "shortName": "NicknameTwo",
@@ -91,6 +96,7 @@
       {
         "drivers": [
           {
+            "id": "1",
             "firstName": "ExampleThree",
             "lastName": "Example",
             "shortName": "NicknameThree",
@@ -128,12 +134,14 @@
     "id": null,
     "entries": [
       {
+        "id": "1",
         "track": "zolder",
         "carModel": 7,
         "ballast": 1,
         "restrictor": 2
       },
       {
+        "id": "2",
         "track": "silverstone_2019",
         "carModel": 2,
         "ballast": 0,

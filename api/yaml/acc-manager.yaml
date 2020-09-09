@@ -936,7 +936,7 @@ components:
           default: "ACC Instance Name"
         dockerImage:
           type: string
-          default: "acc-server-X.X.X"
+          default: "acc-server-wine"
         state:
           $ref: "#/components/schemas/InstanceState"
         event:
@@ -965,7 +965,7 @@ components:
       properties:
         accManagerVersion:
           type: string
-          default: "0.3.0"
+          default: "0.4.0"
         supportedAccVersion:
           type: string
           default: "1.5.5"
@@ -1411,6 +1411,9 @@ components:
     Driver:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique id for driver
         firstName:
           type: string
           default: "First Name"
@@ -1441,6 +1444,9 @@ components:
     EntryBoP:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique id for entry bop
         track:
           type: string
           default: "mount_panorama_2019"
@@ -1560,6 +1566,9 @@ components:
     Session:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique id for session
         hourOfDay:
           type: integer
           default: 9

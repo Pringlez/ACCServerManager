@@ -1,6 +1,6 @@
 package org.accmanager.service.enums;
 
-public enum ConfigFiles {
+public enum FilesEnum {
 
     ASSIST_RULES_JSON("assistRules.json"),
     CONFIGURATION_JSON("configuration.json"),
@@ -12,11 +12,12 @@ public enum ConfigFiles {
 
     private final String configFile;
 
-    ConfigFiles(String configFile) {
+    FilesEnum(String configFile) {
         this.configFile = configFile;
     }
 
-    public String getConfigFile() {
+    @Override
+    public String toString() {
         return configFile;
     }
 }

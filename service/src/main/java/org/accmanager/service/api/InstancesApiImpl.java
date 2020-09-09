@@ -4,6 +4,7 @@ import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import org.accmanager.api.InstancesApi;
 import org.accmanager.model.Instance;
+import org.accmanager.model.InstanceState;
 import org.accmanager.service.services.docker.ContainerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+
+import static org.accmanager.model.InstanceState.CRASHED;
+import static org.accmanager.model.InstanceState.RUNNING;
 
 @Controller
 public class InstancesApiImpl implements InstancesApi {
@@ -31,13 +35,22 @@ public class InstancesApiImpl implements InstancesApi {
     @Override
     public ResponseEntity<Instance> getInstanceById(String instanceId) {
         InspectContainerResponse containerResponse = containerService.inspectContainer(instanceId);
-        return ResponseEntity.ok(buildInstance(containerResponse));
+        return ResponseEntity.ok(buildInstance(containerResponse, getInstance(instanceId)));
+    }
+
+    private Instance getInstance(String instanceId) {
+        for (Instance instance : containerService.listOfContainers()) {
+            if (instance.getId().equals(instanceId)) {
+                return instance;
+            }
+        }
+        return new Instance();
     }
 
     @Override
     public ResponseEntity<Instance> createInstance(Instance instance) {
-        CreateContainerResponse createContainerResponse = containerService.createDockerContainer(instance);
-        return ResponseEntity.ok(buildInstance(createContainerResponse.getId()));
+        CreateContainerResponse containerResponse = containerService.createDockerContainer(instance);
+        return ResponseEntity.ok(buildInstance(containerResponse.getId()));
     }
 
     private Instance buildInstance(String instanceId) {
@@ -46,11 +59,27 @@ public class InstancesApiImpl implements InstancesApi {
         return instance;
     }
 
-    private Instance buildInstance(InspectContainerResponse containerResponse) {
-        Instance instance = new Instance();
+    private Instance buildInstance(CreateContainerResponse containerResponse, Instance instance) {
         instance.setId(containerResponse.getId());
-        instance.setName(containerResponse.getName());
+        instance.setState(getStateOfContainer(containerResponse));
         return instance;
+    }
+
+    private Instance buildInstance(InspectContainerResponse containerResponse, Instance instance) {
+        instance.setId(containerResponse.getId());
+        instance.setState(getStateOfContainer(containerResponse));
+        return instance;
+    }
+
+    private InstanceState getStateOfContainer(CreateContainerResponse containerResponse) {
+        return (containerResponse.getWarnings().length == 0) ? RUNNING : CRASHED;
+    }
+
+    private InstanceState getStateOfContainer(InspectContainerResponse containerResponse) {
+        String status = containerResponse.getState().getStatus();
+        assert status != null;
+        boolean isRunning = status.equals("Running!");
+        return isRunning ? RUNNING : CRASHED;
     }
 
     @Override

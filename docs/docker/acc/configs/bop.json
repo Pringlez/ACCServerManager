@@ -1,12 +1,15 @@
 {
+  "id": null,
   "entries": [
     {
+      "id": "1",
       "track": "zolder",
       "carModel": 7,
       "ballast": 1,
       "restrictor": 2
     },
     {
+      "id": "2",
       "track": "silverstone_2019",
       "carModel": 2,
       "restrictor": 5

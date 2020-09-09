@@ -1,9 +1,11 @@
 {
+  "id": null,
   "configVersion": 1,
   "entries": [
     {
       "drivers": [
         {
+          "id": "1",
           "firstName": "ExampleOne",
           "lastName": "Example",
           "shortName": "NicknameOne",
@@ -11,6 +13,7 @@
           "playerID": "s*****************"
         },
         {
+          "id": "2",
           "firstName": "ExampleTwo",
           "lastName": "Example",
           "shortName": "NicknameTwo",
@@ -28,6 +31,7 @@
     {
       "drivers": [
         {
+          "id": "1",
           "firstName": "ExampleThree",
           "lastName": "Example",
           "shortName": "NicknameThree",

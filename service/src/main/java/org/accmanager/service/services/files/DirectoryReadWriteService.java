@@ -12,22 +12,22 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.VolumePaths.VOLUME_PATH_HOST_INSTANCES;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVERS;
 
 @Service
-public class DirectoryReaderService {
+public class DirectoryReadWriteService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryReaderService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryReadWriteService.class);
 
     public Optional<List<Path>> getAllServerDirectories(String dockerUsername) {
         try {
-            Path dir = Paths.get(format(VOLUME_PATH_HOST_INSTANCES.getVolumePath(), dockerUsername));
+            Path dir = Paths.get(format(PATH_HOST_SERVERS.toString(), dockerUsername));
             return Optional.of(Files.walk(dir, 1)
                     .filter(p -> Files.isDirectory(p) && !p.equals(dir))
                     .map(Path::getFileName)
                     .collect(Collectors.toList()));
         } catch (Exception e) {
-            LOGGER.error(format("Error getting server directories: %s", e.getCause()));
+            LOGGER.error(format("Error getting server directories: %s", e));
         }
         return Optional.empty();
     }

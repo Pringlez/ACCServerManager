@@ -1,4 +1,5 @@
 {
+  "id": null,
   "udpPort": 9231,
   "tcpPort": 9232,
   "maxConnections": 85,
