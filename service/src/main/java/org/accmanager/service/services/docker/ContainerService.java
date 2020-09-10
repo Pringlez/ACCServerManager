@@ -33,6 +33,8 @@ import static org.accmanager.service.enums.FilesEnum.EVENT_RULES_JSON;
 import static org.accmanager.service.enums.FilesEnum.SETTINGS_JSON;
 import static org.accmanager.service.enums.PathsEnum.PATH_CONTAINER;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_CFG;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
 
 @Service
 public class ContainerService {
@@ -49,6 +51,10 @@ public class ContainerService {
     }
 
     public CreateContainerResponse createDockerContainer(Instance instance) {
+        fileReadWriteService.createDirectory(format(PATH_HOST_SERVER_INSTANCE_CFG.toString(),
+                fileReadWriteService.getDockerUsername(), instance.getId()));
+        fileReadWriteService.createDirectory(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(),
+                fileReadWriteService.getDockerUsername(), instance.getId()));
         writeInstanceConfiguration(instance);
         return dockerClient.createContainerCmd(instance.getDockerImage())
                 .withCmd("--net=host")
@@ -90,13 +96,13 @@ public class ContainerService {
     }
 
     private void writeInstanceConfiguration(Instance instance) {
-        fileReadWriteService.writeJsonFile(instance.getId(), EVENT_JSON, Event.class);
-        fileReadWriteService.writeJsonFile(instance.getId(), EVENT_RULES_JSON, EventRules.class);
-        fileReadWriteService.writeJsonFile(instance.getId(), ENTRY_LIST_JSON, EntriesList.class);
-        fileReadWriteService.writeJsonFile(instance.getId(), ASSIST_RULES_JSON, AssistRules.class);
-        fileReadWriteService.writeJsonFile(instance.getId(), BOP_JSON, BoP.class);
-        fileReadWriteService.writeJsonFile(instance.getId(), CONFIGURATION_JSON, Config.class);
-        fileReadWriteService.writeJsonFile(instance.getId(), SETTINGS_JSON, Settings.class);
+        fileReadWriteService.writeJsonFile(instance.getId(), EVENT_JSON, instance.getEvent());
+        fileReadWriteService.writeJsonFile(instance.getId(), EVENT_RULES_JSON, instance.getEventRules());
+        fileReadWriteService.writeJsonFile(instance.getId(), ENTRY_LIST_JSON, instance.getEntriesList());
+        fileReadWriteService.writeJsonFile(instance.getId(), ASSIST_RULES_JSON, instance.getAssists());
+        fileReadWriteService.writeJsonFile(instance.getId(), BOP_JSON, instance.getBop());
+        fileReadWriteService.writeJsonFile(instance.getId(), CONFIGURATION_JSON, instance.getConfig());
+        fileReadWriteService.writeJsonFile(instance.getId(), SETTINGS_JSON, instance.getSettings());
     }
 
     private Instance readInstanceConfiguration(String instanceId) {

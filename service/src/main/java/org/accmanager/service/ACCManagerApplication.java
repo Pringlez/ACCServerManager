@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 
 import static java.lang.String.format;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_EXECUTABLE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVERS;
 
 @SpringBootApplication
 public class ACCManagerApplication {
@@ -28,6 +29,7 @@ public class ACCManagerApplication {
     public CommandLineRunner commandLineRunner() {
         return args -> {
             fileReadWriteService.createDirectory(format(PATH_HOST_EXECUTABLE.toString(), fileReadWriteService.getDockerUsername()));
+            fileReadWriteService.createDirectory(format(PATH_HOST_SERVERS.toString(), fileReadWriteService.getDockerUsername()));
         };
     }
 }

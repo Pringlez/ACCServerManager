@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_CFG_FILE;
 
 @Service
 public class FileReadWriteService {
@@ -37,19 +37,19 @@ public class FileReadWriteService {
 
     public void writeJsonFile(String instanceId, FilesEnum filesEnum, Object object) {
         try {
-            objectMapper.writeValue(createNewFile(instanceId, filesEnum.toString()), object);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(createNewFile(instanceId, filesEnum.toString()), object);
         } catch (IOException e) {
             LOGGER.error(format(FAILED_TO_WRITE_FILE, filesEnum.toString(), e.getMessage()));
         }
     }
 
     private File createNewFile(String instanceId, String jsonFile) {
-        return new File(format(PATH_HOST_SERVER_INSTANCE.toString() + "/%s", dockerUsername, instanceId, jsonFile));
+        return new File(format(PATH_HOST_SERVER_INSTANCE_CFG_FILE.toString(), dockerUsername, instanceId, jsonFile));
     }
 
     public boolean createDirectory(String directory) {
         try {
-            return new File(directory).mkdir();
+            return new File(directory).mkdirs();
         } catch (Exception e) {
             LOGGER.error(format("Error creating directory: %s", e));
             return false;

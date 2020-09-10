@@ -50,13 +50,7 @@ public class InstancesApiImpl implements InstancesApi {
     @Override
     public ResponseEntity<Instance> createInstance(Instance instance) {
         CreateContainerResponse containerResponse = containerService.createDockerContainer(instance);
-        return ResponseEntity.ok(buildInstance(containerResponse.getId()));
-    }
-
-    private Instance buildInstance(String instanceId) {
-        Instance instance = new Instance();
-        instance.setId(instanceId);
-        return instance;
+        return ResponseEntity.ok(buildInstance(containerResponse, instance));
     }
 
     private Instance buildInstance(CreateContainerResponse containerResponse, Instance instance) {
@@ -72,7 +66,8 @@ public class InstancesApiImpl implements InstancesApi {
     }
 
     private InstanceState getStateOfContainer(CreateContainerResponse containerResponse) {
-        return (containerResponse.getWarnings().length == 0) ? RUNNING : CRASHED;
+        boolean warnings = containerResponse.getWarnings().length == 0;
+        return warnings ? RUNNING : CRASHED;
     }
 
     private InstanceState getStateOfContainer(InspectContainerResponse containerResponse) {
