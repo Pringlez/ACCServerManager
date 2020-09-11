@@ -3,8 +3,8 @@ package org.accmanager.service.services.docker;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.ExposedPort;
-import com.github.dockerjava.api.model.Volume;
 import org.accmanager.model.AssistRules;
 import org.accmanager.model.BoP;
 import org.accmanager.model.Config;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,13 +58,12 @@ public class ContainerService {
                 fileReadWriteService.getDockerUsername(), instance.getId()));
         writeInstanceConfiguration(instance);
         return dockerClient.createContainerCmd(instance.getDockerImage())
-                .withCmd("--net=host")
+                .withCmd(Arrays.asList("--net=host", "--restart unless-stopped"))
                 .withName(instance.getId())
-                .withUser(fileReadWriteService.getDockerUsername())
-                .withVolumes(new Volume(format(PATH_HOST_SERVER_INSTANCE.toString(),
+                .withBinds(Bind.parse(format(PATH_HOST_SERVER_INSTANCE.toString(),
                         fileReadWriteService.getDockerUsername(), instance.getId()) + PATH_CONTAINER.toString()))
-                .withExposedPorts(new ExposedPort(instance.getConfig().getTcpPort()),
-                        new ExposedPort(instance.getConfig().getUdpPort())).exec();
+                .withExposedPorts(ExposedPort.udp(instance.getConfig().getUdpPort()),
+                        ExposedPort.tcp(instance.getConfig().getTcpPort())).exec();
     }
 
     public void startContainer(String instanceId) {

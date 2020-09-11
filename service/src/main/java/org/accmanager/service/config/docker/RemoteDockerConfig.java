@@ -2,8 +2,10 @@ package org.accmanager.service.config.docker;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.core.DockerClientImpl;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
+import com.github.dockerjava.transport.DockerHttpClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,11 @@ public class RemoteDockerConfig {
     private boolean dockerVerify;
 
     @Bean
+    public DockerClient dockerClient(DockerClientConfig dockerClientConfig, DockerHttpClient dockerHttpClient) {
+        return DockerClientImpl.getInstance(dockerClientConfig, dockerHttpClient);
+    }
+
+    @Bean
     @Primary
     public DockerClientConfig dockerClientConfig() {
         return DefaultDockerClientConfig.createDefaultConfigBuilder()
@@ -30,7 +37,10 @@ public class RemoteDockerConfig {
     }
 
     @Bean
-    public DockerClient dockerClient(DockerClientConfig dockerClientConfig) {
-        return DockerClientBuilder.getInstance(dockerClientConfig).build();
+    public DockerHttpClient dockerHttpClient(DockerClientConfig dockerClientConfig) {
+        return new ApacheDockerHttpClient.Builder()
+                .dockerHost(dockerClientConfig.getDockerHost())
+                .sslConfig(dockerClientConfig.getSSLConfig())
+                .build();
     }
 }
