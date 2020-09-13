@@ -111,6 +111,24 @@
 					"response": []
 				},
 				{
+					"name": "Instances - Delete instance",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{acc-manager-host}}/instances/ae85423a-b502-4833-bcc2-a424d3f8281e",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"instances",
+								"ae85423a-b502-4833-bcc2-a424d3f8281e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Instances - Start instance",
 					"request": {
 						"method": "GET",

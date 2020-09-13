@@ -52,11 +52,9 @@ public class ContainerService {
     }
 
     public CreateContainerResponse createDockerContainer(Instance instance) {
-        fileReadWriteService.createDirectory(format(PATH_HOST_SERVER_INSTANCE_CFG.toString(),
-                fileReadWriteService.getDockerUsername(), instance.getId()));
-        fileReadWriteService.createDirectory(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(),
-                fileReadWriteService.getDockerUsername(), instance.getId()));
+        createDirectories(instance);
         writeInstanceConfiguration(instance);
+        copyExecutable(instance.getId());
         return dockerClient.createContainerCmd(instance.getDockerImage())
                 .withCmd(Arrays.asList("--net=host", "--restart unless-stopped"))
                 .withName(instance.getId())
@@ -80,6 +78,8 @@ public class ContainerService {
 
     public void killContainer(String instanceId) {
         dockerClient.killContainerCmd(instanceId).exec();
+        dockerClient.removeContainerCmd(instanceId).exec();
+        fileReadWriteService.deleteInstanceDirectory(instanceId);
     }
 
     public InspectContainerResponse inspectContainer(String instanceId) {
@@ -93,6 +93,10 @@ public class ContainerService {
         accServerDirs.ifPresent(dirs -> dirs.forEach(
                 dir -> instancesList.add(readInstanceConfiguration(dir.toString()))));
         return instancesList;
+    }
+
+    private void copyExecutable(String instanceId) {
+        fileReadWriteService.copyExecutable(instanceId);
     }
 
     private void writeInstanceConfiguration(Instance instance) {
@@ -116,5 +120,12 @@ public class ContainerService {
         instance.setConfig((Config) fileReadWriteService.readJsonFile(instanceId, CONFIGURATION_JSON, Config.class).orElse(new Config()));
         instance.setSettings((Settings) fileReadWriteService.readJsonFile(instanceId, SETTINGS_JSON, Settings.class).orElse(new Settings()));
         return instance;
+    }
+
+    private void createDirectories(Instance instance) {
+        fileReadWriteService.createDirectory(format(PATH_HOST_SERVER_INSTANCE_CFG.toString(),
+                fileReadWriteService.getDockerUsername(), instance.getId()));
+        fileReadWriteService.createDirectory(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(),
+                fileReadWriteService.getDockerUsername(), instance.getId()));
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 
 import static org.accmanager.model.InstanceState.CRASHED;
+import static org.accmanager.model.InstanceState.CREATED;
 import static org.accmanager.model.InstanceState.RUNNING;
 
 @Controller
@@ -66,8 +67,7 @@ public class InstancesApiImpl implements InstancesApi {
     }
 
     private InstanceState getStateOfContainer(CreateContainerResponse containerResponse) {
-        boolean warnings = containerResponse.getWarnings().length == 0;
-        return warnings ? RUNNING : CRASHED;
+        return containerResponse.getWarnings().length == 0 ? CREATED : CRASHED;
     }
 
     private InstanceState getStateOfContainer(InspectContainerResponse containerResponse) {

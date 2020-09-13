@@ -9,10 +9,17 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_EXECUTABLE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_CFG_FILE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
 
 @Service
 public class FileReadWriteService {
@@ -53,6 +60,26 @@ public class FileReadWriteService {
         } catch (Exception e) {
             LOGGER.error(format("Error creating directory: %s", e));
             return false;
+        }
+    }
+
+    public void copyExecutable(String instanceId) {
+        try {
+            Files.copy(Paths.get(format(PATH_HOST_EXECUTABLE.toString(), dockerUsername) + "/accServer.exe"),
+                    Paths.get(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(), dockerUsername, instanceId) + "/accServer.exe"));
+        } catch (Exception e) {
+            LOGGER.error(format("Error copying executable: %s", e));
+        }
+    }
+
+    public void deleteInstanceDirectory(String instanceId) {
+        try {
+            Files.walk(Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), dockerUsername, instanceId)))
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        } catch (Exception e) {
+            LOGGER.error(format("Error deleting instance directory: %s", e));
         }
     }
 

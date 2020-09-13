@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: ACC Manager Service
   description: API specification
-  version: 1.1.0
+  version: 1.1.1
   contact:
     name: GitHub Issues
     url: https://github.com/Pringlez/ACCServerManager/issues
@@ -959,13 +959,13 @@ components:
         $ref: "#/components/schemas/Instance"
     InstanceState:
       type: string
-      enum: [stopped, running, crashed, paused, unknown]
+      enum: [created, stopped, running, crashed, paused, unknown]
     SystemInfo:
       type: object
       properties:
         accManagerVersion:
           type: string
-          default: "0.4.0"
+          default: "0.4.1"
         supportedAccVersion:
           type: string
           default: "1.5.5"
