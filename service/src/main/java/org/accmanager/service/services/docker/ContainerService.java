@@ -15,6 +15,8 @@ import org.accmanager.model.Instance;
 import org.accmanager.model.Settings;
 import org.accmanager.service.services.files.DirectoryReadWriteService;
 import org.accmanager.service.services.files.FileReadWriteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,9 @@ import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_E
 
 @Service
 public class ContainerService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContainerService.class);
+    private static final String FAILED_TO_KILL_CONTAINER_INSTANCE_ID = "Failed to kill container instance id: %s";
 
     private final DockerClient dockerClient;
     private final DirectoryReadWriteService directoryReadWriteService;
@@ -77,9 +82,17 @@ public class ContainerService {
     }
 
     public void killContainer(String instanceId) {
-        dockerClient.killContainerCmd(instanceId).exec();
+        attemptToKillContainer(instanceId);
         dockerClient.removeContainerCmd(instanceId).exec();
         fileReadWriteService.deleteInstanceDirectory(instanceId);
+    }
+
+    private void attemptToKillContainer(String instanceId) {
+        try {
+            dockerClient.killContainerCmd(instanceId).exec();
+        } catch (Exception e) {
+            LOGGER.warn(format(FAILED_TO_KILL_CONTAINER_INSTANCE_ID, instanceId));
+        }
     }
 
     public InspectContainerResponse inspectContainer(String instanceId) {
@@ -99,7 +112,7 @@ public class ContainerService {
         fileReadWriteService.copyExecutable(instanceId);
     }
 
-    private void writeInstanceConfiguration(Instance instance) {
+    public void writeInstanceConfiguration(Instance instance) {
         fileReadWriteService.writeJsonFile(instance.getId(), EVENT_JSON, instance.getEvent());
         fileReadWriteService.writeJsonFile(instance.getId(), EVENT_RULES_JSON, instance.getEventRules());
         fileReadWriteService.writeJsonFile(instance.getId(), ENTRY_LIST_JSON, instance.getEntriesList());

@@ -6,8 +6,7 @@ import org.accmanager.api.InstancesApi;
 import org.accmanager.model.Instance;
 import org.accmanager.model.InstanceState;
 import org.accmanager.service.services.docker.ContainerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -15,12 +14,9 @@ import java.util.List;
 
 import static org.accmanager.model.InstanceState.CRASHED;
 import static org.accmanager.model.InstanceState.CREATED;
-import static org.accmanager.model.InstanceState.RUNNING;
 
 @Controller
 public class InstancesApiImpl implements InstancesApi {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(InstancesApiImpl.class);
 
     private final ContainerService containerService;
 
@@ -71,39 +67,36 @@ public class InstancesApiImpl implements InstancesApi {
     }
 
     private InstanceState getStateOfContainer(InspectContainerResponse containerResponse) {
-        String status = containerResponse.getState().getStatus();
-        assert status != null;
-        boolean isRunning = status.equals("Running!");
-        return isRunning ? RUNNING : CRASHED;
+        return InstanceState.fromValue(containerResponse.getState().getStatus());
     }
 
     @Override
     public ResponseEntity<Instance> updateInstanceById(String instanceId, Instance instance) {
-        LOGGER.info("TODO - Not yet implemented");
-        return null;
+        containerService.writeInstanceConfiguration(instance);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> deleteInstanceById(String instanceId) {
         containerService.killContainer(instanceId);
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> startInstanceById(String instanceId) {
         containerService.startContainer(instanceId);
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> restartInstanceById(String instanceId) {
         containerService.restartContainer(instanceId);
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> stopInstanceById(String instanceId) {
         containerService.stopContainer(instanceId);
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
