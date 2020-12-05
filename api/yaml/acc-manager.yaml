@@ -965,10 +965,10 @@ components:
       properties:
         accManagerVersion:
           type: string
-          default: "0.4.2"
+          default: "0.4.3"
         supportedAccVersion:
           type: string
-          default: "1.5.6"
+          default: "1.6.1"
     Error:
       type: object
       properties:
@@ -1491,11 +1491,12 @@ components:
           description: Name of the track event
         track:
           type: string
-          default: "mount_panorama_2019"
+          default: "imola_2020"
           description: The track we run, see “Track name list”. Setting a wrong value will also print out the available track keys in the log. With the 1.1 update containing the 2019 season content, each track has a _2019 variant. Using this track will set the BoP and track grip correspondingly.
-          enum: [barcelona, barcelona_2019, brands_hatch, brands_hatch_2019, hungaroring, hungaroring_2019, misano, misano_2019, monza, monza_2019, 
-          nurburgring, nurburgring_2019, paul_ricard, paul_ricard_2019, silverstone, silverstone_2019, spa, spa_2019, zandvoort, 
-          zandvoort_2019, zolder, zolder_2019, mount_panorama_2019, kyalami_2019, suzuka_2019, laguna_seca_2019]
+          enum: [barcelona, barcelona_2019, brands_hatch, brands_hatch_2019, hungaroring, hungaroring_2019, misano, misano_2019, monza, monza_2019, nurburgring, nurburgring_2019,
+                 paul_ricard, paul_ricard_2019, silverstone, silverstone_2019, spa, spa_2019, zandvoort, zandvoort_2019, zolder, zolder_2019, mount_panorama_2019, kyalami_2019,
+                 suzuka_2019, laguna_seca_2019, monza_2020, zolder_2020, brands_hatch_2020, silverstone_2020, paul_ricard_2020, misano_2020, spa_2020, nurburgring_2020, barcelona_2020
+                 hungaroring_2020, zandvoort_2020, imola_2020]
         preRaceWaitingTimeSeconds:
           type: integer
           default: 120
@@ -1606,8 +1607,8 @@ components:
       enum: [Porsche 991 GT3, Mercedes AMG GT3, Ferrari 488 GT3, Audi R8 LMS, Lamborghini Huracan GT3, Mclaren 650s GT3, Nissan GT R Nismo GT3 2018,
             BMW M6 GT3, Bentley Continental GT3 2018, Porsche 991.2 GT3 Cup, Nissan GT-R Nismo GT3 2017, Bentley Continental GT3 2016, Aston Martin Vantage V12 GT3,
             Lamborghini Gallardo R-EX, Jaguar G3, Lexus RC F GT3, Lamborghini Huracan Evo (2019), Honda NSX GT3, Lamborghini Huracan SuperTrofeo, Audi R8 LMS Evo (2019),
-            AMR V8 Vantage (2019), Honda NSX Evo (2019), McLaren 720S GT3 (Special), Porsche 911 II GT3 R (2019), Alpine A1110 GT4, Aston Martin Vantage GT4
-            Audi R8 LMS GT4, BMW M4 GT4, Chevrolet Camaro GT4, Ginetta G55 GT4, KTM X-Bow GT4, Maserati MC GT4, McLaren 570S GT4, Mercedes AMG GT4, Porsche 718 Cayman GT4]
+            AMR V8 Vantage (2019), Honda NSX Evo (2019), McLaren 720S GT3 (Special), Porsche 911 II GT3 R (2019), Ferrari 488 GT3 Evo 2020, Mercedes-AMG GT3 2020, Alpine A1110 GT4,
+            Aston Martin Vantage GT4, Audi R8 LMS GT4, BMW M4 GT4, Chevrolet Camaro GT4, Ginetta G55 GT4, KTM X-Bow GT4, Maserati MC GT4, McLaren 570S GT4, Mercedes AMG GT4, Porsche 718 Cayman GT4]
   securitySchemes:
     auth:
       type: http

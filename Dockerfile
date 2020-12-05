@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk-alpine
 
 # Built application jar
-ARG JAR_FILE=service/target/acc-manager-service-0.4.1.jar
+ARG JAR_FILE=service/target/acc-manager-service-0.4.3.jar
 
 # App working directory
 WORKDIR /opt/app
