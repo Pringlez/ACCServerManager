@@ -1,10 +1,13 @@
 # ACCServerManager
 The ACC Manager has been designed to manage multiple ACC Server docker containers. Currently, only
-capable of managing containers local to the ACC Manager.
+capable of managing containers local to the ACC Manager application.
 
 ## Setup Host
 First, you'll need to install [docker](https://docs.docker.com/get-started/) on your hosting machine. 
 I'll assume your using Linux to host your game servers, an [Ubuntu](https://docs.docker.com/engine/install/ubuntu/) guide for setting up docker. 
+
+Running the jar of ACC Manager requires you install java on your host machine. I've found this [guide](https://linuxize.com/post/install-java-on-ubuntu-18-04/) easy to follow for 18.04 Ubuntu.
+The installation on other distros is fairly similar.
 
 Docker has support for Windows, the official [guide](https://docs.docker.com/docker-for-windows/install/) for Windows 10.
 
@@ -44,7 +47,7 @@ To contribute to the project you need to set up a basic development environment.
  * React Tools (Node, NPM, Browser Extensions)
  * Docker
 
-Use whatever development tools you feel comfortable to use, for example I normally use VS Code & Intellij for most of my work.
+I'd generally recommend VS Code for frontend & Intellij for backend development.
 
 ### API Spec
 The [API specification](api/yaml/acc-manager.yaml) is used at compile time to generate a number of interfaces & java classes used within the application.
@@ -55,4 +58,4 @@ To compile and test the application locally, run the following command:
 ```
 mvn clean install
 ```
-Instead, you could run the production maven build by adding `-Pprod` flag. This will run the production optimised webpack that will bundle the application's assets & source code.
+You can run the production maven build by adding `-Pprod` flag. This will run optimised webpack that will bundle the frontends assets & source code.
