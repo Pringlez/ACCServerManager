@@ -8,45 +8,33 @@ I'll assume your using Linux to host your game servers, an [Ubuntu](https://docs
 
 Docker has support for Windows, the official [guide](https://docs.docker.com/docker-for-windows/install/) for Windows 10.
 
-### Runtime
- * Java 8+ (JDK, IDE) - (Running ACC Manager)
+### Step 1 - Runtime
+ * Java 8+ (Running ACC Manager)
  * Docker (Running ACC Server)
+ 
+### Step 2 - ACC Server Docker Image
+Building or downloading the docker image `acc-server-wine` in the [readme](docs/docker/acc-server/README.md).
 
-## Running ACC Manager
-Build a production ready build before running the built jar:
+### Step 3 - Running ACC Manager
+You can download the latest available jar from GitHub. TODO...
+
+Run the pre-built jar by executing:
+```
+java -jar -Ddocker.username=<your-system-username> acc-manager-0.4.3.jar
+```
+
+#### Optional - Build Project Jar
+Build a production ready jar from project root directory using maven:
 ```
 mvn clean install -DskipTests -Pprod
 ```
-In the project's root directory, run the spring boot application with the following command:
+Then, run the built jar from the `service/target` directory:
 ```
-java -jar -Dspring.profiles.active=local,h2 -Ddocker.username=<your-system-username> service/target/acc-manager-service-0.4.3.jar
-```
-
-### Running ACC Manager Docker Container (_Experimental_)
-Running the pre-built container by executing:
-```
-docker run -d -p 80:8080 -t acc-manager:0.4.3
-```
-The application should respond on port 80 from your machines ip/domain address.
-
-You can also run in `-it` attached mode to verify the application is starting up correctly:
-```
-docker run -it -p 80:8080 -t acc-manager:0.4.3
-```
-**Note:** _Work in progress, need to mount volume & sharing files correctly_
-
-## Building ACC Manager Docker Image (_Experimental_)
-I'd recommend first running a production maven build to package the optimized jar & frontend build:
-```
-mvn clean install -DskipTests -Pprod
-```
-Run the following command in the __root__ project directory to package everything into a docker image:
-```
-docker build -t acc-manager:0.4.3 .
+java -jar -Ddocker.username=<your-system-username> service/target/acc-manager-service-0.4.3.jar
 ```
 
-### Building ACC Server Docker Image
-Building the docker image `acc-server-wine` in the [readme](docs/docker/acc/README.md). For hosting the acc server inside docker using Wine.
+### Building ACC Manager Docker Image (_Experimental_)
+Building the docker image `acc-manager` in the [readme](docs/docker/acc-manager/README.md).
 
 ## Development
 To contribute to the project you need to set up a basic development environment. You'll need the following:

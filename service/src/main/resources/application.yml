@@ -6,6 +6,8 @@ spring:
   application:
     name: acc-manager
     version: 0.4.3
+  profiles:
+    active: local,h2
   h2:
     console:
       enabled: false
