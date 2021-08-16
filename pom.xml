@@ -16,20 +16,22 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <linkXRef>false</linkXRef>
         <input.yaml.file>acc-manager.yaml</input.yaml.file>
-        <java.version>1.8</java.version>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <node.version>v12.17.0</node.version>
-        <npm.version>6.14.4</npm.version>
-        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
-        <frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
+        <java.version>11</java.version>
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <node.version>v16.6.2</node.version>
+        <npm.version>7.20.3</npm.version>
+        <spring.framework.version>5.3.9</spring.framework.version>
+        <spring.boot.version>2.5.3</spring.boot.version>
+        <openapi.generator.version>4.3.0</openapi.generator.version>
+        <frontend.maven.plugin.version>1.12.0</frontend.maven.plugin.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-parent</artifactId>
-            <version>${spring-boot.version}</version>
+            <version>${spring.boot.version}</version>
             <type>pom</type>
         </dependency>
     </dependencies>

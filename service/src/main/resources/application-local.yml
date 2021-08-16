@@ -6,5 +6,3 @@ spring:
   #  data: classpath:database/data.sql
   jpa:
     show-sql: true
-  profiles:
-    active: local,h2
