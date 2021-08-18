@@ -60,44 +60,44 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.10.2</version>
+			<version>${jackson.databind.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.200</version>
+			<version>${h2.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>2.0.1.Final</version>
+			<version>${validation.api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.docker-java</groupId>
 			<artifactId>docker-java</artifactId>
-			<version>3.2.5</version>
+			<version>${docker.java.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.docker-java</groupId>
 			<artifactId>docker-java-transport-httpclient5</artifactId>
-			<version>3.2.5</version>
+			<version>${docker.java.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-spring</artifactId>
-			<version>4.7.2</version>
+			<version>${cucumber.spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-junit</artifactId>
-			<version>4.7.2</version>
+			<version>${cucumber.spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
-			<version>3.3.0</version>
+			<version>${rest.assured.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -113,7 +113,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
+				<version>${maven.resources.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>copy-frontend-resources</id>
@@ -136,7 +136,7 @@
 			<plugin>
 				<groupId>com.nickwongdev</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.12.6</version>
+				<version>${aspectj.maven.plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
