@@ -21,16 +21,16 @@
         <maven.compiler.source>11</maven.compiler.source>
         <node.version>v16.6.2</node.version>
         <npm.version>7.20.3</npm.version>
-        <spring.framework.version>5.3.9</spring.framework.version>
-        <spring.boot.version>2.5.3</spring.boot.version>
-        <openapi.generator.version>4.3.0</openapi.generator.version>
+        <spring.framework.version>5.3.12</spring.framework.version>
+        <spring.boot.version>2.5.6</spring.boot.version>
+        <openapi.generator.version>5.3.0</openapi.generator.version>
         <frontend.maven.plugin.version>1.12.0</frontend.maven.plugin.version>
         <aspectj.maven.plugin.version>1.12.6</aspectj.maven.plugin.version>
         <maven.resources.plugin.version>2.6</maven.resources.plugin.version>
-        <jackson.databind.version>2.10.2</jackson.databind.version>
+        <jackson.databind.version>2.13.0</jackson.databind.version>
         <h2.version>1.4.200</h2.version>
         <validation.api.version>2.0.1.Final</validation.api.version>
-        <docker.java.version>3.2.5</docker.java.version>
+        <docker.java.version>3.2.12</docker.java.version>
         <cucumber.spring.version>4.7.2</cucumber.spring.version>
         <rest.assured.version>3.3.0</rest.assured.version>
     </properties>

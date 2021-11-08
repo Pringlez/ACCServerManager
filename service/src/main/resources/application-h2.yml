@@ -1,11 +1,9 @@
 spring:
   datasource:
-    schema: classpath:database/schema.sql
-    platform: h2
     driver-class-name: org.h2.Driver
     username: accmanager
     password: accmanager
-    url: jdbc:h2:file:/home/${docker.username}/accmanager/database/acc-db-${spring.application.version};DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:file:../database/acc-db-${spring.application.version};DB_CLOSE_ON_EXIT=FALSE
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,6 +12,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  sql:
+    init:
+      schema-locations: classpath:database/schema.sql
+      platform: h2
 logging:
   level:
     log:

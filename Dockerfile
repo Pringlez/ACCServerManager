@@ -1,13 +1,11 @@
-FROM openjdk:8-jdk-alpine
+FROM adoptopenjdk/openjdk11:alpine-jreww
 
-# Built application jar
-ARG JAR_FILE=service/target/acc-manager-service-0.4.3.jar
-
-# App working directory
-WORKDIR /opt/app
+# Directory & user setup
+RUN mkdir /opt/application
+RUN addgroup --system accmanager && adduser -S -s /bin/false -G accmanager accmanager
 
 # Copy application jar
-COPY ${JAR_FILE} app.jar
+COPY service/target/*.jar /opt/application/Manager.jar
 
 # Start springboot application
-ENTRYPOINT ["java","-Dspring.profiles.active=local,h2","-jar","app.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=local,h2","-jar","/opt/application/accManager.jar"]
