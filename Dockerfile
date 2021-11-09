@@ -1,11 +1,11 @@
-FROM adoptopenjdk/openjdk11:alpine-jreww
+FROM adoptopenjdk/openjdk11:alpine-jre
 
-# Directory & user setup
+# Directory & User Setup
 RUN mkdir /opt/application
 RUN addgroup --system accmanager && adduser -S -s /bin/false -G accmanager accmanager
 
-# Copy application jar
-COPY service/target/*.jar /opt/application/Manager.jar
+# Copy Application Jar
+COPY service/target/*.jar /opt/application/accManager.jar
 
-# Start springboot application
+# Start Springboot Application
 ENTRYPOINT ["java","-Dspring.profiles.active=local,h2","-jar","/opt/application/accManager.jar"]

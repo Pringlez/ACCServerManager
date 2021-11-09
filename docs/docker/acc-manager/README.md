@@ -1,7 +1,7 @@
 ## Docker ACC Manager Notes
 Running the ACC Manager inside docker using [Wine](https://www.winehq.org/).
 
-## Building ACC Manager Docker Image
+### Building ACC Manager Docker Image
 I'd recommend first running a production maven build to package the optimized jar & frontend build:
 ```
 mvn clean install -DskipTests -Pprod
@@ -14,7 +14,7 @@ docker build -t acc-manager:0.4.3 .
 ### Running ACC Manager Docker Container
 Running the pre-built container by executing:
 ```
-docker run -d --name acc-manager --restart unless-stopped -p 80:8080 -t acc-manager:0.4.3
+docker run -d --name acc-manager --restart unless-stopped -p 80:8080 -p 2375:2375 -v <path-to-instance-configs-on-host>:/home/accmanager/configs -t acc-manager:0.4.3
 ```
 Navigate to your hosts machines ip/domain address The application should respond on port 80 from your machines ip/domain address. 
 

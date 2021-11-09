@@ -26,7 +26,7 @@ Run the pre-built jar by executing:
 java -jar -Ddocker.username=<your-system-username> acc-manager-0.4.3.jar
 ```
 
-#### Optional - Build Project Jar
+## Build ACC Manager
 Build a production ready jar from project root directory using maven:
 ```
 mvn clean install -DskipTests -Pprod
@@ -35,6 +35,9 @@ Then, run the built jar from the `service/target` directory:
 ```
 java -jar -Ddocker.username=<your-system-username> service/target/acc-manager-service-0.4.3.jar
 ```
+
+Jar parameters:
+* **-Ddocker.username** - Name of the host's username running the docker engine
 
 ### Building ACC Manager Docker Image (_Experimental_)
 Building the docker image `acc-manager` in the [readme](docs/docker/acc-manager/README.md).
