@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -r /home/server/accmanager/cfg/current
-cp -r /home/server/accmanager/host/cfg/* /home/server/accmanager/cfg
+rm -r /home/accserver/cfg/current
+cp -r /home/accserver/host/cfg/* /home/accserver/cfg
 wine ./host/executable/accServer.exe
 exec "$@"

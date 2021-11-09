@@ -64,7 +64,7 @@ public class ContainerService {
                 .withCmd(Arrays.asList("--net=host", "--restart unless-stopped"))
                 .withName(instance.getId())
                 .withBinds(Bind.parse(format(PATH_HOST_SERVER_INSTANCE.toString(),
-                        fileReadWriteService.getDockerUsername(), instance.getId()) + PATH_CONTAINER.toString()))
+                        fileReadWriteService.getDockerUsername(), instance.getId()) + PATH_CONTAINER))
                 .withExposedPorts(ExposedPort.udp(instance.getConfig().getUdpPort()),
                         ExposedPort.tcp(instance.getConfig().getTcpPort())).exec();
     }

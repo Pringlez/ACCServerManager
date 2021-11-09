@@ -10,7 +10,7 @@ docker build --rm -t acc-server-1.X.X-wine .
 
 ### Running ACC Server Docker Container:
 You wouldn't normally run this container manually, the ACC Manager application interfaces with the docker engine to manage
-multiple ACC Server containers. However, your free to use run these containers outside of the ACC Manager.
+multiple ACC Server containers. However, your free to use run these containers outside the ACC Manager.
 
 Container parameters:
 * **name** - Name of the running docker container
@@ -21,7 +21,7 @@ Container parameters:
 
 Running the docker container and detach, lets the container run in the background.
 ```
-docker run -d --name acc-server-1 --restart unless-stopped --expose=9231-9232 --net=host -v /directory/to/config/on/host:/home/server/accmanager/host acc-server-1.X.X-wine
+docker run -d --name acc-server-1 --restart unless-stopped --expose=9231-9232 --net=host -v <path-to-instance-configs-on-host>:/home/accserver/host -t acc-server-1.X.X-wine
 ```
 For debugging purposes attach to the running container with the `-it` after docker run.
 
