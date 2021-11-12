@@ -5,14 +5,7 @@ import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.ExposedPort;
-import org.accmanager.model.AssistRules;
-import org.accmanager.model.BoP;
-import org.accmanager.model.Config;
-import org.accmanager.model.EntriesList;
-import org.accmanager.model.Event;
-import org.accmanager.model.EventRules;
-import org.accmanager.model.Instance;
-import org.accmanager.model.Settings;
+import org.accmanager.model.*;
 import org.accmanager.service.services.files.DirectoryReadWriteService;
 import org.accmanager.service.services.files.FileReadWriteService;
 import org.slf4j.Logger;
@@ -27,17 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.FilesEnum.ASSIST_RULES_JSON;
-import static org.accmanager.service.enums.FilesEnum.BOP_JSON;
-import static org.accmanager.service.enums.FilesEnum.CONFIGURATION_JSON;
-import static org.accmanager.service.enums.FilesEnum.ENTRY_LIST_JSON;
-import static org.accmanager.service.enums.FilesEnum.EVENT_JSON;
-import static org.accmanager.service.enums.FilesEnum.EVENT_RULES_JSON;
-import static org.accmanager.service.enums.FilesEnum.SETTINGS_JSON;
-import static org.accmanager.service.enums.PathsEnum.PATH_CONTAINER;
-import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
-import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_CFG;
-import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
+import static org.accmanager.service.enums.FilesEnum.*;
+import static org.accmanager.service.enums.PathsEnum.*;
 
 @Service
 public class ContainerService {
@@ -83,13 +67,21 @@ public class ContainerService {
 
     public void killContainer(String instanceId) {
         attemptToKillContainer(instanceId);
-        dockerClient.removeContainerCmd(instanceId).exec();
-        fileReadWriteService.deleteInstanceDirectory(instanceId);
+        attemptToRemoveContainer(instanceId);
+        fileReadWriteService.deleteInstanceDirectoryConfigsAndFiles(instanceId);
     }
 
     private void attemptToKillContainer(String instanceId) {
         try {
             dockerClient.killContainerCmd(instanceId).exec();
+        } catch (Exception e) {
+            LOGGER.warn(format(FAILED_TO_KILL_CONTAINER_INSTANCE_ID, instanceId));
+        }
+    }
+
+    private void attemptToRemoveContainer(String instanceId) {
+        try {
+            dockerClient.removeContainerCmd(instanceId).exec();
         } catch (Exception e) {
             LOGGER.warn(format(FAILED_TO_KILL_CONTAINER_INSTANCE_ID, instanceId));
         }

@@ -16,10 +16,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.PathsEnum.PATH_HOST_EXECUTABLE;
-import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
-import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_CFG_FILE;
-import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
+import static org.accmanager.service.enums.PathsEnum.*;
 
 @Service
 public class FileReadWriteService {
@@ -72,12 +69,13 @@ public class FileReadWriteService {
         }
     }
 
-    public void deleteInstanceDirectory(String instanceId) {
+    public void deleteInstanceDirectoryConfigsAndFiles(String instanceId) {
         try {
             Files.walk(Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), dockerUsername, instanceId)))
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
                     .forEach(File::delete);
+            Files.deleteIfExists(Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), dockerUsername, instanceId)));
         } catch (Exception e) {
             LOGGER.error(format("Error deleting instance directory: %s", e));
         }

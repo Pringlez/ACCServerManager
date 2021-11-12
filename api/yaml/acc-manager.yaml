@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: ACC Manager Service
   description: API specification
-  version: 1.1.1
+  version: 1.1.2
   contact:
     name: GitHub Issues
     url: https://github.com/Pringlez/ACCServerManager/issues
@@ -936,7 +936,7 @@ components:
           default: "ACC Instance Name"
         dockerImage:
           type: string
-          default: "acc-server-wine"
+          default: "acc-server:1.7.4"
         state:
           $ref: "#/components/schemas/InstanceState"
         event:

@@ -29,5 +29,5 @@ RUN apt-get autoclean -y && wine --version
 VOLUME /home/accserver/host
 
 # Starts ACC Game Server
-USER server
+USER accserver
 ENTRYPOINT ["/bin/bash", "-c", "sh run-server.sh"]
