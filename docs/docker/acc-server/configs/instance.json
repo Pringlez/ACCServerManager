@@ -1,7 +1,7 @@
 {
   "id": "ae85423a-b502-4833-bcc2-a424d3f8281e",
   "name": "ACC Instance Name",
-  "dockerImage": "acc-server-wine",
+  "dockerImage": "acc-server:1.7.4",
   "state": "running",
   "event": {
     "id": null,
