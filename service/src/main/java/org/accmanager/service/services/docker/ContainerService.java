@@ -6,6 +6,7 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.ExposedPort;
 import org.accmanager.model.*;
+import org.accmanager.service.exception.DockerException;
 import org.accmanager.service.services.files.DirectoryReadWriteService;
 import org.accmanager.service.services.files.FileReadWriteService;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static org.accmanager.service.enums.ExceptionEnum.*;
 import static org.accmanager.service.enums.FilesEnum.*;
 import static org.accmanager.service.enums.PathsEnum.*;
 
@@ -27,7 +29,6 @@ import static org.accmanager.service.enums.PathsEnum.*;
 public class ContainerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContainerService.class);
-    private static final String FAILED_TO_KILL_CONTAINER_INSTANCE_ID = "Failed to kill container instance id: %s";
 
     private final DockerClient dockerClient;
     private final DirectoryReadWriteService directoryReadWriteService;
@@ -74,16 +75,18 @@ public class ContainerService {
     private void attemptToKillContainer(String instanceId) {
         try {
             dockerClient.killContainerCmd(instanceId).exec();
-        } catch (Exception e) {
-            LOGGER.warn(format(FAILED_TO_KILL_CONTAINER_INSTANCE_ID, instanceId));
+        } catch (Exception ex) {
+            LOGGER.warn(format(ERROR_KILLING_CONTAINER_INSTANCE_ID.toString(), instanceId));
+            throw new DockerException(ERROR_KILLING_CONTAINER_INSTANCE_ID.toString(), ex);
         }
     }
 
     private void attemptToRemoveContainer(String instanceId) {
         try {
             dockerClient.removeContainerCmd(instanceId).exec();
-        } catch (Exception e) {
-            LOGGER.warn(format(FAILED_TO_KILL_CONTAINER_INSTANCE_ID, instanceId));
+        } catch (Exception ex) {
+            LOGGER.warn(format(ERROR_REMOVING_CONTAINER_INSTANCE_ID.toString(), instanceId));
+            throw new DockerException(ERROR_REMOVING_CONTAINER_INSTANCE_ID.toString(), ex);
         }
     }
 
@@ -92,16 +95,25 @@ public class ContainerService {
     }
 
     public List<Instance> listOfContainers() {
-        Optional<List<Path>> accServerDirs = directoryReadWriteService.getAllServerDirectories(
-                fileReadWriteService.getDockerUsername());
         List<Instance> instancesList = new ArrayList<>();
-        accServerDirs.ifPresent(dirs -> dirs.forEach(
-                dir -> instancesList.add(readInstanceConfiguration(dir.toString()))));
+        try {
+            Optional<List<Path>> accServerDirs = directoryReadWriteService.getAllServerDirectories(
+                    fileReadWriteService.getDockerUsername());
+            accServerDirs.ifPresent(dirs -> dirs.forEach(
+                    dir -> instancesList.add(readInstanceConfiguration(dir.toString()))));
+        } catch (Exception ex) {
+            LOGGER.warn(ERROR_RETRIEVING_LIST_OF_CONTAINERS.toString());
+            throw new DockerException(ERROR_RETRIEVING_LIST_OF_CONTAINERS.toString(), ex);
+        }
         return instancesList;
     }
 
     private void copyExecutable(String instanceId) {
-        fileReadWriteService.copyExecutable(instanceId);
+        try {
+            fileReadWriteService.copyExecutable(instanceId);
+        } catch (Exception ex) {
+            LOGGER.warn(ERROR_COPYING_EXECUTABLE.toString());
+        }
     }
 
     public void writeInstanceConfiguration(Instance instance) {

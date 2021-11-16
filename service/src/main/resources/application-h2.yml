@@ -6,13 +6,12 @@ spring:
     url: jdbc:h2:file:../database/acc-db-${spring.application.version};DB_CLOSE_ON_EXIT=FALSE
   jpa:
     hibernate:
-      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         format_sql: true
-    generate-ddl: true
+    defer-datasource-initialization: true
   sql:
     init:
       schema-locations: classpath:database/schema.sql

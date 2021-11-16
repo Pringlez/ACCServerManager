@@ -8,7 +8,7 @@ public class CarEntriesEntity {
 
     private String carEntriesId;
     private String carEntryId;
-    private Object forceEntryList;
+    private int forceEntryList;
     private int configVersion;
 
     @Id
@@ -33,11 +33,11 @@ public class CarEntriesEntity {
 
     @Basic
     @Column(name = "FORCE_ENTRY_LIST")
-    public Object getForceEntryList() {
+    public int getForceEntryList() {
         return forceEntryList;
     }
 
-    public void setForceEntryList(Object forceEntryList) {
+    public void setForceEntryList(int forceEntryList) {
         this.forceEntryList = forceEntryList;
     }
 

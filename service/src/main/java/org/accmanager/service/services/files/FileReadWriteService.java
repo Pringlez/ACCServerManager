@@ -2,6 +2,8 @@ package org.accmanager.service.services.files;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.accmanager.service.enums.FilesEnum;
+import org.accmanager.service.exception.FileReadException;
+import org.accmanager.service.exception.FileWriteException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,14 +18,13 @@ import java.util.Comparator;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static org.accmanager.service.enums.ExceptionEnum.*;
 import static org.accmanager.service.enums.PathsEnum.*;
 
 @Service
 public class FileReadWriteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileReadWriteService.class);
-    private static final String FAILED_TO_PARSE_FILE = "Failed to parse '%s' file: %s";
-    private static final String FAILED_TO_WRITE_FILE = "Failed to write '%s' file: %s";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -33,30 +34,35 @@ public class FileReadWriteService {
     public Optional<Object> readJsonFile(String instanceId, FilesEnum filesEnum, Class<?> cls) {
         try {
             return Optional.of(objectMapper.readValue(createNewFile(instanceId, filesEnum.toString()), cls));
-        } catch (IOException e) {
-            LOGGER.error(format(FAILED_TO_PARSE_FILE, filesEnum.toString(), e.getMessage()));
+        } catch (IOException ex) {
+            LOGGER.error(format(ERROR_READING_FILE.toString(), filesEnum, ex.getMessage()));
+            throw new FileReadException(format(ERROR_READING_FILE.toString(), filesEnum, ex.getMessage()), ex);
         }
-        return Optional.empty();
     }
 
     public void writeJsonFile(String instanceId, FilesEnum filesEnum, Object object) {
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(createNewFile(instanceId, filesEnum.toString()), object);
-        } catch (IOException e) {
-            LOGGER.error(format(FAILED_TO_WRITE_FILE, filesEnum.toString(), e.getMessage()));
+        } catch (IOException ex) {
+            LOGGER.error(format(ERROR_WRITING_FILE.toString(), filesEnum, ex.getMessage()));
+            throw new FileWriteException(format(ERROR_WRITING_FILE.toString(), filesEnum, ex.getMessage()), ex);
         }
     }
 
     private File createNewFile(String instanceId, String jsonFile) {
-        return new File(format(PATH_HOST_SERVER_INSTANCE_CFG_FILE.toString(), dockerUsername, instanceId, jsonFile));
+        try {
+            return new File(format(PATH_HOST_SERVER_INSTANCE_CFG_FILE.toString(), dockerUsername, instanceId, jsonFile));
+        } catch (Exception ex) {
+            LOGGER.error(format(ERROR_WRITING_FILE.toString(), jsonFile, ex.getMessage()));
+            throw new FileWriteException(format(ERROR_WRITING_FILE.toString(), jsonFile, ex.getMessage()), ex);
+        }
     }
 
-    public boolean createDirectory(String directory) {
+    public void createDirectory(String directory) {
         try {
-            return new File(directory).mkdirs();
-        } catch (Exception e) {
-            LOGGER.error(format("Error creating directory: %s", e));
-            return false;
+            new File(directory).mkdirs();
+        } catch (Exception ex) {
+            LOGGER.error(format(ERROR_CREATING_DIRECTORY.toString(), ex));
         }
     }
 
@@ -64,8 +70,8 @@ public class FileReadWriteService {
         try {
             Files.copy(Paths.get(format(PATH_HOST_EXECUTABLE.toString(), dockerUsername) + "/accServer.exe"),
                     Paths.get(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(), dockerUsername, instanceId) + "/accServer.exe"));
-        } catch (Exception e) {
-            LOGGER.error(format("Error copying executable: %s", e));
+        } catch (Exception ex) {
+            LOGGER.error(format(ERROR_COPYING_EXECUTABLE.toString(), ex));
         }
     }
 
@@ -76,8 +82,8 @@ public class FileReadWriteService {
                     .map(Path::toFile)
                     .forEach(File::delete);
             Files.deleteIfExists(Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), dockerUsername, instanceId)));
-        } catch (Exception e) {
-            LOGGER.error(format("Error deleting instance directory: %s", e));
+        } catch (Exception ex) {
+            LOGGER.error(format(ERROR_DELETING_INSTANCE_DIRECTORY.toString(), ex));
         }
     }
 

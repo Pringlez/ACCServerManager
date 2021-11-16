@@ -5,6 +5,7 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import org.accmanager.api.InstancesApi;
 import org.accmanager.model.Instance;
 import org.accmanager.model.InstanceState;
+import org.accmanager.service.exception.InstanceNotFoundException;
 import org.accmanager.service.services.docker.ContainerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,10 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+import static java.lang.String.format;
 import static org.accmanager.model.InstanceState.CRASHED;
 import static org.accmanager.model.InstanceState.CREATED;
+import static org.accmanager.service.enums.ExceptionEnum.ACC_SERVER_INSTANCE_NOT_FOUND;
 
 @Controller
 public class InstancesApiImpl implements InstancesApi {
@@ -41,7 +44,7 @@ public class InstancesApiImpl implements InstancesApi {
                 return instance;
             }
         }
-        return new Instance();
+        throw new InstanceNotFoundException(format(ACC_SERVER_INSTANCE_NOT_FOUND.toString(), instanceId));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.accmanager.service.services.files;
 
+import org.accmanager.service.exception.DirectoryReadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_GETTING_SERVER_DIRECTORIES;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVERS;
 
 @Service
@@ -26,9 +28,9 @@ public class DirectoryReadWriteService {
                     .filter(p -> Files.isDirectory(p) && !p.equals(dir))
                     .map(Path::getFileName)
                     .collect(Collectors.toList()));
-        } catch (Exception e) {
-            LOGGER.error(format("Error getting server directories: %s", e));
+        } catch (Exception ex) {
+            LOGGER.error(format(ERROR_GETTING_SERVER_DIRECTORIES.toString(), ex));
+            throw new DirectoryReadException(format(ERROR_GETTING_SERVER_DIRECTORIES.toString(), ex), ex);
         }
-        return Optional.empty();
     }
 }

@@ -2,7 +2,15 @@ spring:
   h2:
     console:
       enabled: true
-  #datasource:
-  #  data: classpath:database/data.sql
+  sql:
+    init:
+      data-locations: classpath:database/data.sql
+      mode: embedded
+  batch:
+    jdbc:
+      initialize-schema: always
   jpa:
+    hibernate:
+      ddl-auto: update
     show-sql: true
+    defer-datasource-initialization: true
