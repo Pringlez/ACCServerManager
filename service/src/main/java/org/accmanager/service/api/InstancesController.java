@@ -19,11 +19,11 @@ import static org.accmanager.model.InstanceState.CREATED;
 import static org.accmanager.service.enums.ExceptionEnum.ACC_SERVER_INSTANCE_NOT_FOUND;
 
 @Controller
-public class InstancesApiImpl implements InstancesApi {
+public class InstancesController implements InstancesApi {
 
     private final ContainerService containerService;
 
-    public InstancesApiImpl(ContainerService containerService) {
+    public InstancesController(ContainerService containerService) {
         this.containerService = containerService;
     }
 
@@ -81,7 +81,7 @@ public class InstancesApiImpl implements InstancesApi {
 
     @Override
     public ResponseEntity<Void> deleteInstanceById(String instanceId) {
-        containerService.killContainer(instanceId);
+        containerService.killAndRemoveContainer(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

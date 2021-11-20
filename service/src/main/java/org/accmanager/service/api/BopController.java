@@ -10,11 +10,11 @@ import org.springframework.stereotype.Controller;
 import static org.accmanager.service.enums.FilesEnum.BOP_JSON;
 
 @Controller
-public class BoPApiImpl implements BopApi {
+public class BopController implements BopApi {
 
     private final FileReadWriteService fileReadWriteService;
 
-    public BoPApiImpl(FileReadWriteService fileReadWriteService) {
+    public BopController(FileReadWriteService fileReadWriteService) {
         this.fileReadWriteService = fileReadWriteService;
     }
 

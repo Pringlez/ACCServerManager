@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.accmanager.service.enums.ExceptionEnum.*;
+import static org.accmanager.service.enums.FilesEnum.ACC_SERVER_EXE;
 import static org.accmanager.service.enums.PathsEnum.*;
 
 @Service
@@ -58,20 +59,22 @@ public class FileReadWriteService {
         }
     }
 
-    public void createDirectory(String directory) {
+    public void createNewDirectory(String directory) {
         try {
             new File(directory).mkdirs();
         } catch (Exception ex) {
             LOGGER.error(format(ERROR_CREATING_DIRECTORY.toString(), ex));
+            throw new FileWriteException(format(ERROR_CREATING_DIRECTORY.toString(), ex.getMessage()), ex);
         }
     }
 
     public void copyExecutable(String instanceId) {
         try {
-            Files.copy(Paths.get(format(PATH_HOST_EXECUTABLE.toString(), dockerUsername) + "/accServer.exe"),
-                    Paths.get(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(), dockerUsername, instanceId) + "/accServer.exe"));
+            Files.copy(Paths.get(format(PATH_HOST_EXECUTABLE.toString(), dockerUsername) + ACC_SERVER_EXE),
+                    Paths.get(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(), dockerUsername, instanceId) + ACC_SERVER_EXE));
         } catch (Exception ex) {
             LOGGER.error(format(ERROR_COPYING_EXECUTABLE.toString(), ex));
+            throw new FileWriteException(format(ERROR_COPYING_EXECUTABLE.toString(), ex), ex);
         }
     }
 
@@ -84,6 +87,7 @@ public class FileReadWriteService {
             Files.deleteIfExists(Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), dockerUsername, instanceId)));
         } catch (Exception ex) {
             LOGGER.error(format(ERROR_DELETING_INSTANCE_DIRECTORY.toString(), ex));
+            throw new FileWriteException(format(ERROR_DELETING_INSTANCE_DIRECTORY.toString(), ex), ex);
         }
     }
 

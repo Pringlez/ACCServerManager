@@ -10,11 +10,11 @@ import org.springframework.stereotype.Controller;
 import static org.accmanager.service.enums.FilesEnum.ASSIST_RULES_JSON;
 
 @Controller
-public class AssistsApiImpl implements AssistsApi {
+public class AssistsController implements AssistsApi {
 
     private final FileReadWriteService fileReadWriteService;
 
-    public AssistsApiImpl(FileReadWriteService fileReadWriteService) {
+    public AssistsController(FileReadWriteService fileReadWriteService) {
         this.fileReadWriteService = fileReadWriteService;
     }
 

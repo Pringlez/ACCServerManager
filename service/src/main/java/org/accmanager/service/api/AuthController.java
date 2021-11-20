@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class AuthApiImpl implements AuthApi {
+public class AuthController implements AuthApi {
 
     @Override
     public ResponseEntity<String> authenticate(User user) {

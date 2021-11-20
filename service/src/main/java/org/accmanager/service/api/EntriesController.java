@@ -10,11 +10,11 @@ import org.springframework.stereotype.Controller;
 import static org.accmanager.service.enums.FilesEnum.ENTRY_LIST_JSON;
 
 @Controller
-public class EntriesApiImpl implements EntriesApi {
+public class EntriesController implements EntriesApi {
 
     private final FileReadWriteService fileReadWriteService;
 
-    public EntriesApiImpl(FileReadWriteService fileReadWriteService) {
+    public EntriesController(FileReadWriteService fileReadWriteService) {
         this.fileReadWriteService = fileReadWriteService;
     }
 

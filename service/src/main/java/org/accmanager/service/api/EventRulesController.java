@@ -10,11 +10,11 @@ import org.springframework.stereotype.Controller;
 import static org.accmanager.service.enums.FilesEnum.EVENT_RULES_JSON;
 
 @Controller
-public class EventRulesApiImpl implements EventRulesApi {
+public class EventRulesController implements EventRulesApi {
 
     private final FileReadWriteService fileReadWriteService;
 
-    public EventRulesApiImpl(FileReadWriteService fileReadWriteService) {
+    public EventRulesController(FileReadWriteService fileReadWriteService) {
         this.fileReadWriteService = fileReadWriteService;
     }
 

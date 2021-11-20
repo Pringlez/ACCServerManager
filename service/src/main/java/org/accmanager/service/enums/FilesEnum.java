@@ -8,7 +8,8 @@ public enum FilesEnum {
     ENTRY_LIST_JSON("entrylist.json"),
     EVENT_JSON("event.json"),
     EVENT_RULES_JSON("eventRules.json"),
-    SETTINGS_JSON("settings.json");
+    SETTINGS_JSON("settings.json"),
+    ACC_SERVER_EXE("/accServer.exe");
 
     private final String configFile;
 

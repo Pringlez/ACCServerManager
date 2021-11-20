@@ -28,8 +28,8 @@ public class ACCManagerApplication {
     @Bean
     public CommandLineRunner commandLineRunner() {
         return args -> {
-            fileReadWriteService.createDirectory(format(PATH_HOST_EXECUTABLE.toString(), fileReadWriteService.getDockerUsername()));
-            fileReadWriteService.createDirectory(format(PATH_HOST_SERVERS.toString(), fileReadWriteService.getDockerUsername()));
+            fileReadWriteService.createNewDirectory(format(PATH_HOST_EXECUTABLE.toString(), fileReadWriteService.getDockerUsername()));
+            fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVERS.toString(), fileReadWriteService.getDockerUsername()));
         };
     }
 }

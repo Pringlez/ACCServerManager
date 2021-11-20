@@ -12,6 +12,7 @@ public enum ExceptionEnum {
     ERROR_GETTING_SERVER_DIRECTORIES("Error getting server directories: %s"),
     ERROR_READING_FILE("Error reading '%s' file: %s"),
     ERROR_WRITING_FILE("Error writing '%s' file: %s"),
+    ERROR_EXECUTING_DOCKER_COMMAND("Error executing Docker command: %s"),
     ACC_SERVER_INSTANCE_NOT_FOUND("ACC Server instance not found: %s"),
     DOCKER_CONTAINER_NOT_FOUND("Docker container not found: %s"),
     DOCKER_CONTAINER_NAME_IN_USE("Docker container name in use: %s");

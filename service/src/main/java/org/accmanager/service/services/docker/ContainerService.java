@@ -3,10 +3,10 @@ package org.accmanager.service.services.docker;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.exception.DockerException;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.ExposedPort;
 import org.accmanager.model.*;
-import org.accmanager.service.exception.DockerException;
 import org.accmanager.service.services.files.DirectoryReadWriteService;
 import org.accmanager.service.services.files.FileReadWriteService;
 import org.slf4j.Logger;
@@ -24,6 +24,7 @@ import static java.lang.String.format;
 import static org.accmanager.service.enums.ExceptionEnum.*;
 import static org.accmanager.service.enums.FilesEnum.*;
 import static org.accmanager.service.enums.PathsEnum.*;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Service
 public class ContainerService {
@@ -66,28 +67,10 @@ public class ContainerService {
         dockerClient.restartContainerCmd(instanceId).exec();
     }
 
-    public void killContainer(String instanceId) {
-        attemptToKillContainer(instanceId);
-        attemptToRemoveContainer(instanceId);
+    public void killAndRemoveContainer(String instanceId) {
         fileReadWriteService.deleteInstanceDirectoryConfigsAndFiles(instanceId);
-    }
-
-    private void attemptToKillContainer(String instanceId) {
-        try {
-            dockerClient.killContainerCmd(instanceId).exec();
-        } catch (Exception ex) {
-            LOGGER.warn(format(ERROR_KILLING_CONTAINER_INSTANCE_ID.toString(), instanceId));
-            throw new DockerException(ERROR_KILLING_CONTAINER_INSTANCE_ID.toString(), ex);
-        }
-    }
-
-    private void attemptToRemoveContainer(String instanceId) {
-        try {
-            dockerClient.removeContainerCmd(instanceId).exec();
-        } catch (Exception ex) {
-            LOGGER.warn(format(ERROR_REMOVING_CONTAINER_INSTANCE_ID.toString(), instanceId));
-            throw new DockerException(ERROR_REMOVING_CONTAINER_INSTANCE_ID.toString(), ex);
-        }
+        attemptKillingContainer(instanceId);
+        attemptRemovingContainer(instanceId);
     }
 
     public InspectContainerResponse inspectContainer(String instanceId) {
@@ -103,17 +86,9 @@ public class ContainerService {
                     dir -> instancesList.add(readInstanceConfiguration(dir.toString()))));
         } catch (Exception ex) {
             LOGGER.warn(ERROR_RETRIEVING_LIST_OF_CONTAINERS.toString());
-            throw new DockerException(ERROR_RETRIEVING_LIST_OF_CONTAINERS.toString(), ex);
+            throw new DockerException(ERROR_RETRIEVING_LIST_OF_CONTAINERS.toString(), INTERNAL_SERVER_ERROR.value(), ex);
         }
         return instancesList;
-    }
-
-    private void copyExecutable(String instanceId) {
-        try {
-            fileReadWriteService.copyExecutable(instanceId);
-        } catch (Exception ex) {
-            LOGGER.warn(ERROR_COPYING_EXECUTABLE.toString());
-        }
     }
 
     public void writeInstanceConfiguration(Instance instance) {
@@ -124,6 +99,32 @@ public class ContainerService {
         fileReadWriteService.writeJsonFile(instance.getId(), BOP_JSON, instance.getBop());
         fileReadWriteService.writeJsonFile(instance.getId(), CONFIGURATION_JSON, instance.getConfig());
         fileReadWriteService.writeJsonFile(instance.getId(), SETTINGS_JSON, instance.getSettings());
+    }
+
+    private void attemptKillingContainer(String instanceId) {
+        try {
+            dockerClient.killContainerCmd(instanceId).exec();
+        } catch (Exception ex) {
+            LOGGER.warn(format(ERROR_KILLING_CONTAINER_INSTANCE_ID.toString(), instanceId));
+            throw new DockerException(format(ERROR_KILLING_CONTAINER_INSTANCE_ID.toString(), instanceId), INTERNAL_SERVER_ERROR.value(), ex);
+        }
+    }
+
+    private void attemptRemovingContainer(String instanceId) {
+        try {
+            dockerClient.removeContainerCmd(instanceId).exec();
+        } catch (Exception ex) {
+            LOGGER.warn(format(ERROR_REMOVING_CONTAINER_INSTANCE_ID.toString(), instanceId));
+            throw new DockerException(ERROR_REMOVING_CONTAINER_INSTANCE_ID.toString(), INTERNAL_SERVER_ERROR.value(), ex);
+        }
+    }
+
+    private void copyExecutable(String instanceId) {
+        try {
+            fileReadWriteService.copyExecutable(instanceId);
+        } catch (Exception ex) {
+            LOGGER.warn(ERROR_COPYING_EXECUTABLE.toString());
+        }
     }
 
     private Instance readInstanceConfiguration(String instanceId) {
@@ -140,9 +141,9 @@ public class ContainerService {
     }
 
     private void createDirectories(Instance instance) {
-        fileReadWriteService.createDirectory(format(PATH_HOST_SERVER_INSTANCE_CFG.toString(),
+        fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_CFG.toString(),
                 fileReadWriteService.getDockerUsername(), instance.getId()));
-        fileReadWriteService.createDirectory(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(),
+        fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(),
                 fileReadWriteService.getDockerUsername(), instance.getId()));
     }
 }
