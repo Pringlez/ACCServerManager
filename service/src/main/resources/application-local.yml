@@ -6,6 +6,7 @@ spring:
     init:
       data-locations: classpath:database/data.sql
       mode: always
+      #mode: embedded - Does not execute inserts on app startup
   batch:
     jdbc:
       initialize-schema: always
