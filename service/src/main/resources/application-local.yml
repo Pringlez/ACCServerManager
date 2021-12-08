@@ -5,7 +5,7 @@ spring:
   sql:
     init:
       data-locations: classpath:database/data.sql
-      mode: embedded
+      mode: always
   batch:
     jdbc:
       initialize-schema: always

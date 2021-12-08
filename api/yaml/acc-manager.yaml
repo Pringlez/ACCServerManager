@@ -1301,8 +1301,10 @@ components:
           description: Unique id for bop
           example: 76ecfee1-8d80-42e6-9eec-5781c1729c70
         entries:
-          $ref: "#/components/schemas/EntriesBoP"
+          type: array
           description: A list of BoP entry objects
+          items:
+            $ref: "#/components/schemas/EntryBoP"
         disableAutosteer:
           type: integer
           default: 1
@@ -1331,8 +1333,10 @@ components:
           description: Unique id for entries list
           example: 76ecfee1-8d80-42e6-9eec-5781c1729c70
         entries:
-          $ref: "#/components/schemas/Entries"
+          type: array
           description: A list of entry objects
+          items:
+            $ref: "#/components/schemas/Entry"
         forceEntryList:
           type: integer
           default: 0
@@ -1353,8 +1357,10 @@ components:
       type: object
       properties:
         drivers:
-          $ref: "#/components/schemas/Drivers"
+          type: array
           description: List of drivers, see next table. Must at least contain one driver with the SteamId
+          items:
+            $ref: "#/components/schemas/Driver"
         raceNumber:
           type: integer
           default: 1
@@ -1561,8 +1567,10 @@ components:
           type: string
           description: A user defined string that will be transferred to the result outputs.
         sessions:
-          $ref: "#/components/schemas/Sessions"
+          type: array
           description: A list of session objects
+          items:
+            $ref: "#/components/schemas/Session"
         configVersion:
           type: integer
           default: 1
