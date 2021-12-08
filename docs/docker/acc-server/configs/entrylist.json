@@ -1,11 +1,11 @@
 {
-  "id": null,
+  "id": "4b2da8e3-82a8-4ebb-9c67-da75fa703796",
   "configVersion": 1,
   "entries": [
     {
       "drivers": [
         {
-          "id": "1",
+          "id": "1bc44680-e287-403c-aa9d-61c6de46c978",
           "firstName": "ExampleOne",
           "lastName": "Example",
           "shortName": "NicknameOne",
@@ -13,7 +13,7 @@
           "playerID": "s*****************"
         },
         {
-          "id": "2",
+          "id": "0c0533b9-3731-41bf-ae3a-4bbb0f73b903",
           "firstName": "ExampleTwo",
           "lastName": "Example",
           "shortName": "NicknameTwo",
@@ -31,7 +31,7 @@
     {
       "drivers": [
         {
-          "id": "1",
+          "id": "249489ab-60ba-4a1f-acba-adbf407e4324",
           "firstName": "ExampleThree",
           "lastName": "Example",
           "shortName": "NicknameThree",
@@ -42,7 +42,10 @@
       "raceNumber": -1,
       "forcedCarModel": -1,
       "overrideDriverInfo": 1,
+      "defaultGridPosition": -1,
       "isServerAdmin": 1,
+      "ballastKg": 0,
+      "restrictor": 0,
       "customCar": "9-200321-103118.json",
       "overrideCarModelForCustomCar": 0
     }

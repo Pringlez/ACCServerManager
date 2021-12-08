@@ -1,12 +1,12 @@
 {
   "id": "ae85423a-b502-4833-bcc2-a424d3f8281e",
   "name": "ACC Instance Name",
-  "dockerImage": "acc-server:1.7.4",
+  "dockerImage": "acc-server:1.8.5",
   "state": "running",
   "event": {
-    "id": null,
+    "id": "d195f628-adf0-43b6-9532-09732b2d9246",
     "name": "ACC Event Name",
-    "track": "mount_panorama_2019",
+    "track": "mount_panorama",
     "preRaceWaitingTimeSeconds": 80,
     "sessionOverTimeSeconds": 120,
     "ambientTemp": 22,
@@ -16,10 +16,10 @@
     "weatherRandomness": 1,
     "postQualySeconds": 10,
     "postRaceSeconds": 15,
-    "metaData": "mount_panorama_2019",
+    "metaData": "mount_panorama",
     "sessions": [
       {
-        "id": "1",
+        "id": "e76d68b0-89cb-48b8-a87d-3dbecd45d476",
         "hourOfDay": 6,
         "dayOfWeekend": 2,
         "timeMultiplier": 1,
@@ -27,7 +27,7 @@
         "sessionDurationMinutes": 10
       },
       {
-        "id": "2",
+        "id": "5312a577-e599-400d-ba0c-5cb9f6d420f1",
         "hourOfDay": 12,
         "dayOfWeekend": 2,
         "timeMultiplier": 1,
@@ -35,7 +35,7 @@
         "sessionDurationMinutes": 10
       },
       {
-        "id": "3",
+        "id": "857b3317-0e15-4ea8-99a1-9a6e48a4beee",
         "hourOfDay": 18,
         "dayOfWeekend": 3,
         "timeMultiplier": 2,
@@ -46,7 +46,7 @@
     "configVersion": 1
   },
   "eventRules": {
-    "id": null,
+    "id": "cbb32b53-01b6-4d04-b510-4b90eb736fdd",
     "qualifyStandingType": 1,
     "superpoleMaxCar": -1,
     "pitWindowLengthSec": -1,
@@ -62,12 +62,12 @@
     "tyreSetCount": 50
   },
   "entriesList": {
-    "id": null,
+    "id": "62f64d7a-f367-478b-92a0-5085e826adf0",
     "entries": [
       {
         "drivers": [
           {
-            "id": "1",
+            "id": "66df2045-16c0-42d9-86fd-044227f86a40",
             "firstName": "ExampleOne",
             "lastName": "Example",
             "shortName": "NicknameOne",
@@ -75,7 +75,7 @@
             "playerID": "s*****************"
           },
           {
-            "id": "2",
+            "id": "8b14249d-49b2-450b-bc56-e4ff2d147c01",
             "firstName": "ExampleTwo",
             "lastName": "Example",
             "shortName": "NicknameTwo",
@@ -96,7 +96,7 @@
       {
         "drivers": [
           {
-            "id": "1",
+            "id": "67880b98-9ec6-4798-b75a-4032701c70e7",
             "firstName": "ExampleThree",
             "lastName": "Example",
             "shortName": "NicknameThree",
@@ -119,7 +119,7 @@
     "configVersion": 1
   },
   "assists": {
-    "id": null,
+    "id": "e7b37cc3-674d-4d23-8d2a-7a98ec79ff31",
     "stabilityControlLevelMax": 25,
     "disableAutosteer": 1,
     "disableAutoLights": 0,
@@ -131,18 +131,18 @@
     "disableIdealLine": 0
   },
   "bop": {
-    "id": null,
+    "id": "33c3b5b6-61e9-4079-9082-9ff33fe12a6f",
     "entries": [
       {
-        "id": "1",
+        "id": "8bd5dc18-8e7c-4973-a1aa-3a64e8482abd",
         "track": "zolder",
         "carModel": 7,
         "ballast": 1,
         "restrictor": 2
       },
       {
-        "id": "2",
-        "track": "silverstone_2019",
+        "id": "c446d2cc-44d4-48f5-9bf5-8d218d5e391f",
+        "track": "silverstone",
         "carModel": 2,
         "ballast": 0,
         "restrictor": 5
@@ -153,7 +153,7 @@
     "disableAutoWiper": 0
   },
   "config": {
-    "id": null,
+    "id": "c8c5f4cc-749e-4db2-896d-8428abf8c33b",
     "tcpPort": 9232,
     "udpPort": 9231,
     "registerToLobby": 1,
@@ -162,7 +162,7 @@
     "configVersion": 1
   },
   "settings": {
-    "id": null,
+    "id": "9d920ac7-63a1-4a68-97c6-1e4dfad501fd",
     "serverName": "Testing Server 1",
     "adminPassword": "adminPassword123",
     "carGroup": "FreeForAll",

@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.h2.Driver
     username: accmanager
     password: accmanager
-    url: jdbc:h2:file:../database/acc-db-${spring.application.version};DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:file:./database/acc-db-${spring.application.version};DB_CLOSE_ON_EXIT=FALSE
   jpa:
     hibernate:
       naming:

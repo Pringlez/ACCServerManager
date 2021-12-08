@@ -1,7 +1,7 @@
 {
-  "id": null,
-  "track": "mount_panorama_2019",
-  "metaData": "mount_panorama_2019",
+  "id": "a12aea03-86e9-46bc-852d-903dcd309ee1",
+  "track": "mount_panorama",
+  "metaData": "mount_panorama",
   "preRaceWaitingTimeSeconds": 80,
   "postQualySeconds": 10,
   "postRaceSeconds": 15,
@@ -13,7 +13,7 @@
   "weatherRandomness": 1,
   "sessions": [
     {
-      "id": "1",
+      "id": "7848fd69-150f-4201-9b57-788cce659925",
       "hourOfDay": 6,
       "dayOfWeekend": 2,
       "timeMultiplier": 1,
@@ -21,7 +21,7 @@
       "sessionDurationMinutes": 10
     },
     {
-      "id": "2",
+      "id": "3b6b0dbb-60d5-49ef-a937-6c51ea12db6c",
       "hourOfDay": 12,
       "dayOfWeekend": 2,
       "timeMultiplier": 1,
@@ -29,7 +29,7 @@
       "sessionDurationMinutes": 10
     },
     {
-      "id": "3",
+      "id": "af7f15be-25b7-4dbb-b916-f7a2963d8b17",
       "hourOfDay": 18,
       "dayOfWeekend": 3,
       "timeMultiplier": 2,

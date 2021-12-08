@@ -23,7 +23,7 @@ You can download the latest available jar from GitHub. TODO...
 
 Run the pre-built jar by executing:
 ```
-java -jar -Ddocker.username=<your-system-username> acc-manager-0.4.3.jar
+java -jar -Ddocker.username=<your-system-username> acc-manager-0.4.4.jar
 ```
 
 ## Build ACC Manager
@@ -33,7 +33,7 @@ mvn clean install -DskipTests -Pprod
 ```
 Then, run the built jar from the `service/target` directory:
 ```
-java -jar -Ddocker.username=<your-system-username> service/target/acc-manager-service-0.4.3.jar
+java -jar -Ddocker.username=<your-system-username> service/target/acc-manager-service-0.4.4.jar
 ```
 
 Jar parameters:

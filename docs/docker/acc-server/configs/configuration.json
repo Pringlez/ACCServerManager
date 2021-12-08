@@ -1,9 +1,10 @@
 {
-  "id": null,
+  "id": "b2d03c30-c796-4ed9-bbbe-071bbafe7587",
   "udpPort": 9231,
   "tcpPort": 9232,
   "maxConnections": 85,
   "registerToLobby": 1,
   "lanDiscovery": 1,
+  "publicIP": "11.22.33.44",
   "configVersion": 1
 }

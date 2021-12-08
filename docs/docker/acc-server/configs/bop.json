@@ -1,16 +1,16 @@
 {
-  "id": null,
+  "id": "0900fba3-8610-41af-8e5e-6fd9a9b4401b",
   "entries": [
     {
-      "id": "1",
+      "id": "304e2448-a3f7-4c7b-9c3e-e0db1b92bc64",
       "track": "zolder",
       "carModel": 7,
-      "ballast": 1,
+      "ballastKg": 1,
       "restrictor": 2
     },
     {
-      "id": "2",
-      "track": "silverstone_2019",
+      "id": "2d72ab5a-560d-4e6f-92c0-ba58268ca032",
+      "track": "silverstone",
       "carModel": 2,
       "restrictor": 5
     }

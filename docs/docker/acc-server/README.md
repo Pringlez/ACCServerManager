@@ -5,7 +5,7 @@ Running the ACC Server inside docker using [Wine](https://www.winehq.org/).
 The docker build scripts have built & tested on Ubuntu distros. Navigate to the `docs/docker/acc/ubuntu/<version>` directory and 
 execute the command below to build acc server docker image:
 ```
-docker build --rm -t acc-server:1.7.4 .
+docker build --rm -t acc-server:1.8.5 .
 ```
 
 ### Running ACC Server Docker Container:
@@ -21,7 +21,7 @@ Container parameters:
 
 Running the docker container and detach, lets the container run in the background.
 ```
-docker run -d --name acc-server-1 --restart unless-stopped --expose=9231-9232 --net=host -v <path-to-instance-configs-on-host>:/home/accserver/host -t acc-server:1.7.4
+docker run -d --name acc-server-1 --restart unless-stopped --expose=9231-9232 --net=host -v <path-to-instance-configs-on-host>:/home/accserver/host -t acc-server:1.8.5
 ```
 For debugging purposes attach to the running container with the `-it` after docker run.
 

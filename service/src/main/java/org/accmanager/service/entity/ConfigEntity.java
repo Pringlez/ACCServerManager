@@ -12,6 +12,7 @@ public class ConfigEntity {
     private int maxConnections;
     private int lanDiscovery;
     private int registerToLobby;
+    private String publicIP;
     private int configVersion;
 
     @Id
@@ -72,6 +73,16 @@ public class ConfigEntity {
 
     public void setRegisterToLobby(int registerToLobby) {
         this.registerToLobby = registerToLobby;
+    }
+
+    @Basic
+    @Column(name = "PUBLIC_IP")
+    public String getPublicIP() {
+        return publicIP;
+    }
+
+    public void setPublicIP(String registerToLobby) {
+        this.publicIP = publicIP;
     }
 
     @Basic
