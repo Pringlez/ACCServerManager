@@ -54,7 +54,7 @@ public class InstancesController implements InstancesApi {
     }
 
     private Instance buildInstance(CreateContainerResponse containerResponse, Instance instance) {
-        instance.setId(containerResponse.getId());
+        instance.setId(instance.getId());
         instance.setState(getStateOfContainer(containerResponse));
         return instance;
     }

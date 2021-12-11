@@ -26,7 +26,9 @@
       "overrideDriverInfo": 1,
       "isServerAdmin": 1,
       "customCar": "9-200321-103118.json",
-      "overrideCarModelForCustomCar": 0
+      "overrideCarModelForCustomCar": 0,
+      "ballastKg": 0,
+      "restrictor": 0
     },
     {
       "drivers": [

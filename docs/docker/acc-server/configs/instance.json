@@ -12,7 +12,7 @@
     "ambientTemp": 22,
     "trackTemp": 30,
     "cloudLevel": 0.1,
-    "rain": 0,
+    "rain": 0.0,
     "weatherRandomness": 1,
     "postQualySeconds": 10,
     "postRaceSeconds": 15,

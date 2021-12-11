@@ -106,7 +106,6 @@ public class ContainerService {
             dockerClient.killContainerCmd(instanceId).exec();
         } catch (Exception ex) {
             LOGGER.warn(format(ERROR_KILLING_CONTAINER_INSTANCE_ID.toString(), instanceId));
-            throw new DockerException(format(ERROR_KILLING_CONTAINER_INSTANCE_ID.toString(), instanceId), INTERNAL_SERVER_ERROR.value(), ex);
         }
     }
 
@@ -115,7 +114,6 @@ public class ContainerService {
             dockerClient.removeContainerCmd(instanceId).exec();
         } catch (Exception ex) {
             LOGGER.warn(format(ERROR_REMOVING_CONTAINER_INSTANCE_ID.toString(), instanceId));
-            throw new DockerException(ERROR_REMOVING_CONTAINER_INSTANCE_ID.toString(), INTERNAL_SERVER_ERROR.value(), ex);
         }
     }
 

@@ -16,6 +16,7 @@ spring:
     init:
       schema-locations: classpath:database/schema.sql
       platform: h2
+      continue-on-error: true
   h2:
     console:
       enabled: true

@@ -14,5 +14,8 @@
       "carModel": 2,
       "restrictor": 5
     }
-  ]
+  ],
+  "disableAutosteer": 1,
+  "disableAutoLights": 0,
+  "disableAutoWiper": 0
 }

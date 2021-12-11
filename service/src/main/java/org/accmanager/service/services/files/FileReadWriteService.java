@@ -1,5 +1,7 @@
 package org.accmanager.service.services.files;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.accmanager.service.enums.FilesEnum;
 import org.accmanager.service.exception.FileReadException;
@@ -27,10 +29,16 @@ public class FileReadWriteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileReadWriteService.class);
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
+    private final DefaultPrettyPrinter defaultPrettyPrinter;
 
     @Value("${docker.username:accmanager}")
     private String dockerUsername;
+
+    public FileReadWriteService(ObjectMapper objectMapper, DefaultPrettyPrinter defaultPrettyPrinter) {
+        this.objectMapper = objectMapper;
+        this.defaultPrettyPrinter = defaultPrettyPrinter;
+    }
 
     public Optional<Object> readJsonFile(String instanceId, FilesEnum filesEnum, Class<?> cls) {
         try {
@@ -43,7 +51,8 @@ public class FileReadWriteService {
 
     public void writeJsonFile(String instanceId, FilesEnum filesEnum, Object object) {
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(createNewFile(instanceId, filesEnum.toString()), object);
+            objectMapper.writer(defaultPrettyPrinter).writeValue(objectMapper.createGenerator(createNewFile(instanceId,
+                    filesEnum.toString()), JsonEncoding.UTF16_LE), object);
         } catch (IOException ex) {
             LOGGER.error(format(ERROR_WRITING_FILE.toString(), filesEnum, ex.getMessage()));
             throw new FileWriteException(format(ERROR_WRITING_FILE.toString(), filesEnum, ex.getMessage()), ex);
@@ -87,7 +96,6 @@ public class FileReadWriteService {
             Files.deleteIfExists(Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), dockerUsername, instanceId)));
         } catch (Exception ex) {
             LOGGER.error(format(ERROR_DELETING_INSTANCE_DIRECTORY.toString(), ex));
-            throw new FileWriteException(format(ERROR_DELETING_INSTANCE_DIRECTORY.toString(), ex), ex);
         }
     }
 

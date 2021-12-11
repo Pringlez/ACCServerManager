@@ -6,9 +6,13 @@ import com.github.dockerjava.api.exception.NotFoundException;
 import org.accmanager.service.exception.FileReadException;
 import org.accmanager.service.exception.FileWriteException;
 import org.accmanager.service.exception.InstanceNotFoundException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static org.springframework.http.HttpStatus.*;
@@ -19,6 +23,11 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InstanceNotFoundException.class)
     public ResponseEntity<Object> handleInstanceNotFoundException(InstanceNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), NOT_FOUND);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new ResponseEntity<>(ex.getCause().getMessage(), INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NotFoundException.class)
