@@ -8,13 +8,13 @@ mvn clean install -DskipTests -Pprod
 ```
 Run the following command in the __root__ project directory to package everything into a docker image:
 ```
-docker build -t acc-manager:0.4.4 .
+docker build -t acc-manager:0.5.0 .
 ```
 
 ### Running ACC Manager Docker Container
 Running the pre-built container by executing:
 ```
-docker run -d --name acc-manager --restart unless-stopped -p 80:8080 -p 2375:2375 -v <path-to-instance-configs-on-host>:/home/accmanager/host -t acc-manager:0.4.4
+docker run -d --name acc-manager --restart unless-stopped -p 80:8080 -p 2375:2375 -v <path-to-instance-configs-on-host>:/home/accmanager/host -t acc-manager:0.5.0
 ```
 Navigate to your hosts machines ip/domain address The application should respond on port 80 from your machines ip/domain address. 
 
