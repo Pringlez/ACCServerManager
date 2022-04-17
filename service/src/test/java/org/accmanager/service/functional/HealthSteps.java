@@ -18,7 +18,8 @@ public class HealthSteps extends ACCManagerFunctionalBaseTest {
 
 	@When("^the client calls /health and response status code of (\\d+)$")
 	public void the_client_calls_health(int statusCode) throws Throwable {
-		given().when().get(getAppUrl() + getAppServerPort() +
-				getAppContextPath() + getActuatorPath() + "/health").then().statusCode(statusCode);
+		String appUrl = getAppUrl();
+		int appServerPort = getAppServerPort();
+		given().when().get(appUrl + appServerPort + "/actuator/health").then().statusCode(statusCode);
 	}
 }

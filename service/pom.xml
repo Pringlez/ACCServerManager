@@ -84,6 +84,12 @@
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-spring</artifactId>
 			<version>${cucumber.spring.version}</version>
 			<scope>test</scope>
@@ -146,8 +152,8 @@
 				</executions>
 				<configuration>
 					<complianceLevel>${java.version}</complianceLevel>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 					<proc>none</proc>
 					<verbose>true</verbose>
 					<showWeaveInfo>true</showWeaveInfo>

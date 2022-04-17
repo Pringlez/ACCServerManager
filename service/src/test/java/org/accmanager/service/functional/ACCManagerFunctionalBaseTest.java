@@ -12,26 +12,12 @@ public class ACCManagerFunctionalBaseTest {
 
 	@Value("${system.app.url:http://localhost:}")
 	private String appUrl;
-	
-	@Value("${server.servlet.context-path:}")
-	private String appContextPath;
-
-	@Value("${management.endpoints.web.base-path}")
-	private String actuatorPath;
 
 	@LocalServerPort
 	private int appServerPort;
 
 	public String getAppUrl() {
 		return appUrl;
-	}
-
-	public String getAppContextPath() {
-		return appContextPath;
-	}
-
-	public String getActuatorPath() {
-		return actuatorPath;
 	}
 
 	public int getAppServerPort() {

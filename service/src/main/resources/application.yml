@@ -6,8 +6,6 @@ spring:
   application:
     name: acc-manager
     version: 0.4.4
-  profiles:
-    active: local,h2
   jpa:
     hibernate:
       ddl-auto: none
@@ -16,10 +14,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  config:
+    activate:
+      on-profile: local,h2
 management:
   endpoints:
     web:
-      base-path: /management
       exposure:
         include: ['health', 'info', 'env', 'configprops']
   endpoint:
@@ -28,3 +28,5 @@ management:
   info:
     git:
       mode: full
+server:
+  port: 8080
