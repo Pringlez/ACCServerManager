@@ -14,9 +14,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  config:
-    activate:
-      on-profile: local,h2
+  profiles:
+    active: local,h2
 management:
   endpoints:
     web:

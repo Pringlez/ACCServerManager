@@ -937,7 +937,7 @@ components:
           default: "ACC Instance Name"
         dockerImage:
           type: string
-          default: "acc-server:1.8.5"
+          default: "acc-server:1.8.17"
         state:
           $ref: "#/components/schemas/InstanceState"
         event:
@@ -969,7 +969,7 @@ components:
           default: "0.5.0"
         supportedAccVersion:
           type: string
-          default: "1.8.13"
+          default: "1.8.17"
     Error:
       type: object
       properties:
@@ -1469,7 +1469,7 @@ components:
           type: string
           default: "mount_panorama"
           description: Name of track to apply BoP
-          enum: [barcelona, brands_hatch, hungaroring, misano, monza, nurburgring, paul_ricard, silverstone, spa, zandvoort, zolder, mount_panorama, kyalami, suzuka, laguna_seca]
+          enum: [barcelona, brands_hatch, hungaroring, misano, monza, nurburgring, paul_ricard, silverstone, spa, zandvoort, zolder, mount_panorama, kyalami, suzuka, laguna_seca, oulton_park, donington, snetterton, cota, indianapolis, watkins_glen]
         carModel:
           type: integer
           default: 0
@@ -1510,7 +1510,7 @@ components:
           type: string
           default: "mount_panorama"
           description: The track we run, see “Track name list”. Setting a wrong value will also print out the available track keys in the log. With the 1.8 update the “open” season was introduced, replacing 2018-2020 variants of the track
-          enum: [barcelona, brands_hatch, hungaroring, misano, monza, nurburgring, paul_ricard, silverstone, spa, zandvoort, zolder, mount_panorama, kyalami, suzuka, laguna_seca]
+          enum: [barcelona, brands_hatch, hungaroring, misano, monza, nurburgring, paul_ricard, silverstone, spa, zandvoort, zolder, mount_panorama, kyalami, suzuka, laguna_seca, oulton_park, donington, snetterton, cota, indianapolis, watkins_glen]
         preRaceWaitingTimeSeconds:
           type: integer
           default: 120
@@ -1626,7 +1626,7 @@ components:
             Lamborghini Gallardo R-EX, Jaguar G3, Lexus RC F GT3, Lamborghini Huracan Evo (2019), Honda NSX GT3, Lamborghini Huracan SuperTrofeo, Audi R8 LMS Evo (2019),
             AMR V8 Vantage (2019), Honda NSX Evo (2019), McLaren 720S GT3 (Special), Porsche 911 II GT3 R (2019), Ferrari 488 GT3 Evo 2020, Mercedes-AMG GT3 2020,
             Ferrari 488 Challenge Evo, BMW M2 CS Racing, Porsche 911 GT3 Cup (Type 992), Lamborghini Huracán Super Trofeo EVO2, BMW M4 GT3, Audi R8 LMS GT3 evo II,
-            Alpine A1110 GT4, AMR V8 Vantage GT4, Audi R8 LMS GT4, BMW M4 GT4, Chevrolet Camaro GT4, Ginetta G55 GT4, KTM X-Bow GT4, Maserati MC GT4, McLaren 570S GT4, Mercedes AMG GT4, Porsche 718 Cayman GT4]
+            Alpine A110 GT4, AMR V8 Vantage GT4, Audi R8 LMS GT4, BMW M4 GT4, Chevrolet Camaro GT4, Ginetta G55 GT4, KTM X-Bow GT4, Maserati MC GT4, McLaren 570S GT4, Mercedes-AMG GT4, Porsche 718 Cayman GT4]
   securitySchemes:
     auth:
       type: http

@@ -16,12 +16,12 @@ public class HealthSteps {
 	private CommonSteps commonSteps;
 
 	@Given("^the health service url is \"([^\"]*)\"$")
-	public void the_health_service_url_is(String url) throws Throwable {
+	public void theHealthServiceUrlIs(String url) {
 		LOGGER.info("URL is: " + url);
 	}
 
 	@When("^the client calls /health and response status code of (\\d+)$")
-	public void the_client_calls_health(int statusCode) throws Throwable {
+	public void theClientCallsHealth(int statusCode) {
 		String appUrl = commonSteps.getAppUrl();
 		int appServerPort = commonSteps.getAppServerPort();
 		given().when().get(appUrl + appServerPort + "/actuator/health").then().statusCode(statusCode);
