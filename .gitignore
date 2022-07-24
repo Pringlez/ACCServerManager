@@ -11,4 +11,5 @@ api/.project
 api/.classpath
 /frontend/node_modules/
 /frontend/dist/
+/frontend/build/
 /frontend/node/
