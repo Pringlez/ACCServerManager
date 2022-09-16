@@ -1,0 +1,169 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "results": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "vehicleId": {
+              "type": "string"
+            },
+            "vehicleVIN": {
+              "type": "string"
+            },
+            "vehicleSN": {
+              "type": "string"
+            },
+            "vehicleType": {
+              "type": "string"
+            },
+            "deviceSTID": {
+              "type": "string"
+            },
+            "deviceType": {
+              "type": "string"
+            },
+            "deviceStatus": {
+              "type": "string"
+            },
+            "mobileStatus": {
+              "type": "string"
+            },
+            "statusCode": {
+              "type": "string"
+            },
+            "statusDate": {
+              "type": "string"
+            },
+            "businessState": {
+              "type": "string"
+            },
+            "powertrain": {
+              "type": "string"
+            },
+            "engineType": {
+              "type": "string"
+            },
+            "primaryAddress": {
+              "type": "string"
+            },
+            "ownerAccountId": {
+              "type": "string"
+            },
+            "ownerAccountType": {
+              "type": "string"
+            },
+            "ownerAccountName": {
+              "type": "string"
+            },
+            "ownerAccountStatus": {
+              "type": "string"
+            },
+            "primaryDriverId": {
+              "type": "string"
+            },
+            "addressOwnerId": {
+              "type": "string"
+            },
+            "addressType": {
+              "type": "string"
+            },
+            "licensePlate": {
+              "type": "string"
+            },
+            "paintCode": {
+              "type": "string"
+            },
+            "vehicleColor": {
+              "type": "string"
+            },
+            "userColor": {
+              "type": "string"
+            },
+            "features": {
+              "type": "string"
+            },
+            "services": {
+              "type": "string"
+            },
+            "isOvd": {
+              "type": "boolean"
+            },
+            "isDmn": {
+              "type": "boolean"
+            },
+            "regionCode": {
+              "type": "string"
+            },
+            "isWelcomeCallOccurred": {
+              "type": "boolean"
+            },
+            "isWelcomeCallComplete": {
+              "type": "boolean"
+            },
+            "createdBy": {
+              "type": "string"
+            },
+            "createdOn": {
+              "type": "string"
+            },
+            "updatedBy": {
+              "type": "string"
+            },
+            "updatedOn": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "vehicleId",
+            "vehicleVIN",
+            "vehicleSN",
+            "vehicleType",
+            "deviceSTID",
+            "deviceType",
+            "deviceStatus",
+            "mobileStatus",
+            "statusCode",
+            "statusDate",
+            "businessState",
+            "powertrain",
+            "engineType",
+            "primaryAddress",
+            "ownerAccountId",
+            "ownerAccountType",
+            "ownerAccountName",
+            "ownerAccountStatus",
+            "primaryDriverId",
+            "addressOwnerId",
+            "addressType",
+            "licensePlate",
+            "paintCode",
+            "vehicleColor",
+            "userColor",
+            "features",
+            "services",
+            "isOvd",
+            "isDmn",
+            "regionCode",
+            "isWelcomeCallOccurred",
+            "isWelcomeCallComplete",
+            "createdBy",
+            "createdOn",
+            "updatedBy",
+            "updatedOn"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "success",
+    "results"
+  ]
+}

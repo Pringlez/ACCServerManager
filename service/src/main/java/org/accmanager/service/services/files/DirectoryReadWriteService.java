@@ -21,9 +21,9 @@ public class DirectoryReadWriteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryReadWriteService.class);
 
-    public Optional<List<Path>> getAllServerDirectories(String dockerUsername) {
+    public Optional<List<Path>> getAllServerDirectories() {
         try {
-            Path dir = Paths.get(format(PATH_HOST_SERVERS.toString(), dockerUsername));
+            Path dir = Paths.get(format(PATH_HOST_SERVERS.toString()));
             return Optional.of(Files.walk(dir, 1)
                     .filter(p -> Files.isDirectory(p) && !p.equals(dir))
                     .map(Path::getFileName)

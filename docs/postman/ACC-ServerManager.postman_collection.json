@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a4ce766c-ea91-425d-a7de-f90a6b740851",
+		"_postman_id": "9a74d552-3613-4d5d-9074-d5a54262b48b",
 		"name": "ACC-ServerManager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -895,6 +895,59 @@
 									"key": "assistsId",
 									"value": "e8c04d38-2dbd-46a1-859c-67f44525710c"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service",
+			"item": [
+				{
+					"name": "Service - Health",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/actuator/health",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Service - Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{acc-manager-host}}/actuator/info",
+							"host": [
+								"{{acc-manager-host}}"
+							],
+							"path": [
+								"actuator",
+								"info"
 							]
 						}
 					},

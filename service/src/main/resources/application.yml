@@ -1,7 +1,6 @@
 docker:
   host: tcp://localhost:2375
   verify: false
-  username: john
 spring:
   application:
     name: acc-manager
@@ -29,3 +28,4 @@ management:
       mode: full
 server:
   port: 8080
+  control: executable

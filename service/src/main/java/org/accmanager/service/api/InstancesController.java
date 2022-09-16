@@ -6,7 +6,8 @@ import org.accmanager.api.InstancesApi;
 import org.accmanager.model.Instance;
 import org.accmanager.model.InstanceState;
 import org.accmanager.service.exception.InstanceNotFoundException;
-import org.accmanager.service.services.docker.ContainerService;
+import org.accmanager.service.services.control.ServerControl;
+import org.accmanager.service.services.control.docker.ContainerControlService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,25 +22,25 @@ import static org.accmanager.service.enums.ExceptionEnum.ACC_SERVER_INSTANCE_NOT
 @Controller
 public class InstancesController implements InstancesApi {
 
-    private final ContainerService containerService;
+    private final ServerControl serverControl;
 
-    public InstancesController(ContainerService containerService) {
-        this.containerService = containerService;
+    public InstancesController(ServerControl serverControl) {
+        this.serverControl = serverControl;
     }
 
     @Override
     public ResponseEntity<List<Instance>> getAllInstances() {
-        return ResponseEntity.ok(containerService.listOfContainers());
+        return ResponseEntity.ok(serverControl.listOfInstances());
     }
 
     @Override
     public ResponseEntity<Instance> getInstanceById(String instanceId) {
-        InspectContainerResponse containerResponse = containerService.inspectContainer(instanceId);
-        return ResponseEntity.ok(buildInstance(containerResponse, getInstance(instanceId)));
+        serverControl.inspectInstance(instanceId);
+        return ResponseEntity.ok(buildInstance(getInstance(instanceId)));
     }
 
     private Instance getInstance(String instanceId) {
-        for (Instance instance : containerService.listOfContainers()) {
+        for (Instance instance : serverControl.listOfInstances()) {
             if (instance.getId().equals(instanceId)) {
                 return instance;
             }
@@ -49,57 +50,42 @@ public class InstancesController implements InstancesApi {
 
     @Override
     public ResponseEntity<Instance> createInstance(Instance instance) {
-        CreateContainerResponse containerResponse = containerService.createDockerContainer(instance);
-        return ResponseEntity.ok(buildInstance(containerResponse, instance));
+        serverControl.createInstance(instance);
+        return ResponseEntity.ok(buildInstance(instance));
     }
 
-    private Instance buildInstance(CreateContainerResponse containerResponse, Instance instance) {
+    private Instance buildInstance(Instance instance) {
         instance.setId(instance.getId());
-        instance.setState(getStateOfContainer(containerResponse));
         return instance;
-    }
-
-    private Instance buildInstance(InspectContainerResponse containerResponse, Instance instance) {
-        instance.setId(containerResponse.getId());
-        instance.setState(getStateOfContainer(containerResponse));
-        return instance;
-    }
-
-    private InstanceState getStateOfContainer(CreateContainerResponse containerResponse) {
-        return containerResponse.getWarnings().length == 0 ? CREATED : CRASHED;
-    }
-
-    private InstanceState getStateOfContainer(InspectContainerResponse containerResponse) {
-        return InstanceState.fromValue(containerResponse.getState().getStatus());
     }
 
     @Override
     public ResponseEntity<Instance> updateInstanceById(String instanceId, Instance instance) {
-        containerService.writeInstanceConfiguration(instance);
+        serverControl.writeInstanceConfiguration(instance);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> deleteInstanceById(String instanceId) {
-        containerService.killAndRemoveContainer(instanceId);
+        serverControl.deleteConfigFiles(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> startInstanceById(String instanceId) {
-        containerService.startContainer(instanceId);
+        serverControl.startInstance(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> restartInstanceById(String instanceId) {
-        containerService.restartContainer(instanceId);
+        serverControl.restartInstance(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> stopInstanceById(String instanceId) {
-        containerService.stopContainer(instanceId);
+        serverControl.stopInstance(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

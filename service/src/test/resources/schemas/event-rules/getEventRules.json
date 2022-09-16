@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "results": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "buildVersion": {
+              "type": "null"
+            },
+            "lastCommitDate": {
+              "type": "null"
+            },
+            "buildDate": {
+              "type": "null"
+            },
+            "isActive": {
+              "type": "boolean"
+            },
+            "startedOn": {
+              "type": "string"
+            },
+            "businessRegionCode": {
+              "type": "string"
+            },
+            "configVersion": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "buildVersion",
+            "lastCommitDate",
+            "buildDate",
+            "isActive",
+            "startedOn",
+            "businessRegionCode",
+            "configVersion"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "success",
+    "results"
+  ]
+}

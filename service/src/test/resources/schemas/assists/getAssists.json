@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "results": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "accountId": {
+              "type": "string"
+            },
+            "accountNumber": {
+              "type": "string"
+            },
+            "accountType": {
+              "type": "string"
+            },
+            "accountName": {
+              "type": "string"
+            },
+            "integrationNumber": {
+              "type": "string"
+            },
+            "accountOwnerId": {
+              "type": "string"
+            },
+            "countryCode": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "statusCode": {
+              "type": "string"
+            },
+            "statusDate": {
+              "type": "string"
+            },
+            "createdBy": {
+              "type": "string"
+            },
+            "createdOn": {
+              "type": "string"
+            },
+            "updatedOn": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "accountId",
+            "accountNumber",
+            "accountType",
+            "accountName",
+            "integrationNumber",
+            "accountOwnerId",
+            "countryCode",
+            "description",
+            "statusCode",
+            "statusDate",
+            "createdBy",
+            "createdOn",
+            "updatedOn"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "success",
+    "results"
+  ]
+}
