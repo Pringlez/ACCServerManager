@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: ACC Manager Service
   description: API specification
-  version: 1.1.3
+  version: 1.1.4
   contact:
     name: GitHub Issues
     url: https://github.com/Pringlez/ACCServerManager/issues
@@ -89,7 +89,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Instance"
+                $ref: "#/components/schemas/InstanceSuccess"
         default:
           description: Unexpected error occurred
           content:
@@ -147,7 +147,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Instance"
+                $ref: "#/components/schemas/InstanceSuccess"
         default:
           description: Unexpected error occurred
           content:
@@ -937,7 +937,9 @@ components:
           default: "ACC Instance Name"
         dockerImage:
           type: string
-          default: "acc-server:1.8.17"
+          example: "acc-server:1.8.18"
+        serverControl:
+          $ref: "#/components/schemas/ServerControl"
         state:
           $ref: "#/components/schemas/InstanceState"
         event:
@@ -961,6 +963,18 @@ components:
     InstanceState:
       type: string
       enum: [created, stopped, running, crashed, failed, unknown]
+    ServerControl:
+      type: string
+      enum: [docker, executable]
+    InstanceSuccess:
+      type: object
+      properties:
+        state:
+          $ref: "#/components/schemas/InstanceState"
+        message:
+          type: string
+        serverControl:
+          $ref: "#/components/schemas/ServerControl"
     SystemInfo:
       type: object
       properties:
@@ -969,7 +983,7 @@ components:
           default: "0.5.0"
         supportedAccVersion:
           type: string
-          default: "1.8.17"
+          default: "1.8.18"
     Error:
       type: object
       properties:

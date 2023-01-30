@@ -1,6 +1,8 @@
 docker:
   host: tcp://localhost:2375
   verify: false
+server:
+  port: 8080
 spring:
   application:
     name: acc-manager
@@ -26,6 +28,3 @@ management:
   info:
     git:
       mode: full
-server:
-  port: 8080
-  control: executable

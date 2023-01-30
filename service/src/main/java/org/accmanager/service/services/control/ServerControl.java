@@ -1,7 +1,6 @@
 package org.accmanager.service.services.control;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.dockerjava.api.exception.DockerException;
 import org.accmanager.model.AssistRules;
 import org.accmanager.model.BoP;
@@ -15,7 +14,6 @@ import org.accmanager.service.services.files.DirectoryReadWriteService;
 import org.accmanager.service.services.files.FileReadWriteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_COPYING_EXECUTABLE;
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_RETRIEVING_LIST_OF_CONTAINERS;
 import static org.accmanager.service.enums.FilesEnum.ASSIST_RULES_JSON;
 import static org.accmanager.service.enums.FilesEnum.BOP_JSON;
@@ -37,7 +34,6 @@ import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_E
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_LOGS;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
-@Component
 public abstract class ServerControl {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerControl.class);
@@ -101,11 +97,7 @@ public abstract class ServerControl {
     }
 
     public void copyExecutable(String instanceId) {
-        try {
-            fileReadWriteService.copyExecutable(instanceId);
-        } catch (Exception ex) {
-            LOGGER.warn(ERROR_COPYING_EXECUTABLE.toString());
-        }
+        fileReadWriteService.copyExecutable(instanceId);
     }
 
 

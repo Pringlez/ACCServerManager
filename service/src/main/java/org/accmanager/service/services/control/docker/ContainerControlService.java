@@ -14,6 +14,7 @@ import org.accmanager.service.services.files.FileReadWriteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -26,6 +27,7 @@ import static org.accmanager.service.enums.PathsEnum.PATH_CONTAINER;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
 
 @Service
+@ConditionalOnProperty(prefix = "accserver", name = "control", havingValue = "docker")
 public class ContainerControlService extends ServerControl {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContainerControlService.class);

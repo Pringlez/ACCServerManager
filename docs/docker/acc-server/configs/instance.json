@@ -1,7 +1,7 @@
 {
   "id": "ae85423a-b502-4833-bcc2-a424d3f8281e",
   "name": "ACC Instance Name",
-  "dockerImage": "acc-server:1.8.17",
+  "dockerImage": "acc-server:1.8.18",
   "state": "running",
   "event": {
     "id": "d195f628-adf0-43b6-9532-09732b2d9246",

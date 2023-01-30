@@ -1,13 +1,10 @@
 package org.accmanager.service.api;
 
-import com.github.dockerjava.api.command.CreateContainerResponse;
-import com.github.dockerjava.api.command.InspectContainerResponse;
 import org.accmanager.api.InstancesApi;
 import org.accmanager.model.Instance;
-import org.accmanager.model.InstanceState;
+import org.accmanager.model.InstanceSuccess;
 import org.accmanager.service.exception.InstanceNotFoundException;
 import org.accmanager.service.services.control.ServerControl;
-import org.accmanager.service.services.control.docker.ContainerControlService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,8 +12,8 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 
 import static java.lang.String.format;
-import static org.accmanager.model.InstanceState.CRASHED;
 import static org.accmanager.model.InstanceState.CREATED;
+import static org.accmanager.model.ServerControl.EXECUTABLE;
 import static org.accmanager.service.enums.ExceptionEnum.ACC_SERVER_INSTANCE_NOT_FOUND;
 
 @Controller
@@ -36,33 +33,33 @@ public class InstancesController implements InstancesApi {
     @Override
     public ResponseEntity<Instance> getInstanceById(String instanceId) {
         serverControl.inspectInstance(instanceId);
-        return ResponseEntity.ok(buildInstance(getInstance(instanceId)));
+        return ResponseEntity.ok(getInstance(instanceId));
     }
 
     private Instance getInstance(String instanceId) {
-        for (Instance instance : serverControl.listOfInstances()) {
-            if (instance.getId().equals(instanceId)) {
-                return instance;
-            }
-        }
-        throw new InstanceNotFoundException(format(ACC_SERVER_INSTANCE_NOT_FOUND.toString(), instanceId));
+        return serverControl.listOfInstances().stream()
+                .filter(instance -> instance.getId().equals(instanceId)).findFirst()
+                .orElseThrow(() -> new InstanceNotFoundException(format(ACC_SERVER_INSTANCE_NOT_FOUND.toString(), instanceId)));
     }
 
     @Override
-    public ResponseEntity<Instance> createInstance(Instance instance) {
+    public ResponseEntity<InstanceSuccess> createInstance(Instance instance) {
         serverControl.createInstance(instance);
-        return ResponseEntity.ok(buildInstance(instance));
+        return ResponseEntity.ok(buildSuccessInstance("ACC server instance files created successfully"));
     }
 
-    private Instance buildInstance(Instance instance) {
-        instance.setId(instance.getId());
-        return instance;
+    private InstanceSuccess buildSuccessInstance(String message) {
+        InstanceSuccess instanceSuccess = new InstanceSuccess();
+        instanceSuccess.setState(CREATED);
+        instanceSuccess.setMessage(message);
+        instanceSuccess.setServerControl(EXECUTABLE);
+        return instanceSuccess;
     }
 
     @Override
-    public ResponseEntity<Instance> updateInstanceById(String instanceId, Instance instance) {
+    public ResponseEntity<InstanceSuccess> updateInstanceById(String instanceId, Instance instance) {
         serverControl.writeInstanceConfiguration(instance);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(buildSuccessInstance("ACC server instance was updated successfully, you'll need to restart the ACC server"));
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.accmanager.service.services.files.FileReadWriteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_E
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_LOGS;
 
 @Service
+@ConditionalOnProperty(prefix = "accserver", name = "control", havingValue = "executable")
 public class ExecutableControlService extends ServerControl {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutableControlService.class);
@@ -42,21 +44,26 @@ public class ExecutableControlService extends ServerControl {
         createDirectories(instance);
         writeInstanceConfiguration(instance);
         copyExecutable(instance.getId());
+        initializeProcessBuilder(instance.getId());
+        return instance.getId();
+    }
+
+    private void initializeProcessBuilder(String instanceId) {
         try {
             processBuilder = new ProcessBuilder(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(),
-                    instance.getId()) + ACC_SERVER_EXE);
+                    instanceId) + ACC_SERVER_EXE);
         } catch (Exception ex) {
-            LOGGER.warn(format(ERROR_RUNNING_EXECUTABLE.toString(), instance.getId()));
+            LOGGER.warn(format(ERROR_RUNNING_EXECUTABLE.toString(), instanceId));
         }
-        return instance.getId();
     }
 
     @Override
     public void startInstance(String instanceId) {
         try {
+            initializeProcessBuilder(instanceId);
             processBuilder.redirectErrorStream(true);
             File log = new File(format(PATH_HOST_SERVER_INSTANCE_LOGS.toString(), instanceId),
-                    format("acc-server-%s-%s.log", instanceId, Instant.now()));
+                    format("acc-server-%s-%s.log", instanceId, Instant.now().getEpochSecond()));
             processBuilder.redirectOutput(log);
             process = processBuilder.start();
         } catch (Exception ex) {

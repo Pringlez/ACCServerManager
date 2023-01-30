@@ -7,6 +7,7 @@ public enum ExceptionEnum {
     ERROR_RETRIEVING_LIST_OF_CONTAINERS("Error retrieving list of containers"),
     ERROR_DELETING_INSTANCE_DIRECTORY("Error deleting instance directory: %s"),
     ERROR_COPYING_EXECUTABLE("Error copying executable: %s"),
+    ERROR_COPYING_EXECUTABLE_ALREADY_EXISTS("Error copying executable, it already exists: %s"),
     ERROR_RUNNING_EXECUTABLE("Error running executable: %s"),
     ERROR_STARTING_EXECUTABLE("Error starting executable: %s"),
     ERROR_CREATING_DIRECTORY("Error creating directory: %s"),

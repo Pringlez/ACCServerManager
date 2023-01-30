@@ -1,3 +1,4 @@
+accserver.control: executable
 spring:
   h2:
     console:
