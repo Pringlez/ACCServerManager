@@ -1,22 +1,31 @@
 package org.accmanager.service.services.dao.instance;
 
 import org.accmanager.model.AssistRules;
+import org.accmanager.model.BoP;
+import org.accmanager.model.Config;
 import org.accmanager.model.Driver;
 import org.accmanager.model.EntriesList;
 import org.accmanager.model.Entry;
+import org.accmanager.model.EntryBoP;
 import org.accmanager.model.Event;
 import org.accmanager.model.EventRules;
 import org.accmanager.model.Instance;
 import org.accmanager.model.Session;
+import org.accmanager.model.Settings;
 import org.accmanager.service.entity.AssistsEntity;
+import org.accmanager.service.entity.BopEntity;
+import org.accmanager.service.entity.BopEntryEntity;
 import org.accmanager.service.entity.CarEntriesEntity;
 import org.accmanager.service.entity.CarEntryEntity;
+import org.accmanager.service.entity.ConfigEntity;
 import org.accmanager.service.entity.DriverEntity;
 import org.accmanager.service.entity.EventEntity;
 import org.accmanager.service.entity.EventRulesEntity;
 import org.accmanager.service.entity.InstancesEntity;
 import org.accmanager.service.entity.SessionsEntity;
+import org.accmanager.service.entity.SettingsEntity;
 import org.accmanager.service.repository.AssistsRepository;
+import org.accmanager.service.repository.BopEntryRepository;
 import org.accmanager.service.repository.BopRepository;
 import org.accmanager.service.repository.CarEntriesRepository;
 import org.accmanager.service.repository.CarEntryRepository;
@@ -29,11 +38,12 @@ import org.accmanager.service.repository.SessionsRepository;
 import org.accmanager.service.repository.SettingsRepository;
 import org.accmanager.service.services.dao.DaoService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
 public class InstanceDaoService implements DaoService<Instance> {
@@ -49,11 +59,12 @@ public class InstanceDaoService implements DaoService<Instance> {
     private final SessionsRepository sessionsRepository;
     private final CarEntryRepository carEntryRepository;
     private final DriverRepository driverRepository;
+    private final BopEntryRepository bopEntryRepository;
 
     public InstanceDaoService(InstancesRepository instancesRepository, EventRepository eventRepository, EventRulesRepository eventRulesRepository,
                               CarEntriesRepository carEntriesRepository, AssistsRepository assistsRepository, BopRepository bopRepository,
                               ConfigRepository configRepository, SettingsRepository settingsRepository, SessionsRepository sessionsRepository,
-                              CarEntryRepository carEntryRepository, DriverRepository driverRepository) {
+                              CarEntryRepository carEntryRepository, DriverRepository driverRepository, BopEntryRepository bopEntryRepository) {
         this.instancesRepository = instancesRepository;
         this.eventRepository = eventRepository;
         this.eventRulesRepository = eventRulesRepository;
@@ -65,26 +76,29 @@ public class InstanceDaoService implements DaoService<Instance> {
         this.sessionsRepository = sessionsRepository;
         this.carEntryRepository = carEntryRepository;
         this.driverRepository = driverRepository;
+        this.bopEntryRepository = bopEntryRepository;
     }
 
     @Override
-    public Optional<Instance> retrieveById(String id, Instance instance) {
-        if (ObjectUtils.isEmpty(id)) { id = instance.getId(); }
-        Optional<InstancesEntity> instanceOptDB = instancesRepository.findInstancesEntityByInstanceId(id);
-        Optional<Instance> instanceOpt = Optional.of(new Instance());
+    public Optional<Instance> retrieveById(String instanceId) {
+        Optional<InstancesEntity> instanceOptDB = instancesRepository.findInstancesEntityByInstanceId(instanceId);
+        Instance instance = new Instance();
         if (instanceOptDB.isPresent()) {
-            instanceOpt.get().setId(instanceOptDB.get().getInstanceId());
-            instanceOpt.get().setEvent(getAndBuildEventById(instanceOptDB));
-            instanceOpt.get().setEventRules(getAndBuildEventRulesById(instanceOptDB));
-            instanceOpt.get().setEntriesList(getAndBuildEntriesListById(instanceOptDB));
-            instanceOpt.get().setAssists(getAndBuildAssistRulesById(instanceOptDB));
+            instance.setId(instanceOptDB.get().getInstanceId());
+            instance.setEvent(getAndBuildEventById(instanceOptDB.get().getEventId()));
+            instance.setEventRules(getAndBuildEventRulesById(instanceOptDB.get().getEventRulesId()));
+            instance.setEntriesList(getAndBuildEntriesListById(instanceOptDB));
+            instance.setAssists(getAndBuildAssistRulesById(instanceOptDB.get().getAssistsId()));
+            instance.setBop(getAndBuildBopById(instanceOptDB.get().getBopId()));
+            instance.setConfig(getAndBuildConfigById(instanceOptDB.get().getConfigId()));
+            instance.setSettings(getAndSettingsById(instanceOptDB.get().getSettingsId()));
         }
-        return instanceOpt;
+        return Optional.of(instance);
     }
 
-    private Event getAndBuildEventById(Optional<InstancesEntity> instanceOptDB) {
-        if (instanceOptDB.isPresent()) {
-            Optional<EventEntity> eventEntityOpt = eventRepository.findEventEntityByEventId(instanceOptDB.get().getEventId());
+    private Event getAndBuildEventById(String eventId) {
+        if (!isEmpty(eventId)) {
+            Optional<EventEntity> eventEntityOpt = eventRepository.findEventEntityByEventId(eventId);
             if (eventEntityOpt.isPresent()) {
                 Event event = new Event();
                 event.setId(eventEntityOpt.get().getEventId());
@@ -107,9 +121,9 @@ public class InstanceDaoService implements DaoService<Instance> {
         return new Event();
     }
 
-    private EventRules getAndBuildEventRulesById(Optional<InstancesEntity> instanceOptDB) {
-        if (instanceOptDB.isPresent()) {
-            Optional<EventRulesEntity> eventRulesEntityOpt = eventRulesRepository.findEventRulesEntityByEventRulesId(instanceOptDB.get().getEventRulesId());
+    private EventRules getAndBuildEventRulesById(String eventRulesId) {
+        if (!isEmpty(eventRulesId)) {
+            Optional<EventRulesEntity> eventRulesEntityOpt = eventRulesRepository.findEventRulesEntityByEventRulesId(eventRulesId);
             if (eventRulesEntityOpt.isPresent()) {
                 EventRules eventRules = new EventRules();
                 eventRules.setId(eventRulesEntityOpt.get().getEventRulesId());
@@ -146,9 +160,9 @@ public class InstanceDaoService implements DaoService<Instance> {
         return new EntriesList();
     }
 
-    private AssistRules getAndBuildAssistRulesById(Optional<InstancesEntity> instanceOptDB) {
-        if (instanceOptDB.isPresent()) {
-            Optional<AssistsEntity> assistsEntityOpt = assistsRepository.findAssistsEntityByAssistsId(instanceOptDB.get().getAssistsId());
+    private AssistRules getAndBuildAssistRulesById(String assistsId) {
+        if (!isEmpty(assistsId)) {
+            Optional<AssistsEntity> assistsEntityOpt = assistsRepository.findAssistsEntityByAssistsId(assistsId);
             if (assistsEntityOpt.isPresent()) {
                 AssistRules assistRules = new AssistRules();
                 assistRules.setId(assistsEntityOpt.get().getAssistsId());
@@ -165,6 +179,93 @@ public class InstanceDaoService implements DaoService<Instance> {
             }
         }
         return new AssistRules();
+    }
+
+    private BoP getAndBuildBopById(String bopId) {
+        if (!isEmpty(bopId)) {
+            Optional<BopEntity> bopEntityOpt = bopRepository.findBopEntityByBopId(bopId);
+            if (bopEntityOpt.isPresent()) {
+                BoP bop = new BoP();
+                bop.setId(bopEntityOpt.get().getBopId());
+                bop.setEntries(getAndBuildBopEntries(bopEntityOpt.get().getBopEntryId()));
+                bop.setDisableAutosteer(bopEntityOpt.get().getDisableAutoSteer());
+                bop.setDisableAutoLights(bopEntityOpt.get().getDisableAutoLights());
+                bop.setDisableAutoWiper(bopEntityOpt.get().getDisableAutoWiper());
+                return bop;
+            }
+        }
+        return new BoP();
+    }
+
+    private Config getAndBuildConfigById(String configId) {
+        if (!isEmpty(configId)) {
+            Optional<ConfigEntity> configEntityOpt = configRepository.findConfigEntityByConfigId(configId);
+            if (configEntityOpt.isPresent()) {
+                Config config = new Config();
+                config.setId(configEntityOpt.get().getConfigId());
+                config.setTcpPort(configEntityOpt.get().getTcpPort());
+                config.setUdpPort(configEntityOpt.get().getUdpPort());
+                config.setRegisterToLobby(configEntityOpt.get().getRegisterToLobby());
+                config.setMaxConnections(configEntityOpt.get().getMaxConnections());
+                config.setLanDiscovery(configEntityOpt.get().getLanDiscovery());
+                config.setPublicIP(configEntityOpt.get().getPublicIP());
+                config.setConfigVersion(configEntityOpt.get().getConfigVersion());
+                return config;
+            }
+        }
+        return new Config();
+    }
+
+    private Settings getAndSettingsById(String settingsId) {
+        if (!isEmpty(settingsId)) {
+            Optional<SettingsEntity> settingsEntityOpt = settingsRepository.findSettingsEntityBySettingsId(settingsId);
+            if (settingsEntityOpt.isPresent()) {
+                Settings settings = new Settings();
+                settings.setId(settingsEntityOpt.get().getSettingsId());
+                settings.setServerName(settingsEntityOpt.get().getServerInstanceName());
+                settings.setAdminPassword(settingsEntityOpt.get().getAdminPassword());
+                settings.setCarGroup(Settings.CarGroupEnum.valueOf(settingsEntityOpt.get().getCarGroup()));
+                settings.setTrackMedalsRequirement(settingsEntityOpt.get().getTrackMedalsRequirement());
+                settings.setSafetyRatingRequirement(settingsEntityOpt.get().getSafetyRatingRequirement());
+                settings.setRacecraftRatingRequirement(settingsEntityOpt.get().getRaceCraftRatingRequirement());
+                settings.setPassword(settingsEntityOpt.get().getServerPassword());
+                settings.setSpectatorPassword(settingsEntityOpt.get().getSpectatorPassword());
+                settings.setMaxCarSlots(settingsEntityOpt.get().getMaxCarSlots());
+                settings.setDumpLeaderboards(settingsEntityOpt.get().getDumpLeaderBoards());
+                settings.setIsRaceLocked(settingsEntityOpt.get().getIsRaceLocked());
+                settings.setIsPrepPhaseLocked(settingsEntityOpt.get().getIsPrepPhaseLocked());
+                settings.setRandomizeTrackWhenEmpty(settingsEntityOpt.get().getRandomizeTrackWhenEmpty());
+                settings.setCentralEntryListPath(settingsEntityOpt.get().getCentralEntryListPath());
+                settings.setAllowAutoDQ(settingsEntityOpt.get().getAllowAutoDq());
+                settings.setShortFormationLap(settingsEntityOpt.get().getShortFormationLap());
+                settings.setDumpEntryList(settingsEntityOpt.get().getDumpEntryList());
+                settings.setFormationLapType(settingsEntityOpt.get().getFormationLapType());
+                settings.setDoDriverSwapBroadcast(settingsEntityOpt.get().getDoDriverSwapBroadcast());
+                settings.setConfigVersion(settingsEntityOpt.get().getConfigVersion());
+                return settings;
+            }
+        }
+        return new Settings();
+    }
+
+    private List<EntryBoP> getAndBuildBopEntries(String bopEntryId) {
+        if (!isEmpty(bopEntryId)) {
+            Optional<List<BopEntryEntity>> bopEntryEntitiesOpt = bopEntryRepository.findBopEntryEntitiesByBopEntryId(bopEntryId);
+            if (bopEntryEntitiesOpt.isPresent()) {
+                List<EntryBoP> entryBopList = new ArrayList<>();
+                for (BopEntryEntity bopEntryEntity : bopEntryEntitiesOpt.get()) {
+                    EntryBoP entryBop = new EntryBoP();
+                    entryBop.setId(bopEntryEntity.getBopId());
+                    entryBop.setTrack(EntryBoP.TrackEnum.valueOf(bopEntryEntity.getTrack()));
+                    entryBop.setCarModel(bopEntryEntity.getCarModel());
+                    entryBop.setBallastKg(bopEntryEntity.getBallest());
+                    entryBop.setRestrictor(bopEntryEntity.getRestrictor());
+                    entryBopList.add(entryBop);
+                }
+                return entryBopList;
+            }
+        }
+        return new ArrayList<>();
     }
 
     private List<Entry> getAndBuildEntryList(Optional<InstancesEntity> instanceOptDB) {
@@ -193,7 +294,7 @@ public class InstanceDaoService implements DaoService<Instance> {
     }
 
     private List<Driver> getAndBuildDriversList(CarEntryEntity carEntryEntity) {
-        if (!ObjectUtils.isEmpty(carEntryEntity)) {
+        if (!isEmpty(carEntryEntity)) {
             Optional<List<DriverEntity>> driverEntitiesOpt = driverRepository.findDriverEntitiesByCarEntryId(carEntryEntity.getCarEntryId());
             List<Driver> driverList = new ArrayList<>();
             if (driverEntitiesOpt.isPresent()) {
@@ -214,13 +315,15 @@ public class InstanceDaoService implements DaoService<Instance> {
     }
 
     private List<Session> getAndBuildSessionsById(String eventId) {
-        Optional<List<SessionsEntity>> sessionsEntitiesOpt = sessionsRepository.findSessionsEntitiesByEventId(eventId);
-        if (sessionsEntitiesOpt.isPresent()) {
-            List<Session> sessionList = new ArrayList<>();
-            for (SessionsEntity session : sessionsEntitiesOpt.get()) {
-                sessionList.add(buildSessionFromEntity(session));
+        if (!isEmpty(eventId)) {
+            Optional<List<SessionsEntity>> sessionsEntitiesOpt = sessionsRepository.findSessionsEntitiesByEventId(eventId);
+            if (sessionsEntitiesOpt.isPresent()) {
+                List<Session> sessionList = new ArrayList<>();
+                for (SessionsEntity session : sessionsEntitiesOpt.get()) {
+                    sessionList.add(buildSessionFromEntity(session));
+                }
+                return sessionList;
             }
-            return sessionList;
         }
         return new ArrayList<>();
     }
