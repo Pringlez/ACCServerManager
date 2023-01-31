@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_RUNNING_EXECUTABLE;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_INITIALIZING_EXECUTABLE;
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_STARTING_EXECUTABLE;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_STOPPING_EXECUTABLE;
 import static org.accmanager.service.enums.FilesEnum.ACC_SERVER_EXE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_LOGS;
@@ -53,7 +54,7 @@ public class ExecutableControlService extends ServerControl {
             processBuilder = new ProcessBuilder(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(),
                     instanceId) + ACC_SERVER_EXE);
         } catch (Exception ex) {
-            LOGGER.warn(format(ERROR_RUNNING_EXECUTABLE.toString(), instanceId));
+            LOGGER.warn(format(ERROR_INITIALIZING_EXECUTABLE.toString(), instanceId, ex));
         }
     }
 
@@ -67,16 +68,18 @@ public class ExecutableControlService extends ServerControl {
             processBuilder.redirectOutput(log);
             process = processBuilder.start();
         } catch (Exception ex) {
-            LOGGER.warn(format(ERROR_STARTING_EXECUTABLE.toString(), instanceId));
+            LOGGER.warn(format(ERROR_STARTING_EXECUTABLE.toString(), instanceId, ex));
         }
     }
 
     @Override
     public void stopInstance(String instanceId) {
         try {
-            if (process.isAlive()) { process.destroy(); }
+            if (process.isAlive()) {
+                process.destroy();
+            }
         } catch (Exception ex) {
-            LOGGER.warn(format(ERROR_STARTING_EXECUTABLE.toString(), instanceId));
+            LOGGER.warn(format(ERROR_STOPPING_EXECUTABLE.toString(), instanceId, ex));
         }
     }
 

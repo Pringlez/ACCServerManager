@@ -935,7 +935,7 @@ components:
         name:
           type: string
           default: "ACC Instance Name"
-        dockerImage:
+        containerImage:
           type: string
           example: "acc-server:1.8.18"
         serverControl:
@@ -965,7 +965,7 @@ components:
       enum: [created, stopped, running, crashed, failed, unknown]
     ServerControl:
       type: string
-      enum: [docker, executable]
+      enum: [container, executable]
     InstanceSuccess:
       type: object
       properties:

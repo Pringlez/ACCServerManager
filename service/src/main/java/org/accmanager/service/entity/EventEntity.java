@@ -1,6 +1,10 @@
 package org.accmanager.service.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "EVENT")
@@ -149,15 +153,5 @@ public class EventEntity {
 
     public void setMetaData(String metaData) {
         this.metaData = metaData;
-    }
-
-    @Basic
-    @Column(name = "SESSION_ID")
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 }

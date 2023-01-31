@@ -1,12 +1,17 @@
 package org.accmanager.service.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "SESSIONS")
 public class SessionsEntity {
 
     private String sessionId;
+    private String eventId;
     private int hourOfDay;
     private int dayOfWeekend;
     private int timeMultiplier;
@@ -21,6 +26,16 @@ public class SessionsEntity {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    @Basic
+    @Column(name = "EVENT_ID")
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
     @Basic

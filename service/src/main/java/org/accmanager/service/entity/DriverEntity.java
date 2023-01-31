@@ -1,12 +1,17 @@
 package org.accmanager.service.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "DRIVER")
 public class DriverEntity {
 
     private String driverId;
+    private String carEntryId;
     private String firstName;
     private String lastName;
     private String shortName;
@@ -21,6 +26,16 @@ public class DriverEntity {
 
     public void setDriverId(String driverId) {
         this.driverId = driverId;
+    }
+
+    @Basic
+    @Column(name = "CAR_ENTRY_ID")
+    public String getCarEntryId() {
+        return carEntryId;
+    }
+
+    public void setCarEntryId(String carEntryId) {
+        this.carEntryId = carEntryId;
     }
 
     @Basic

@@ -92,11 +92,12 @@ public class FileReadWriteService {
 
     public void deleteInstanceDirectoryConfigsAndFiles(String instanceId) {
         try {
-            Files.walk(Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), instanceId)))
+            Path pathHostServerInstance = Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), instanceId));
+            Files.walk(pathHostServerInstance)
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
                     .forEach(File::delete);
-            Files.deleteIfExists(Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), instanceId)));
+            Files.deleteIfExists(pathHostServerInstance);
         } catch (Exception ex) {
             LOGGER.error(format(ERROR_DELETING_INSTANCE_DIRECTORY.toString(), ex));
         }

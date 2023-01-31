@@ -100,7 +100,6 @@ public abstract class ServerControl {
         fileReadWriteService.copyExecutable(instanceId);
     }
 
-
     public void createDirectories(Instance instance) {
         fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_CFG.toString(), instance.getId()));
         fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(), instance.getId()));
