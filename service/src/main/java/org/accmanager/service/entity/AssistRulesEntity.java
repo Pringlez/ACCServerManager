@@ -7,8 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ASSISTS")
-public class AssistsEntity {
+@Table(name = "ASSISTS_RULES")
+public class AssistRulesEntity {
 
     private String assistsId;
     private int stabilityControlLevelMax;
@@ -22,7 +22,7 @@ public class AssistsEntity {
     private int disableIdealLine;
 
     @Id
-    @Column(name = "ASSISTS_ID")
+    @Column(name = "ASSIST_RULES_ID")
     public String getAssistsId() {
         return assistsId;
     }

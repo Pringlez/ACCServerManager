@@ -1,9 +1,9 @@
 package org.accmanager.service.services.control.executable;
 
 import org.accmanager.model.Instance;
+import org.accmanager.model.StorageType;
 import org.accmanager.service.services.control.ServerControl;
-import org.accmanager.service.services.files.DirectoryReadWriteService;
-import org.accmanager.service.services.files.FileReadWriteService;
+import org.accmanager.service.services.dao.InstanceDaoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_INITIALIZING_EXECUTABLE;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_PAUSING_EXECUTION;
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_STARTING_EXECUTABLE;
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_STOPPING_EXECUTABLE;
 import static org.accmanager.service.enums.FilesEnum.ACC_SERVER_EXE;
@@ -32,19 +32,16 @@ public class ExecutableControlService extends ServerControl {
     private Process process;
     private ProcessBuilder processBuilder;
 
-    private static final Map<String, Instance> instanceMap = new HashMap<>();
-
     @Autowired
-    public ExecutableControlService(DirectoryReadWriteService directoryReadWriteService, FileReadWriteService fileReadWriteService) {
-        super(directoryReadWriteService, fileReadWriteService);
+    public ExecutableControlService(InstanceDaoService instanceDaoService) {
+        super(instanceDaoService);
     }
 
     @Override
     public String createInstance(Instance instance) {
-        instanceMap.put(instance.getId(), instance);
-        createDirectories(instance);
-        writeInstanceConfiguration(instance);
-        copyExecutable(instance.getId());
+        getDaoService().createDirectories(instance);
+        getDaoService().writeInstanceConfiguration(instance);
+        getDaoService().copyExecutable(instance.getId());
         initializeProcessBuilder(instance.getId());
         return instance.getId();
     }
@@ -86,16 +83,25 @@ public class ExecutableControlService extends ServerControl {
     @Override
     public void restartInstance(String instanceId) {
         stopInstance(instanceId);
-        createInstance(instanceMap.get(instanceId));
+        pauseExecution(5);
+        startInstance(instanceId);
+    }
+
+    private static void pauseExecution(int seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException ie) {
+            LOGGER.warn(format(ERROR_PAUSING_EXECUTION.toString(), ie));
+        }
     }
 
     @Override
     public void deleteConfigFiles(String instanceId) {
-        getFileReadWriteService().deleteInstanceDirectoryConfigsAndFiles(instanceId);
+        getDaoService().getFileReadWriteService().deleteInstanceDirectoryConfigsAndFiles(instanceId);
     }
 
     @Override
-    public String inspectInstance(String instanceId) {
+    public String inspectInstance(String instanceId, StorageType storageType) {
         return null;
     }
 }

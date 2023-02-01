@@ -1,6 +1,6 @@
 package org.accmanager.service.api;
 
-import org.accmanager.api.AssistsApi;
+import org.accmanager.api.AssistRulesApi;
 import org.accmanager.model.AssistRules;
 import org.accmanager.service.services.files.FileReadWriteService;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import static org.accmanager.service.enums.FilesEnum.ASSIST_RULES_JSON;
 
 @Controller
-public class AssistsController implements AssistsApi {
+public class AssistsController implements AssistRulesApi {
 
     private final FileReadWriteService fileReadWriteService;
 

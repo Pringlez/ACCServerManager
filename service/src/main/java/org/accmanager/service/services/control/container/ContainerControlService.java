@@ -8,9 +8,9 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.ExposedPort;
 import org.accmanager.model.Instance;
+import org.accmanager.model.StorageType;
 import org.accmanager.service.services.control.ServerControl;
-import org.accmanager.service.services.files.DirectoryReadWriteService;
-import org.accmanager.service.services.files.FileReadWriteService;
+import org.accmanager.service.services.dao.InstanceDaoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +38,16 @@ public class ContainerControlService extends ServerControl {
     private final DockerClient dockerClient;
 
     @Autowired
-    public ContainerControlService(DockerClient dockerClient, DirectoryReadWriteService directoryReadWriteService, FileReadWriteService fileReadWriteService) {
-        super(directoryReadWriteService, fileReadWriteService);
+    public ContainerControlService(DockerClient dockerClient, InstanceDaoService instanceDaoService) {
+        super(instanceDaoService);
         this.dockerClient = dockerClient;
     }
 
     @Override
     public String createInstance(Instance instance) {
-        createDirectories(instance);
-        writeInstanceConfiguration(instance);
-        copyExecutable(instance.getId());
+        getDaoService().createDirectories(instance);
+        getDaoService().writeInstanceConfiguration(instance);
+        getDaoService().copyExecutable(instance.getId());
         CreateContainerResponse createContainerResponse = dockerClient.createContainerCmd(instance.getContainerImage())
                 .withCmd(Arrays.asList("--net=host", "--restart unless-stopped"))
                 .withName(instance.getId())
@@ -92,13 +92,13 @@ public class ContainerControlService extends ServerControl {
 
     @Override
     public void deleteConfigFiles(String instanceId) {
-        getFileReadWriteService().deleteInstanceDirectoryConfigsAndFiles(instanceId);
+        getDaoService().getFileReadWriteService().deleteInstanceDirectoryConfigsAndFiles(instanceId);
         attemptKillingContainer(instanceId);
         attemptRemovingContainer(instanceId);
     }
 
     @Override
-    public String inspectInstance(String instanceId) {
+    public String inspectInstance(String instanceId, StorageType storageType) {
         InspectContainerResponse inspectContainerResponse = dockerClient.inspectContainerCmd(instanceId).exec();
         ObjectNode containerResponse = buildContainerResponse(instanceId, inspectContainerResponse);
         Optional<String> jsonResponse = getJsonResponse(containerResponse);

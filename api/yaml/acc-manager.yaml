@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: ACC Manager Service
   description: API specification
-  version: 1.1.4
+  version: 1.1.5
   contact:
     name: GitHub Issues
     url: https://github.com/Pringlez/ACCServerManager/issues
@@ -20,8 +20,8 @@ tags:
     description: Manage events for server instance
   - name: eventRules
     description: Manage events rules for server instance
-  - name: assists
-    description: Manage assists for server instance
+  - name: assistRules
+    description: Manage assist rules for server instance
   - name: bop
     description: Manage BoP for server instance
 paths:
@@ -58,6 +58,13 @@ paths:
       operationId: getAllInstances
       tags:
         - instances
+      parameters:
+        - name: storageType
+          in: path
+          required: true
+          description: The type of storage used to persist the ACC instance data
+          schema:
+            $ref: "#/components/schemas/StorageType"
       responses:
         '200':
           description: An array of instances
@@ -109,6 +116,12 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
+        - name: storageType
+          in: path
+          required: true
+          description: The type of storage used to persist the ACC instance data
+          schema:
+            $ref: "#/components/schemas/StorageType"
       responses:
         '200':
           description: Expected response to a valid request
@@ -646,12 +659,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /assists/{instanceId}:
+  /assistrules/{instanceId}:
     get:
       summary: Get assist rules by instance id
       operationId: getAssistRulesByInstanceId
       tags:
-        - assists
+        - assistRules
       parameters:
         - name: instanceId
           in: path
@@ -659,9 +672,9 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
-        - name: assistsId
+        - name: assistRulesId
           in: query
-          description: Filter by assists id
+          description: Filter by assist rules id
           required: false
           schema:
             type: string
@@ -682,7 +695,7 @@ paths:
       summary: Create assist rules by instance id
       operationId: createAssistRulesByInstanceId
       tags:
-        - assists
+        - assistRules
       parameters:
         - name: instanceId
           in: path
@@ -690,9 +703,9 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
-        - name: assistsId
+        - name: assistRulesId
           in: query
-          description: Filter by assists id
+          description: Filter by assist rules id
           required: false
           schema:
             type: string
@@ -720,7 +733,7 @@ paths:
       summary: Update assist rules by instance id
       operationId: updateAssistRulesByInstanceId
       tags:
-        - assists
+        - assistRules
       parameters:
         - name: instanceId
           in: path
@@ -728,9 +741,9 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
-        - name: assistsId
+        - name: assistRulesId
           in: query
-          description: Filter by assists id
+          description: Filter by assist rules id
           required: false
           schema:
             type: string
@@ -758,7 +771,7 @@ paths:
       summary: Delete assist rules by instance id
       operationId: deleteAssistRulesByInstanceId
       tags:
-        - assists
+        - assistRules
       parameters:
         - name: instanceId
           in: path
@@ -766,9 +779,9 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
-        - name: assistsId
+        - name: assistRulesId
           in: query
-          description: Filter by assists id
+          description: Filter by assist rules id
           required: false
           schema:
             type: string
@@ -938,6 +951,7 @@ components:
         containerImage:
           type: string
           example: "acc-server:1.8.18"
+          default: "N/A"
         serverControl:
           $ref: "#/components/schemas/ServerControl"
         state:
@@ -948,7 +962,7 @@ components:
           $ref: "#/components/schemas/EventRules"
         entriesList:
           $ref: "#/components/schemas/EntriesList"
-        assists:
+        assistRules:
           $ref: "#/components/schemas/AssistRules"
         bop:
           $ref: "#/components/schemas/BoP"
@@ -966,6 +980,10 @@ components:
     ServerControl:
       type: string
       enum: [container, executable]
+    StorageType:
+      type: string
+      enum: [file, db, all]
+      default: all
     InstanceSuccess:
       type: object
       properties:

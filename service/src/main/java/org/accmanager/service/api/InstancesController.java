@@ -3,6 +3,7 @@ package org.accmanager.service.api;
 import org.accmanager.api.InstancesApi;
 import org.accmanager.model.Instance;
 import org.accmanager.model.InstanceSuccess;
+import org.accmanager.model.StorageType;
 import org.accmanager.service.exception.InstanceNotFoundException;
 import org.accmanager.service.services.control.ServerControl;
 import org.springframework.http.HttpStatus;
@@ -26,18 +27,18 @@ public class InstancesController implements InstancesApi {
     }
 
     @Override
-    public ResponseEntity<List<Instance>> getAllInstances() {
-        return ResponseEntity.ok(serverControl.listOfInstances());
+    public ResponseEntity<List<Instance>> getAllInstances(StorageType storageType) {
+        return ResponseEntity.ok(serverControl.getDaoService().listOfInstances(storageType));
     }
 
     @Override
-    public ResponseEntity<Instance> getInstanceById(String instanceId) {
-        serverControl.inspectInstance(instanceId);
-        return ResponseEntity.ok(getInstance(instanceId));
+    public ResponseEntity<Instance> getInstanceById(String instanceId, StorageType storageType) {
+        serverControl.inspectInstance(instanceId, storageType);
+        return ResponseEntity.ok(getInstance(instanceId, storageType));
     }
 
-    private Instance getInstance(String instanceId) {
-        return serverControl.listOfInstances().stream()
+    private Instance getInstance(String instanceId, StorageType storageType) {
+        return serverControl.getDaoService().listOfInstances(storageType).stream()
                 .filter(instance -> instance.getId().equals(instanceId)).findFirst()
                 .orElseThrow(() -> new InstanceNotFoundException(format(ACC_SERVER_INSTANCE_NOT_FOUND.toString(), instanceId)));
     }
@@ -58,7 +59,7 @@ public class InstancesController implements InstancesApi {
 
     @Override
     public ResponseEntity<InstanceSuccess> updateInstanceById(String instanceId, Instance instance) {
-        serverControl.writeInstanceConfiguration(instance);
+        serverControl.getDaoService().writeInstanceConfiguration(instance);
         return ResponseEntity.ok(buildSuccessInstance("ACC server instance was updated successfully, you'll need to restart the ACC server"));
     }
 

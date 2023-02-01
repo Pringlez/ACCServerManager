@@ -10,6 +10,7 @@ public enum ExceptionEnum {
     ERROR_INITIALIZING_EXECUTABLE("Error initializing executable: %s - Error: %s"),
     ERROR_STARTING_EXECUTABLE("Error starting executable: %s - Error: %s"),
     ERROR_STOPPING_EXECUTABLE("Error stopping executable: %s - Error: %s"),
+    ERROR_PAUSING_EXECUTION("Error pausing execution: %s"),
     ERROR_CREATING_DIRECTORY("Error creating directory: %s"),
     ERROR_GETTING_SERVER_DIRECTORIES("Error getting server directories: %s"),
     ERROR_READING_FILE("Error reading '%s' file: %s"),

@@ -12,12 +12,11 @@ public class InstancesEntity {
 
     private String instanceId;
     private String instanceName;
-    private String dockerImage;
-    private String containerState;
+    private String containerImage;
     private String eventId;
     private String eventRulesId;
     private String entriesId;
-    private String assistsId;
+    private String assistRulesId;
     private String bopId;
     private String configId;
     private String settingsId;
@@ -43,23 +42,13 @@ public class InstancesEntity {
     }
 
     @Basic
-    @Column(name = "DOCKER_IMAGE")
-    public String getDockerImage() {
-        return dockerImage;
+    @Column(name = "CONTAINER_IMAGE")
+    public String getContainerImage() {
+        return containerImage;
     }
 
-    public void setDockerImage(String dockerImage) {
-        this.dockerImage = dockerImage;
-    }
-
-    @Basic
-    @Column(name = "CONTAINER_STATE")
-    public String getContainerState() {
-        return containerState;
-    }
-
-    public void setContainerState(String containerState) {
-        this.containerState = containerState;
+    public void setContainerImage(String containerImage) {
+        this.containerImage = containerImage;
     }
 
     @Basic
@@ -93,13 +82,13 @@ public class InstancesEntity {
     }
 
     @Basic
-    @Column(name = "ASSISTS_ID")
-    public String getAssistsId() {
-        return assistsId;
+    @Column(name = "ASSIST_RULES_ID")
+    public String getAssistRulesId() {
+        return assistRulesId;
     }
 
-    public void setAssistsId(String assistsId) {
-        this.assistsId = assistsId;
+    public void setAssistRulesId(String assistRulesId) {
+        this.assistRulesId = assistRulesId;
     }
 
     @Basic

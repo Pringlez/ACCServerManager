@@ -1,5 +1,6 @@
-package org.accmanager.service.services.dao.instance;
+package org.accmanager.service.services.dao;
 
+import com.github.dockerjava.api.exception.DockerException;
 import org.accmanager.model.AssistRules;
 import org.accmanager.model.BoP;
 import org.accmanager.model.Config;
@@ -12,7 +13,8 @@ import org.accmanager.model.EventRules;
 import org.accmanager.model.Instance;
 import org.accmanager.model.Session;
 import org.accmanager.model.Settings;
-import org.accmanager.service.entity.AssistsEntity;
+import org.accmanager.model.StorageType;
+import org.accmanager.service.entity.AssistRulesEntity;
 import org.accmanager.service.entity.BopEntity;
 import org.accmanager.service.entity.BopEntryEntity;
 import org.accmanager.service.entity.CarEntriesEntity;
@@ -24,7 +26,7 @@ import org.accmanager.service.entity.EventRulesEntity;
 import org.accmanager.service.entity.InstancesEntity;
 import org.accmanager.service.entity.SessionsEntity;
 import org.accmanager.service.entity.SettingsEntity;
-import org.accmanager.service.repository.AssistsRepository;
+import org.accmanager.service.repository.AssistRulesRepository;
 import org.accmanager.service.repository.BopEntryRepository;
 import org.accmanager.service.repository.BopRepository;
 import org.accmanager.service.repository.CarEntriesRepository;
@@ -36,23 +38,43 @@ import org.accmanager.service.repository.EventRulesRepository;
 import org.accmanager.service.repository.InstancesRepository;
 import org.accmanager.service.repository.SessionsRepository;
 import org.accmanager.service.repository.SettingsRepository;
-import org.accmanager.service.services.dao.DaoService;
+import org.accmanager.service.services.control.ServerControl;
+import org.accmanager.service.services.files.DirectoryReadWriteService;
+import org.accmanager.service.services.files.FileReadWriteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.String.format;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_RETRIEVING_LIST_OF_CONTAINERS;
+import static org.accmanager.service.enums.FilesEnum.ASSIST_RULES_JSON;
+import static org.accmanager.service.enums.FilesEnum.BOP_JSON;
+import static org.accmanager.service.enums.FilesEnum.CONFIGURATION_JSON;
+import static org.accmanager.service.enums.FilesEnum.ENTRY_LIST_JSON;
+import static org.accmanager.service.enums.FilesEnum.EVENT_JSON;
+import static org.accmanager.service.enums.FilesEnum.EVENT_RULES_JSON;
+import static org.accmanager.service.enums.FilesEnum.SETTINGS_JSON;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_CFG;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_LOGS;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
-public class InstanceDaoService implements DaoService<Instance> {
+public class InstanceDaoService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerControl.class);
 
     private final InstancesRepository instancesRepository;
     private final EventRepository eventRepository;
     private final EventRulesRepository eventRulesRepository;
     private final CarEntriesRepository carEntriesRepository;
-    private final AssistsRepository assistsRepository;
+    private final AssistRulesRepository assistRulesRepository;
     private final BopRepository bopRepository;
     private final ConfigRepository configRepository;
     private final SettingsRepository settingsRepository;
@@ -60,16 +82,19 @@ public class InstanceDaoService implements DaoService<Instance> {
     private final CarEntryRepository carEntryRepository;
     private final DriverRepository driverRepository;
     private final BopEntryRepository bopEntryRepository;
+    private final DirectoryReadWriteService directoryReadWriteService;
+    private final FileReadWriteService fileReadWriteService;
 
     public InstanceDaoService(InstancesRepository instancesRepository, EventRepository eventRepository, EventRulesRepository eventRulesRepository,
-                              CarEntriesRepository carEntriesRepository, AssistsRepository assistsRepository, BopRepository bopRepository,
+                              CarEntriesRepository carEntriesRepository, AssistRulesRepository assistRulesRepository, BopRepository bopRepository,
                               ConfigRepository configRepository, SettingsRepository settingsRepository, SessionsRepository sessionsRepository,
-                              CarEntryRepository carEntryRepository, DriverRepository driverRepository, BopEntryRepository bopEntryRepository) {
+                              CarEntryRepository carEntryRepository, DriverRepository driverRepository, BopEntryRepository bopEntryRepository,
+                              DirectoryReadWriteService directoryReadWriteService, FileReadWriteService fileReadWriteService) {
         this.instancesRepository = instancesRepository;
         this.eventRepository = eventRepository;
         this.eventRulesRepository = eventRulesRepository;
         this.carEntriesRepository = carEntriesRepository;
-        this.assistsRepository = assistsRepository;
+        this.assistRulesRepository = assistRulesRepository;
         this.bopRepository = bopRepository;
         this.configRepository = configRepository;
         this.settingsRepository = settingsRepository;
@@ -77,18 +102,21 @@ public class InstanceDaoService implements DaoService<Instance> {
         this.carEntryRepository = carEntryRepository;
         this.driverRepository = driverRepository;
         this.bopEntryRepository = bopEntryRepository;
+        this.directoryReadWriteService = directoryReadWriteService;
+        this.fileReadWriteService = fileReadWriteService;
     }
 
-    @Override
     public Optional<Instance> retrieveById(String instanceId) {
         Optional<InstancesEntity> instanceOptDB = instancesRepository.findInstancesEntityByInstanceId(instanceId);
         Instance instance = new Instance();
         if (instanceOptDB.isPresent()) {
             instance.setId(instanceOptDB.get().getInstanceId());
+            instance.setName(instanceOptDB.get().getInstanceName());
+            instance.setContainerImage(instanceOptDB.get().getContainerImage());
             instance.setEvent(getAndBuildEventById(instanceOptDB.get().getEventId()));
             instance.setEventRules(getAndBuildEventRulesById(instanceOptDB.get().getEventRulesId()));
             instance.setEntriesList(getAndBuildEntriesListById(instanceOptDB));
-            instance.setAssists(getAndBuildAssistRulesById(instanceOptDB.get().getAssistsId()));
+            instance.setAssistRules(getAndBuildAssistRulesById(instanceOptDB.get().getAssistRulesId()));
             instance.setBop(getAndBuildBopById(instanceOptDB.get().getBopId()));
             instance.setConfig(getAndBuildConfigById(instanceOptDB.get().getConfigId()));
             instance.setSettings(getAndSettingsById(instanceOptDB.get().getSettingsId()));
@@ -162,7 +190,7 @@ public class InstanceDaoService implements DaoService<Instance> {
 
     private AssistRules getAndBuildAssistRulesById(String assistsId) {
         if (!isEmpty(assistsId)) {
-            Optional<AssistsEntity> assistsEntityOpt = assistsRepository.findAssistsEntityByAssistsId(assistsId);
+            Optional<AssistRulesEntity> assistsEntityOpt = assistRulesRepository.findAssistsEntityByAssistsId(assistsId);
             if (assistsEntityOpt.isPresent()) {
                 AssistRules assistRules = new AssistRules();
                 assistRules.setId(assistsEntityOpt.get().getAssistsId());
@@ -337,18 +365,95 @@ public class InstanceDaoService implements DaoService<Instance> {
         return session;
     }
 
-    @Override
     public Optional<Instance> retrieveAll() {
         return Optional.empty();
     }
 
-    @Override
     public void updateServerById(String id, Instance obj) {
 
     }
 
-    @Override
     public void saveData(Instance obj) {
 
+    }
+
+    /**
+     * Get all acc server instances by storage type, return all instances if 'ALL' of @{@link StorageType} passed
+     *
+     * @param storageType
+     * @return
+     */
+    public List<Instance> listOfInstances(StorageType storageType) {
+        List<Instance> instancesList = new ArrayList<>();
+        if (StorageType.ALL.equals(storageType)) {
+            instancesList = getInstancesByFile();
+            // TODO - Combine all results from file system & database
+        }
+        return instancesList;
+    }
+
+    private List<Instance> getInstancesByFile() {
+        List<Instance> instancesList = new ArrayList<>();
+        try {
+            Optional<List<Path>> accServerDirs = directoryReadWriteService.getAllServerDirectories();
+            accServerDirs.ifPresent(dirs -> dirs.forEach(
+                    dir -> instancesList.add(readInstanceConfiguration(dir.toString()))));
+        } catch (Exception ex) {
+            LOGGER.warn(ERROR_RETRIEVING_LIST_OF_CONTAINERS.toString());
+            throw new DockerException(ERROR_RETRIEVING_LIST_OF_CONTAINERS.toString(), INTERNAL_SERVER_ERROR.value(), ex);
+        }
+        return instancesList;
+    }
+
+    private List<Instance> getInstancesByDB() {
+        List<Instance> instancesList = new ArrayList<>();
+        try {
+            retrieveAll();
+        } catch (Exception ex) {
+            LOGGER.warn(ERROR_RETRIEVING_LIST_OF_CONTAINERS.toString());
+            throw new DockerException(ERROR_RETRIEVING_LIST_OF_CONTAINERS.toString(), INTERNAL_SERVER_ERROR.value(), ex);
+        }
+        return instancesList;
+    }
+
+    public void writeInstanceConfiguration(Instance instance) {
+        fileReadWriteService.writeJsonFile(instance.getId(), EVENT_JSON, instance.getEvent());
+        fileReadWriteService.writeJsonFile(instance.getId(), EVENT_RULES_JSON, instance.getEventRules());
+        fileReadWriteService.writeJsonFile(instance.getId(), ENTRY_LIST_JSON, instance.getEntriesList());
+        fileReadWriteService.writeJsonFile(instance.getId(), ASSIST_RULES_JSON, instance.getAssistRules());
+        fileReadWriteService.writeJsonFile(instance.getId(), BOP_JSON, instance.getBop());
+        fileReadWriteService.writeJsonFile(instance.getId(), CONFIGURATION_JSON, instance.getConfig());
+        fileReadWriteService.writeJsonFile(instance.getId(), SETTINGS_JSON, instance.getSettings());
+    }
+
+    public Instance readInstanceConfiguration(String instanceId) {
+        Instance instance = new Instance();
+        instance.setId(instanceId);
+        instance.setEvent((Event) fileReadWriteService.readJsonFile(instanceId, EVENT_JSON, Event.class).orElse(new Event()));
+        instance.setEventRules((EventRules) fileReadWriteService.readJsonFile(instanceId, EVENT_RULES_JSON, EventRules.class).orElse(new EventRules()));
+        instance.setEntriesList((EntriesList) fileReadWriteService.readJsonFile(instanceId, ENTRY_LIST_JSON, EntriesList.class).orElse(new EntriesList()));
+        instance.setAssistRules((AssistRules) fileReadWriteService.readJsonFile(instanceId, ASSIST_RULES_JSON, AssistRules.class).orElse(new AssistRules()));
+        instance.setBop((BoP) fileReadWriteService.readJsonFile(instanceId, BOP_JSON, BoP.class).orElse(new BoP()));
+        instance.setConfig((Config) fileReadWriteService.readJsonFile(instanceId, CONFIGURATION_JSON, Config.class).orElse(new Config()));
+        instance.setSettings((Settings) fileReadWriteService.readJsonFile(instanceId, SETTINGS_JSON, Settings.class).orElse(new Settings()));
+        return instance;
+    }
+
+    public void copyExecutable(String instanceId) {
+        fileReadWriteService.copyExecutable(instanceId);
+    }
+
+    public void createDirectories(Instance instance) {
+        fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_CFG.toString(), instance.getId()));
+        fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(), instance.getId()));
+        fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_LOGS.toString(), instance.getId()));
+    }
+
+    public DirectoryReadWriteService getDirectoryReadWriteService() {
+        return directoryReadWriteService;
+    }
+
+    public FileReadWriteService getFileReadWriteService() {
+        return fileReadWriteService;
     }
 }
