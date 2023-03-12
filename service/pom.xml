@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.accmanager</groupId>
 		<artifactId>acc-manager</artifactId>
-		<version>0.5.0</version>
+		<version>0.6.0</version>
 	</parent>
 
 	<properties>
