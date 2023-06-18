@@ -1,8 +1,8 @@
-package org.accmanager.service.integration.steps.health;
+package org.accmanager.service.integration.cucumber.steps.health;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import org.accmanager.service.integration.steps.common.TestBase;
+import org.accmanager.service.integration.cucumber.steps.common.TestBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

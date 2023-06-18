@@ -1,4 +1,4 @@
-package org.accmanager.service.integration.steps.common;
+package org.accmanager.service.integration.cucumber.steps.common;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;

@@ -10,7 +10,7 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 tags:
-  - name: auth
+  - name: authenticate
     description: Authentication to application
   - name: instances
     description: Manage server instances
@@ -28,9 +28,9 @@ paths:
   /login:
     post:
       summary: Authenticate by username and password
-      operationId: authenticate
+      operationId: loginUser
       tags:
-        - auth
+        - authenticate
       requestBody:
         description: User credentials to be assessed
         required: true

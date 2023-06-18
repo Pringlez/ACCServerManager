@@ -16,7 +16,6 @@ public class ACCManagerApplication {
 
     private final FileReadWriteService fileReadWriteService;
 
-    @Autowired
     public ACCManagerApplication(FileReadWriteService fileReadWriteService) {
         this.fileReadWriteService = fileReadWriteService;
     }
