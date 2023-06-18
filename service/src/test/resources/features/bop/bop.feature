@@ -2,7 +2,8 @@ Feature: Verify bop API functionality & structure
 
   @Api
   Scenario Outline: Retrieve instance's configured bop, validate response structure and elements
-    Given the endpoint is "/bop/<instanceId>"
+    Given the endpoint is "/api/v1/bop/<instanceId>"
+    And a basic auth header "Authorization" with a value "admin:admin" is included in the request
     And a query parameter "bopId" with a value "<bopId>" is included in the request
     When a GET request is executed we should receive <status> status code
     Then the response structure should match "<schema>" file in directory "bop"

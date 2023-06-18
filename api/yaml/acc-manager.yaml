@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: ACC Manager Service
   description: API specification
-  version: 1.1.6
+  version: 1.2.0
   contact:
     name: GitHub Issues
     url: https://github.com/Pringlez/ACCServerManager/issues
@@ -52,7 +52,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security: []
-  /instances:
+  /api/v1/instances:
     get:
       summary: List all available ACC instances
       operationId: getAllInstances
@@ -103,7 +103,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /instances/{instanceId}:
+  /api/v1/instances/{instanceId}:
     get:
       summary: Get ACC instance by id
       operationId: getInstanceById
@@ -188,7 +188,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /instances/{instanceId}/start:
+  /api/v1/instances/{instanceId}/start:
     get:
       summary: Start ACC instance by id
       operationId: startInstanceById
@@ -210,7 +210,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /instances/{instanceId}/stop:
+  /api/v1/instances/{instanceId}/stop:
     get:
       summary: Stop ACC instance by id
       operationId: stopInstanceById
@@ -232,7 +232,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /instances/{instanceId}/restart:
+  /api/v1/instances/{instanceId}/restart:
     get:
       summary: Restart ACC instance by id
       operationId: restartInstanceById
@@ -254,7 +254,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /entries/{instanceId}:
+  /api/v1/entries/{instanceId}:
     get:
       summary: Get entries for ACC instance by id
       operationId: getEntriesByInstanceId
@@ -389,7 +389,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /events/{instanceId}:
+  /api/v1/events/{instanceId}:
     get:
       summary: Get event for ACC instance by event id
       operationId: getInstanceEventById
@@ -524,7 +524,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /eventrules/{instanceId}:
+  /api/v1/eventrules/{instanceId}:
     get:
       summary: Get event rules for ACC instance by event rules id
       operationId: getInstanceEventRulesById
@@ -659,7 +659,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /assistrules/{instanceId}:
+  /api/v1/assistrules/{instanceId}:
     get:
       summary: Get assist rules by instance id
       operationId: getAssistRulesByInstanceId
@@ -794,7 +794,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /bop/{instanceId}:
+  /api/v1/bop/{instanceId}:
     get:
       summary: Get BoP for ACC instance by id
       operationId: getBoPByInstanceId
@@ -998,7 +998,7 @@ components:
       properties:
         accManagerVersion:
           type: string
-          default: "0.6.0"
+          default: "0.6.1"
         supportedAccVersion:
           type: string
           default: "1.8.18"

@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class TestBase {
 
-    @Value("${system.app.url:http://localhost:}")
+    @Value("${system.app.url:http://localhost}")
     private String appUrl;
 
     @LocalServerPort

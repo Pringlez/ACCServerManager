@@ -5,8 +5,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.config.HttpClientConfig;
+import io.restassured.http.Header;
 
 import java.io.File;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -56,6 +58,13 @@ public class CommonSteps extends TestBase {
     public void theFormParameterWithKeyIsIncludedInTheRequest(String key) {
         request = given(request).formParam(key, formParam.get(key));
         formParam.clear();
+    }
+
+    @And("a basic auth header {string} with a value {string} is included in the request")
+    public void aHeaderParameterWithAValueIsIncludedInTheRequest(String key, String value) {
+        if (!isEmpty(value)) {
+            request = given(request).header(new Header(key, "Basic " + Base64.getEncoder().encodeToString(value.getBytes())));
+        }
     }
 
     @When("a GET request is executed we should receive {int} status code")

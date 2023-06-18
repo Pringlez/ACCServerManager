@@ -2,7 +2,8 @@ Feature: Verify event rules API functionality & structure
 
   @Api
   Scenario Outline: Retrieve instance's configured event rules, validate response structure and elements
-    Given the endpoint is "/eventrules/<instanceId>"
+    Given the endpoint is "/api/v1/eventrules/<instanceId>"
+    And a basic auth header "Authorization" with a value "admin:admin" is included in the request
     And a query parameter "eventRulesId" with a value "<eventRulesId>" is included in the request
     When a GET request is executed we should receive <status> status code
     Then the response structure should match "<schema>" file in directory "vehicles"

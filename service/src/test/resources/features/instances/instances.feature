@@ -2,7 +2,8 @@ Feature: Verify instances API functionality & structure
 
   @Api
   Scenario Outline: Retrieve instance's full configuration and status, validate response structure and elements
-    Given the endpoint is "/instances/<instanceId>"
+    Given the endpoint is "/api/v1/instances/<instanceId>"
+    And a basic auth header "Authorization" with a value "admin:admin" is included in the request
     When a GET request is executed we should receive <status> status code
     Then the response structure should match "<schema>" file in directory "instances"
     And the response time should be less then or equal to 1 seconds

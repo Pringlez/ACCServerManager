@@ -5,7 +5,7 @@
 
     <groupId>org.accmanager</groupId>
     <artifactId>acc-manager</artifactId>
-    <version>0.6.0</version>
+    <version>0.6.1</version>
     <packaging>pom</packaging>
 
     <name>ACC Manager :: Parent</name>
@@ -30,10 +30,10 @@
         <frontend.maven.plugin.version>1.12.0</frontend.maven.plugin.version>
         <aspectj.maven.plugin.version>1.12.6</aspectj.maven.plugin.version>
         <maven.resources.plugin.version>2.6</maven.resources.plugin.version>
-        <jackson.databind.version>2.13.4</jackson.databind.version>
+        <jackson.databind.version>2.15.2</jackson.databind.version>
         <h2.version>2.1.214</h2.version>
         <validation.api.version>2.0.1.Final</validation.api.version>
-        <docker.java.version>3.2.13</docker.java.version>
+        <docker.java.version>3.3.1</docker.java.version>
         <cucumber.spring.version>7.6.0</cucumber.spring.version>
         <rest.assured.version>5.1.1</rest.assured.version>
         <jackson.databind.nullable.version>0.2.2</jackson.databind.nullable.version>

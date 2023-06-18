@@ -13,3 +13,4 @@ api/.classpath
 /frontend/dist/
 /frontend/build/
 /frontend/node/
+/database/

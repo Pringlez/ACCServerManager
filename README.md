@@ -23,17 +23,17 @@ You can download the latest available jar from GitHub. TODO...
 
 Run the pre-built jar by executing:
 ```
-java -jar -Ddocker.username=<your-system-username> acc-manager-0.6.0.jar
+java -jar -Ddocker.username=<your-system-username> acc-manager-0.6.1.jar
 ```
 
 ## Build ACC Manager
 Build a production ready jar from project root directory using maven:
 ```
-mvn clean install -DskipTests -Pprod
+mvn clean install -Pprod
 ```
 Then, run the built jar from the `service/target` directory:
 ```
-java -jar -Ddocker.username=<your-system-username> service/target/acc-manager-service-0.6.0.jar
+java -jar -Ddocker.username=<your-system-username> service/target/acc-manager-service-0.6.1.jar
 ```
 
 Jar parameters:
@@ -62,3 +62,8 @@ To compile and test the application locally, run the following command:
 mvn clean install
 ```
 You can run the production maven build by adding `-Pprod` flag. This will run optimised webpack that will bundle the frontends assets & source code.
+
+To execute cucumber tests using the commandline, use the following maven profile:
+```
+mvn clean install -P dev-cucumber
+```
