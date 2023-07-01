@@ -3,7 +3,8 @@ spring:
     driver-class-name: org.h2.Driver
     username: h2-user
     password: gUfszrdzCBMwNSFH
-    url: jdbc:h2:file:./database/acc-db-${spring.application.version};DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:acc-db;DB_CLOSE_ON_EXIT=FALSE
+    #url: jdbc:h2:file:./database/acc-db-${spring.application.version};DB_CLOSE_ON_EXIT=FALSE
   h2:
     console:
       enabled: true
@@ -20,6 +21,7 @@ spring:
       hibernate:
         format_sql: true
     defer-datasource-initialization: true
+    #defer-datasource-initialization: false
     database: h2
     show-sql: true
   sql:
@@ -29,4 +31,5 @@ spring:
       continue-on-error: true
       data-locations: classpath:database/data.sql
       mode: always
-      #mode: embedded - Does not execute inserts on app startup
+      #mode: embedded - Does not execute inserts on app startup, for real database
+      #mode: never - Never execute inserts on app startup

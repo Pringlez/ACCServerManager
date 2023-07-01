@@ -2,12 +2,18 @@ package org.accmanager.service.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
+import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -30,18 +36,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder(); // Auto configure password encoders
-        //return new BCryptPasswordEncoder();
-        //return new StandardPasswordEncoder(); // SHA-256
-        //return new LdapShaPasswordEncoder(); // SSHA
+        String encodingId = "bcrypt";
+        Map<String, PasswordEncoder> encoders = new HashMap();
+        encoders.put(encodingId, new BCryptPasswordEncoder());
+        encoders.put("ldap", new LdapShaPasswordEncoder());
+        encoders.put("MD5", new MessageDigestPasswordEncoder("MD5"));
+        encoders.put("sha256", new StandardPasswordEncoder());
+        return new DelegatingPasswordEncoder(encodingId, encoders);
     }
 
-    /**
-     * In-memory example of users & passwords with different hashing algorithms
-     *
-     * @param authenticationManagerBuilder
-     * @throws Exception
-     */
+    // In-memory username & password setup
+    /*
     @Override
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.inMemoryAuthentication()
@@ -55,6 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("user-3")
                 .password("{sha256}bda2f7abb85455b6b52b88e6afdb41781f54d00c0e4aac92db040f1f23cf4b9370b6b839dfaacf65")
+                .roles("USER")
+                .and()
+                .withUser("user-4")
+                .password("{ldap}RCPvwn+C7/kK93ZBY8KjdJ5XiJH5XaCGPQz5Xg==")
                 .roles("USER");
-    }
+    }*/
 }
