@@ -7,20 +7,12 @@ spring:
   application:
     name: acc-manager
     version: 0.6.1
-  jpa:
-    hibernate:
-      ddl-auto: none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
-      hibernate:
-        format_sql: true
   profiles:
-    active: local,h2
+    #active: local,h2
+    active: local,postgres
   security:
     user:
-      name: admin
-      password: admin
+      name: acc-user
 management:
   endpoints:
     web:

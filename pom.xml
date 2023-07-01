@@ -32,6 +32,7 @@
         <maven.resources.plugin.version>2.6</maven.resources.plugin.version>
         <jackson.databind.version>2.15.2</jackson.databind.version>
         <h2.version>2.1.214</h2.version>
+        <postgres.version>42.6.0</postgres.version>
         <validation.api.version>2.0.1.Final</validation.api.version>
         <docker.java.version>3.3.1</docker.java.version>
         <cucumber.spring.version>7.6.0</cucumber.spring.version>
