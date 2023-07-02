@@ -1,7 +1,6 @@
 package org.accmanager.service.services.control.executable;
 
 import org.accmanager.model.Instance;
-import org.accmanager.model.StorageType;
 import org.accmanager.service.services.control.ServerControl;
 import org.accmanager.service.services.dao.InstanceDaoService;
 import org.slf4j.Logger;
@@ -101,7 +100,7 @@ public class ExecutableControlService extends ServerControl {
     }
 
     @Override
-    public String inspectInstance(String instanceId, StorageType storageType) {
+    public String inspectInstance(String instanceId) {
         return null;
     }
 }

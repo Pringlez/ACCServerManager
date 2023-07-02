@@ -9,13 +9,8 @@ spring:
       #ddl-auto: none
       ddl-auto: update
       #ddl-auto: validate
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
-      hibernate:
-        format_sql: true
     defer-datasource-initialization: true
-    #efer-datasource-initialization: false
+    #defer-datasource-initialization: false
     database: postgresql
     show-sql: true
   sql:

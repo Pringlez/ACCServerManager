@@ -8,7 +8,6 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.ExposedPort;
 import org.accmanager.model.Instance;
-import org.accmanager.model.StorageType;
 import org.accmanager.service.services.control.ServerControl;
 import org.accmanager.service.services.dao.InstanceDaoService;
 import org.slf4j.Logger;
@@ -98,7 +97,7 @@ public class ContainerControlService extends ServerControl {
     }
 
     @Override
-    public String inspectInstance(String instanceId, StorageType storageType) {
+    public String inspectInstance(String instanceId) {
         InspectContainerResponse inspectContainerResponse = dockerClient.inspectContainerCmd(instanceId).exec();
         ObjectNode containerResponse = buildContainerResponse(instanceId, inspectContainerResponse);
         Optional<String> jsonResponse = getJsonResponse(containerResponse);

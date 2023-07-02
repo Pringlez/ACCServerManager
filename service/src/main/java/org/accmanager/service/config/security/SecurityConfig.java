@@ -1,7 +1,9 @@
 package org.accmanager.service.config.security;
 
+import org.accmanager.service.services.security.UserAuthDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,6 +22,12 @@ import java.util.Map;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserAuthDetailsService userAuthDetailsService;
+
+    public SecurityConfig(UserAuthDetailsService userAuthDetailsService) {
+        this.userAuthDetailsService = userAuthDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -45,6 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         encoders.put("MD5", new MessageDigestPasswordEncoder("MD5"));
         encoders.put("sha256", new StandardPasswordEncoder());
         return new DelegatingPasswordEncoder(encodingId, encoders);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(userAuthDetailsService);
     }
 
     // In-memory username & password setup

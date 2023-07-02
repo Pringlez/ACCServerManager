@@ -5,9 +5,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.AUTO;
 
@@ -24,9 +24,8 @@ public class UsersAuthorityEntity {
     @Column(name = "PERMISSION")
     private String permission;
 
-    @ManyToOne
-    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID")
-    private UsersRolesEntity roles;
+    @ManyToMany(mappedBy = "authorities")
+    private Set<RolesEntity> roles;
 
     public static UsersAuthorityEntity builder() {
         return new UsersAuthorityEntity();
@@ -50,11 +49,11 @@ public class UsersAuthorityEntity {
         return this;
     }
 
-    public UsersRolesEntity getRoles() {
+    public Set<RolesEntity> getRoles() {
         return roles;
     }
 
-    public UsersAuthorityEntity setRoles(UsersRolesEntity roles) {
+    public UsersAuthorityEntity setRoles(Set<RolesEntity> roles) {
         this.roles = roles;
         return this;
     }

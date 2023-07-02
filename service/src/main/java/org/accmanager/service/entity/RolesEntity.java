@@ -5,8 +5,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
 
@@ -15,8 +16,8 @@ import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
 
 @Entity
-@Table(name = "USERS_ROLES")
-public class UsersRolesEntity {
+@Table(name = "ROLES")
+public class RolesEntity {
 
     @Id
     @GeneratedValue(strategy = AUTO)
@@ -30,18 +31,21 @@ public class UsersRolesEntity {
     @ManyToMany(mappedBy = "roles")
     private Set<UsersEntity> users;
 
-    @OneToMany(cascade = MERGE, fetch = EAGER, mappedBy = "roles")
+    @ManyToMany(cascade = MERGE, fetch = EAGER)
+    @JoinTable(name = "USERS_ROLES_AUTHORITIES",
+            joinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "AUTHORITY_ID")})
     private Set<UsersAuthorityEntity> authorities;
 
-    public static UsersRolesEntity builder() {
-        return new UsersRolesEntity();
+    public static RolesEntity builder() {
+        return new RolesEntity();
     }
 
     public Integer getRoleId() {
         return roleId;
     }
 
-    public UsersRolesEntity setRoleId(Integer roleId) {
+    public RolesEntity setRoleId(Integer roleId) {
         this.roleId = roleId;
         return this;
     }
@@ -50,7 +54,7 @@ public class UsersRolesEntity {
         return roleName;
     }
 
-    public UsersRolesEntity setRoleName(String roleName) {
+    public RolesEntity setRoleName(String roleName) {
         this.roleName = roleName;
         return this;
     }
@@ -59,7 +63,7 @@ public class UsersRolesEntity {
         return users;
     }
 
-    public UsersRolesEntity setUsers(Set<UsersEntity> users) {
+    public RolesEntity setUsers(Set<UsersEntity> users) {
         this.users = users;
         return this;
     }
@@ -68,7 +72,7 @@ public class UsersRolesEntity {
         return authorities;
     }
 
-    public UsersRolesEntity setAuthorities(Set<UsersAuthorityEntity> authorities) {
+    public RolesEntity setAuthorities(Set<UsersAuthorityEntity> authorities) {
         this.authorities = authorities;
         return this;
     }

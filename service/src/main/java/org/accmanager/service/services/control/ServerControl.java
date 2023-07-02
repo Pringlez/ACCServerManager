@@ -2,14 +2,9 @@ package org.accmanager.service.services.control;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.accmanager.model.Instance;
-import org.accmanager.model.StorageType;
 import org.accmanager.service.services.dao.InstanceDaoService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class ServerControl {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServerControl.class);
 
     private final InstanceDaoService instanceDaoService;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -28,7 +23,7 @@ public abstract class ServerControl {
 
     public abstract void deleteConfigFiles(String instanceId);
 
-    public abstract String inspectInstance(String instanceId, StorageType storageType);
+    public abstract String inspectInstance(String instanceId);
 
     public InstanceDaoService getDaoService() {
         return instanceDaoService;

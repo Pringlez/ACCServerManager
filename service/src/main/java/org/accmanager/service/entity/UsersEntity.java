@@ -36,10 +36,10 @@ public class UsersEntity {
     private String password;
 
     @ManyToMany(cascade = MERGE, fetch = EAGER)
-    @JoinTable(name = "USERS_ROLES_AUTHORITIES",
+    @JoinTable(name = "USERS_ROLES",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID")})
-    private Set<UsersRolesEntity> roles;
+    private Set<RolesEntity> roles;
 
     @Transient
     private Set<UsersAuthorityEntity> authorities;
@@ -95,18 +95,18 @@ public class UsersEntity {
         return this;
     }
 
-    public Set<UsersRolesEntity> getRoles() {
+    public Set<RolesEntity> getRoles() {
         return roles;
     }
 
-    public UsersEntity setRoles(Set<UsersRolesEntity> roles) {
+    public UsersEntity setRoles(Set<RolesEntity> roles) {
         this.roles = roles;
         return this;
     }
 
     public Set<UsersAuthorityEntity> getAuthorities() {
         return this.roles.stream()
-                .map(UsersRolesEntity::getAuthorities)
+                .map(RolesEntity::getAuthorities)
                 .flatMap(Set::stream)
                 .collect(Collectors.toSet());
     }

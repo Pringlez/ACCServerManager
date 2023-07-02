@@ -167,6 +167,16 @@ create table instances
 alter table instances
     owner to postgres;
 
+create table roles
+(
+    role_id   integer not null
+        primary key,
+    role_name varchar(255)
+);
+
+alter table roles
+    owner to postgres;
+
 create table sessions
 (
     session_id           varchar(255) not null
@@ -227,38 +237,39 @@ create table users
 alter table users
     owner to postgres;
 
-create table users_roles
-(
-    role_id   integer not null
-        primary key,
-    role_name varchar(255)
-);
-
-alter table users_roles
-    owner to postgres;
-
 create table users_authority
 (
     authority_id integer not null
         primary key,
-    permission   varchar(255),
-    role_id      integer
-        constraint fkt0fwkodjcnw0im8mjp4vtk8rf
-            references users_roles
+    permission   varchar(255)
 );
 
 alter table users_authority
     owner to postgres;
 
-create table users_roles_authorities
+create table users_roles
 (
     user_id integer not null
-        constraint fk4xb4ldkxod433g2lobw3o6yw4
+        constraint fk12v220v0594jj67ajy0u6xdvu
             references users,
     role_id integer not null
-        constraint fks4gj2qe9p8rm5x9l3yrsn8g08
-            references users_roles,
+        constraint fkoaraxqcxi9fou9oqpjrc4nx68
+            references roles,
     primary key (user_id, role_id)
+);
+
+alter table users_roles
+    owner to postgres;
+
+create table users_roles_authorities
+(
+    role_id      integer not null
+        constraint fkgyxt1q1kpaonv4nynd05hk7qw
+            references roles,
+    authority_id integer not null
+        constraint fkcms6o7cpx3bo7q4offrq20a0b
+            references users_authority,
+    primary key (role_id, authority_id)
 );
 
 alter table users_roles_authorities

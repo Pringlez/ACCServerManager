@@ -2,7 +2,7 @@ package org.accmanager.service.startup;
 
 import org.accmanager.service.entity.UsersAuthorityEntity;
 import org.accmanager.service.entity.UsersEntity;
-import org.accmanager.service.entity.UsersRolesEntity;
+import org.accmanager.service.entity.RolesEntity;
 import org.accmanager.service.repository.UsersAuthorityRepository;
 import org.accmanager.service.repository.UsersRepository;
 import org.accmanager.service.repository.UsersRolesRepository;
@@ -46,8 +46,8 @@ public class UserDataLoader implements CommandLineRunner {
         UsersAuthorityEntity writeBop = usersAuthorityRepository.save(UsersAuthorityEntity.builder().setPermission("write.bop"));
         UsersAuthorityEntity writeAssistRules = usersAuthorityRepository.save(UsersAuthorityEntity.builder().setPermission("write.assistRules"));
 
-        UsersRolesEntity adminRole = usersRolesRepository.save(UsersRolesEntity.builder().setRoleName("ADMIN"));
-        UsersRolesEntity userRole = usersRolesRepository.save(UsersRolesEntity.builder().setRoleName("USER"));
+        RolesEntity adminRole = usersRolesRepository.save(RolesEntity.builder().setRoleName("ADMIN"));
+        RolesEntity userRole = usersRolesRepository.save(RolesEntity.builder().setRoleName("USER"));
 
         adminRole.setAuthorities(Set.of(readInstance, readEntries, readEvents, readEventRules, readBop, readAssistRules, writeInstance, writeEntries,
                 writeEvents, writeEventRules, writeBop, writeAssistRules));

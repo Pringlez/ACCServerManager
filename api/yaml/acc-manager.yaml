@@ -58,13 +58,6 @@ paths:
       operationId: getAllInstances
       tags:
         - instances
-      parameters:
-        - name: storageType
-          in: path
-          required: true
-          description: The type of storage used to persist the ACC instance data
-          schema:
-            $ref: "#/components/schemas/StorageType"
       responses:
         '200':
           description: An array of instances
@@ -116,12 +109,6 @@ paths:
           description: The id of an ACC instance
           schema:
             type: string
-        - name: storageType
-          in: path
-          required: true
-          description: The type of storage used to persist the ACC instance data
-          schema:
-            $ref: "#/components/schemas/StorageType"
       responses:
         '200':
           description: Expected response to a valid request
@@ -980,10 +967,7 @@ components:
     ServerControl:
       type: string
       enum: [container, executable]
-    StorageType:
-      type: string
-      enum: [file, db, all]
-      default: all
+
     InstanceSuccess:
       type: object
       properties:

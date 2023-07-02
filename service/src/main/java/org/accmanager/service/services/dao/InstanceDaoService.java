@@ -13,7 +13,6 @@ import org.accmanager.model.EventRules;
 import org.accmanager.model.Instance;
 import org.accmanager.model.Session;
 import org.accmanager.model.Settings;
-import org.accmanager.model.StorageType;
 import org.accmanager.service.entity.AssistRulesEntity;
 import org.accmanager.service.entity.BopEntity;
 import org.accmanager.service.entity.BopEntryEntity;
@@ -377,18 +376,9 @@ public class InstanceDaoService {
 
     }
 
-    /**
-     * Get all acc server instances by storage type, return all instances if 'ALL' of @{@link StorageType} passed
-     *
-     * @param storageType
-     * @return
-     */
-    public List<Instance> listOfInstances(StorageType storageType) {
-        List<Instance> instancesList = new ArrayList<>();
-        if (StorageType.ALL.equals(storageType)) {
-            instancesList = getInstancesByFile();
-            // TODO - Combine all results from file system & database
-        }
+    public List<Instance> listOfInstances() {
+        List<Instance> instancesList = getInstancesByFile();
+        // TODO - Combine all results from file system & database
         return instancesList;
     }
 

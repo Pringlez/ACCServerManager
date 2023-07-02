@@ -3,6 +3,13 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
   security:
     user:
       password: 9k7nEa45dPzVuG64
