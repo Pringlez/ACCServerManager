@@ -8,6 +8,7 @@ import org.accmanager.service.exception.InstanceNotFoundException;
 import org.accmanager.service.services.control.ServerControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -26,11 +27,13 @@ public class InstancesController implements InstancesApi {
         this.serverControl = serverControl;
     }
 
+    @PreAuthorize("hasAuthority('read.instance')")
     @Override
     public ResponseEntity<List<Instance>> getAllInstances(StorageType storageType) {
         return ResponseEntity.ok(serverControl.getDaoService().listOfInstances(storageType));
     }
 
+    @PreAuthorize("hasAuthority('read.instance')")
     @Override
     public ResponseEntity<Instance> getInstanceById(String instanceId, StorageType storageType) {
         serverControl.inspectInstance(instanceId, storageType);
@@ -43,6 +46,7 @@ public class InstancesController implements InstancesApi {
                 .orElseThrow(() -> new InstanceNotFoundException(format(ACC_SERVER_INSTANCE_NOT_FOUND.toString(), instanceId)));
     }
 
+    @PreAuthorize("hasAuthority('write.instance')")
     @Override
     public ResponseEntity<InstanceSuccess> createInstance(Instance instance) {
         serverControl.createInstance(instance);
@@ -57,30 +61,35 @@ public class InstancesController implements InstancesApi {
         return instanceSuccess;
     }
 
+    @PreAuthorize("hasAuthority('write.instance')")
     @Override
     public ResponseEntity<InstanceSuccess> updateInstanceById(String instanceId, Instance instance) {
         serverControl.getDaoService().writeInstanceConfiguration(instance);
         return ResponseEntity.ok(buildSuccessInstance("ACC server instance was updated successfully, you'll need to restart the ACC server"));
     }
 
+    @PreAuthorize("hasAuthority('write.instance')")
     @Override
     public ResponseEntity<Void> deleteInstanceById(String instanceId) {
         serverControl.deleteConfigFiles(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('read.instance')")
     @Override
     public ResponseEntity<Void> startInstanceById(String instanceId) {
         serverControl.startInstance(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('read.instance')")
     @Override
     public ResponseEntity<Void> restartInstanceById(String instanceId) {
         serverControl.restartInstance(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('read.instance')")
     @Override
     public ResponseEntity<Void> stopInstanceById(String instanceId) {
         serverControl.stopInstance(instanceId);

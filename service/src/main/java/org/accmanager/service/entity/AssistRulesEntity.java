@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ASSISTS_RULES")
+@Table(name = "ASSIST_RULES")
 public class AssistRulesEntity {
 
     private String assistsId;

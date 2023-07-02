@@ -5,6 +5,7 @@ import org.accmanager.model.AssistRules;
 import org.accmanager.service.services.files.FileReadWriteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import static org.accmanager.service.enums.FilesEnum.ASSIST_RULES_JSON;
@@ -18,24 +19,28 @@ public class AssistsController implements AssistRulesApi {
         this.fileReadWriteService = fileReadWriteService;
     }
 
+    @PreAuthorize("hasAuthority('read.assistRules')")
     @Override
     public ResponseEntity<AssistRules> getAssistRulesByInstanceId(String instanceId, String assistsId) {
         return new ResponseEntity<>((AssistRules) fileReadWriteService.readJsonFile(
                 instanceId, ASSIST_RULES_JSON, AssistRules.class).orElse(new AssistRules()), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('write.assistRules')")
     @Override
     public ResponseEntity<AssistRules> createAssistRulesByInstanceId(String instanceId, AssistRules assistRules, String assistsId) {
         fileReadWriteService.writeJsonFile(instanceId, ASSIST_RULES_JSON, assistRules);
         return new ResponseEntity<>(assistRules, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('write.assistRules')")
     @Override
     public ResponseEntity<AssistRules> updateAssistRulesByInstanceId(String instanceId, AssistRules assistRules, String assistsId) {
         fileReadWriteService.writeJsonFile(instanceId, ASSIST_RULES_JSON, assistRules);
         return new ResponseEntity<>(assistRules, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('write.assistRules')")
     @Override
     public ResponseEntity<Void> deleteAssistRulesByInstanceId(String instanceId, String assistsId) {
         return null;

@@ -3,7 +3,6 @@ package org.accmanager.service.services.security;
 import org.accmanager.service.entity.UsersAuthorityEntity;
 import org.accmanager.service.entity.UsersEntity;
 import org.accmanager.service.repository.UsersRepository;
-import org.jvnet.hk2.annotations.Service;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -41,7 +40,7 @@ public class UserAuthDetailsService implements UserDetailsService {
     private Collection<? extends GrantedAuthority> convertToSpringAuthorities(Set<UsersAuthorityEntity> authorities) {
         if (authorities != null && authorities.size() > 0) {
             return authorities.stream()
-                    .map(UsersAuthorityEntity::getUserRole)
+                    .map(UsersAuthorityEntity::getPermission)
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toSet());
         } else {

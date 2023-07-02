@@ -9,10 +9,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.Instant;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
 
 @Entity
@@ -32,10 +35,13 @@ public class UsersEntity {
     @Column(name = "PASSWORD")
     private String password;
 
-    @ManyToMany(cascade = MERGE)
-    @JoinTable(name = "USERS_AUTHORITIES",
+    @ManyToMany(cascade = MERGE, fetch = EAGER)
+    @JoinTable(name = "USERS_ROLES_AUTHORITIES",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "AUTHORITY_ID")})
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID")})
+    private Set<UsersRolesEntity> roles;
+
+    @Transient
     private Set<UsersAuthorityEntity> authorities;
 
     @Basic
@@ -89,8 +95,20 @@ public class UsersEntity {
         return this;
     }
 
+    public Set<UsersRolesEntity> getRoles() {
+        return roles;
+    }
+
+    public UsersEntity setRoles(Set<UsersRolesEntity> roles) {
+        this.roles = roles;
+        return this;
+    }
+
     public Set<UsersAuthorityEntity> getAuthorities() {
-        return authorities;
+        return this.roles.stream()
+                .map(UsersRolesEntity::getAuthorities)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 
     public UsersEntity setAuthorities(Set<UsersAuthorityEntity> authorities) {

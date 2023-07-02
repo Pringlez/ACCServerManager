@@ -5,9 +5,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Set;
 
 import static javax.persistence.GenerationType.AUTO;
 
@@ -21,11 +21,12 @@ public class UsersAuthorityEntity {
     private Integer authorityId;
 
     @Basic
-    @Column(name = "USER_ROLE")
-    private String userRole;
+    @Column(name = "PERMISSION")
+    private String permission;
 
-    @ManyToMany(mappedBy = "authorities")
-    private Set<UsersEntity> users;
+    @ManyToOne
+    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID")
+    private UsersRolesEntity roles;
 
     public static UsersAuthorityEntity builder() {
         return new UsersAuthorityEntity();
@@ -40,21 +41,21 @@ public class UsersAuthorityEntity {
         return this;
     }
 
-    public String getUserRole() {
-        return userRole;
+    public String getPermission() {
+        return permission;
     }
 
-    public UsersAuthorityEntity setUserRole(String userRole) {
-        this.userRole = userRole;
+    public UsersAuthorityEntity setPermission(String permission) {
+        this.permission = permission;
         return this;
     }
 
-    public Set<UsersEntity> getUsers() {
-        return users;
+    public UsersRolesEntity getRoles() {
+        return roles;
     }
 
-    public UsersAuthorityEntity setUsers(Set<UsersEntity> users) {
-        this.users = users;
+    public UsersAuthorityEntity setRoles(UsersRolesEntity roles) {
+        this.roles = roles;
         return this;
     }
 }

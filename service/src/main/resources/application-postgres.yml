@@ -8,21 +8,22 @@ spring:
     hibernate:
       #ddl-auto: none
       ddl-auto: update
+      #ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         format_sql: true
     defer-datasource-initialization: true
-    #defer-datasource-initialization: false
+    #efer-datasource-initialization: false
     database: postgresql
     show-sql: true
   sql:
     init:
-      schema-locations: classpath:database/schema.sql
+      schema-locations: classpath:database/postgres/schema.sql
       platform: postgres
       continue-on-error: true
-      data-locations: classpath:database/data.sql
+      data-locations: classpath:database/postgres/data.sql
       mode: always
-      #mode: embedded - Does not execute inserts on app startup, for real database
-      #mode: never - Never execute inserts on app startup
+      #mode: embedded # - Does not execute inserts on app startup, for real database
+      #mode: never # - Never execute inserts on app startup
