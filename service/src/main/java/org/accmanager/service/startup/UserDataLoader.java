@@ -1,8 +1,8 @@
 package org.accmanager.service.startup;
 
+import org.accmanager.service.entity.RolesEntity;
 import org.accmanager.service.entity.UsersAuthorityEntity;
 import org.accmanager.service.entity.UsersEntity;
-import org.accmanager.service.entity.RolesEntity;
 import org.accmanager.service.repository.UsersAuthorityRepository;
 import org.accmanager.service.repository.UsersRepository;
 import org.accmanager.service.repository.UsersRolesRepository;
