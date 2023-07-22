@@ -2,52 +2,735 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "success": {
-      "type": "boolean"
+    "id": {
+      "type": "string"
     },
-    "results": {
-      "type": "array",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "buildVersion": {
-              "type": "null"
+    "name": {
+      "type": "string"
+    },
+    "containerImage": {
+      "type": "string"
+    },
+    "serverControl": {
+      "type": "null"
+    },
+    "state": {
+      "type": "null"
+    },
+    "event": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "track": {
+          "type": "string"
+        },
+        "preRaceWaitingTimeSeconds": {
+          "type": "integer"
+        },
+        "sessionOverTimeSeconds": {
+          "type": "integer"
+        },
+        "ambientTemp": {
+          "type": "integer"
+        },
+        "trackTemp": {
+          "type": "integer"
+        },
+        "cloudLevel": {
+          "type": "number"
+        },
+        "rain": {
+          "type": "integer"
+        },
+        "weatherRandomness": {
+          "type": "integer"
+        },
+        "postQualySeconds": {
+          "type": "integer"
+        },
+        "postRaceSeconds": {
+          "type": "integer"
+        },
+        "metaData": {
+          "type": "string"
+        },
+        "sessions": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "hourOfDay": {
+                  "type": "integer"
+                },
+                "dayOfWeekend": {
+                  "type": "integer"
+                },
+                "timeMultiplier": {
+                  "type": "integer"
+                },
+                "sessionType": {
+                  "type": "string"
+                },
+                "sessionDurationMinutes": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "hourOfDay",
+                "dayOfWeekend",
+                "timeMultiplier",
+                "sessionType",
+                "sessionDurationMinutes"
+              ]
             },
-            "lastCommitDate": {
-              "type": "null"
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "hourOfDay": {
+                  "type": "integer"
+                },
+                "dayOfWeekend": {
+                  "type": "integer"
+                },
+                "timeMultiplier": {
+                  "type": "integer"
+                },
+                "sessionType": {
+                  "type": "string"
+                },
+                "sessionDurationMinutes": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "hourOfDay",
+                "dayOfWeekend",
+                "timeMultiplier",
+                "sessionType",
+                "sessionDurationMinutes"
+              ]
             },
-            "buildDate": {
-              "type": "null"
-            },
-            "isActive": {
-              "type": "boolean"
-            },
-            "startedOn": {
-              "type": "string"
-            },
-            "businessRegionCode": {
-              "type": "string"
-            },
-            "configVersion": {
-              "type": "null"
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "hourOfDay": {
+                  "type": "integer"
+                },
+                "dayOfWeekend": {
+                  "type": "integer"
+                },
+                "timeMultiplier": {
+                  "type": "integer"
+                },
+                "sessionType": {
+                  "type": "string"
+                },
+                "sessionDurationMinutes": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "hourOfDay",
+                "dayOfWeekend",
+                "timeMultiplier",
+                "sessionType",
+                "sessionDurationMinutes"
+              ]
             }
-          },
-          "required": [
-            "buildVersion",
-            "lastCommitDate",
-            "buildDate",
-            "isActive",
-            "startedOn",
-            "businessRegionCode",
-            "configVersion"
           ]
+        },
+        "configVersion": {
+          "type": "integer"
         }
+      },
+      "required": [
+        "id",
+        "name",
+        "track",
+        "preRaceWaitingTimeSeconds",
+        "sessionOverTimeSeconds",
+        "ambientTemp",
+        "trackTemp",
+        "cloudLevel",
+        "rain",
+        "weatherRandomness",
+        "postQualySeconds",
+        "postRaceSeconds",
+        "metaData",
+        "sessions",
+        "configVersion"
+      ]
+    },
+    "eventRules": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "qualifyStandingType": {
+          "type": "integer"
+        },
+        "superpoleMaxCar": {
+          "type": "integer"
+        },
+        "pitWindowLengthSec": {
+          "type": "integer"
+        },
+        "driverStintTimeSec": {
+          "type": "integer"
+        },
+        "mandatoryPitstopCount": {
+          "type": "integer"
+        },
+        "maxTotalDrivingTime": {
+          "type": "integer"
+        },
+        "maxDriversCount": {
+          "type": "integer"
+        },
+        "isRefuellingAllowedInRace": {
+          "type": "boolean"
+        },
+        "isRefuellingTimeFixed": {
+          "type": "boolean"
+        },
+        "isMandatoryPitstopRefuellingRequired": {
+          "type": "boolean"
+        },
+        "isMandatoryPitstopTyreChangeRequired": {
+          "type": "boolean"
+        },
+        "isMandatoryPitstopSwapDriverRequired": {
+          "type": "boolean"
+        },
+        "tyreSetCount": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "qualifyStandingType",
+        "superpoleMaxCar",
+        "pitWindowLengthSec",
+        "driverStintTimeSec",
+        "mandatoryPitstopCount",
+        "maxTotalDrivingTime",
+        "maxDriversCount",
+        "isRefuellingAllowedInRace",
+        "isRefuellingTimeFixed",
+        "isMandatoryPitstopRefuellingRequired",
+        "isMandatoryPitstopTyreChangeRequired",
+        "isMandatoryPitstopSwapDriverRequired",
+        "tyreSetCount"
+      ]
+    },
+    "entriesList": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entries": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "drivers": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "shortName": {
+                          "type": "string"
+                        },
+                        "driverCategory": {
+                          "type": "integer"
+                        },
+                        "playerID": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "firstName",
+                        "lastName",
+                        "shortName",
+                        "driverCategory",
+                        "playerID"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "shortName": {
+                          "type": "string"
+                        },
+                        "driverCategory": {
+                          "type": "integer"
+                        },
+                        "playerID": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "firstName",
+                        "lastName",
+                        "shortName",
+                        "driverCategory",
+                        "playerID"
+                      ]
+                    }
+                  ]
+                },
+                "raceNumber": {
+                  "type": "integer"
+                },
+                "forcedCarModel": {
+                  "type": "integer"
+                },
+                "overrideDriverInfo": {
+                  "type": "integer"
+                },
+                "customCar": {
+                  "type": "string"
+                },
+                "overrideCarModelForCustomCar": {
+                  "type": "integer"
+                },
+                "isServerAdmin": {
+                  "type": "integer"
+                },
+                "defaultGridPosition": {
+                  "type": "integer"
+                },
+                "ballastKg": {
+                  "type": "integer"
+                },
+                "restrictor": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "drivers",
+                "raceNumber",
+                "forcedCarModel",
+                "overrideDriverInfo",
+                "customCar",
+                "overrideCarModelForCustomCar",
+                "isServerAdmin",
+                "defaultGridPosition",
+                "ballastKg",
+                "restrictor"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "drivers": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "shortName": {
+                          "type": "string"
+                        },
+                        "driverCategory": {
+                          "type": "integer"
+                        },
+                        "playerID": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "firstName",
+                        "lastName",
+                        "shortName",
+                        "driverCategory",
+                        "playerID"
+                      ]
+                    }
+                  ]
+                },
+                "raceNumber": {
+                  "type": "integer"
+                },
+                "forcedCarModel": {
+                  "type": "integer"
+                },
+                "overrideDriverInfo": {
+                  "type": "integer"
+                },
+                "customCar": {
+                  "type": "string"
+                },
+                "overrideCarModelForCustomCar": {
+                  "type": "integer"
+                },
+                "isServerAdmin": {
+                  "type": "integer"
+                },
+                "defaultGridPosition": {
+                  "type": "integer"
+                },
+                "ballastKg": {
+                  "type": "integer"
+                },
+                "restrictor": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "drivers",
+                "raceNumber",
+                "forcedCarModel",
+                "overrideDriverInfo",
+                "customCar",
+                "overrideCarModelForCustomCar",
+                "isServerAdmin",
+                "defaultGridPosition",
+                "ballastKg",
+                "restrictor"
+              ]
+            }
+          ]
+        },
+        "forceEntryList": {
+          "type": "integer"
+        },
+        "configVersion": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "entries",
+        "forceEntryList",
+        "configVersion"
+      ]
+    },
+    "assistRules": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "stabilityControlLevelMax": {
+          "type": "integer"
+        },
+        "disableAutosteer": {
+          "type": "integer"
+        },
+        "disableAutoLights": {
+          "type": "integer"
+        },
+        "disableAutoWiper": {
+          "type": "integer"
+        },
+        "disableAutoEngineStart": {
+          "type": "integer"
+        },
+        "disableAutoPitLimiter": {
+          "type": "integer"
+        },
+        "disableAutoGear": {
+          "type": "integer"
+        },
+        "disableAutoClutch": {
+          "type": "integer"
+        },
+        "disableIdealLine": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "stabilityControlLevelMax",
+        "disableAutosteer",
+        "disableAutoLights",
+        "disableAutoWiper",
+        "disableAutoEngineStart",
+        "disableAutoPitLimiter",
+        "disableAutoGear",
+        "disableAutoClutch",
+        "disableIdealLine"
+      ]
+    },
+    "bop": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entries": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "track": {
+                  "type": "string"
+                },
+                "carModel": {
+                  "type": "integer"
+                },
+                "ballastKg": {
+                  "type": "integer"
+                },
+                "restrictor": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "track",
+                "carModel",
+                "ballastKg",
+                "restrictor"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "track": {
+                  "type": "string"
+                },
+                "carModel": {
+                  "type": "integer"
+                },
+                "ballastKg": {
+                  "type": "integer"
+                },
+                "restrictor": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "track",
+                "carModel",
+                "ballastKg",
+                "restrictor"
+              ]
+            }
+          ]
+        },
+        "disableAutosteer": {
+          "type": "integer"
+        },
+        "disableAutoLights": {
+          "type": "integer"
+        },
+        "disableAutoWiper": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "entries",
+        "disableAutosteer",
+        "disableAutoLights",
+        "disableAutoWiper"
+      ]
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "tcpPort": {
+          "type": "integer"
+        },
+        "udpPort": {
+          "type": "integer"
+        },
+        "registerToLobby": {
+          "type": "integer"
+        },
+        "maxConnections": {
+          "type": "integer"
+        },
+        "lanDiscovery": {
+          "type": "integer"
+        },
+        "publicIP": {
+          "type": "string"
+        },
+        "configVersion": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "tcpPort",
+        "udpPort",
+        "registerToLobby",
+        "maxConnections",
+        "lanDiscovery",
+        "publicIP",
+        "configVersion"
+      ]
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "serverName": {
+          "type": "string"
+        },
+        "adminPassword": {
+          "type": "string"
+        },
+        "carGroup": {
+          "type": "string"
+        },
+        "trackMedalsRequirement": {
+          "type": "integer"
+        },
+        "safetyRatingRequirement": {
+          "type": "integer"
+        },
+        "racecraftRatingRequirement": {
+          "type": "integer"
+        },
+        "password": {
+          "type": "string"
+        },
+        "spectatorPassword": {
+          "type": "string"
+        },
+        "maxCarSlots": {
+          "type": "integer"
+        },
+        "dumpLeaderboards": {
+          "type": "integer"
+        },
+        "isRaceLocked": {
+          "type": "integer"
+        },
+        "isPrepPhaseLocked": {
+          "type": "integer"
+        },
+        "randomizeTrackWhenEmpty": {
+          "type": "integer"
+        },
+        "centralEntryListPath": {
+          "type": "string"
+        },
+        "allowAutoDQ": {
+          "type": "integer"
+        },
+        "shortFormationLap": {
+          "type": "integer"
+        },
+        "dumpEntryList": {
+          "type": "integer"
+        },
+        "formationLapType": {
+          "type": "integer"
+        },
+        "doDriverSwapBroadcast": {
+          "type": "integer"
+        },
+        "configVersion": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "serverName",
+        "adminPassword",
+        "carGroup",
+        "trackMedalsRequirement",
+        "safetyRatingRequirement",
+        "racecraftRatingRequirement",
+        "password",
+        "spectatorPassword",
+        "maxCarSlots",
+        "dumpLeaderboards",
+        "isRaceLocked",
+        "isPrepPhaseLocked",
+        "randomizeTrackWhenEmpty",
+        "centralEntryListPath",
+        "allowAutoDQ",
+        "shortFormationLap",
+        "dumpEntryList",
+        "formationLapType",
+        "doDriverSwapBroadcast",
+        "configVersion"
       ]
     }
   },
   "required": [
-    "success",
-    "results"
+    "id",
+    "name",
+    "containerImage",
+    "serverControl",
+    "state",
+    "event",
+    "eventRules",
+    "entriesList",
+    "assistRules",
+    "bop",
+    "config",
+    "settings"
   ]
 }

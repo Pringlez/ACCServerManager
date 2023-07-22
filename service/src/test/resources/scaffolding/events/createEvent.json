@@ -1,0 +1,35 @@
+{
+  "event": {
+    "id": "84d2d4da-93e1-4fa9-88e3-313d6c659c95",
+    "name": "ACC Event Name",
+    "track": "monza",
+    "preRaceWaitingTimeSeconds": 80,
+    "sessionOverTimeSeconds": 120,
+    "ambientTemp": 22,
+    "trackTemp": 36,
+    "cloudLevel": 0.1,
+    "rain": 0.0,
+    "weatherRandomness": 1,
+    "postQualySeconds": 60,
+    "postRaceSeconds": 60,
+    "metaData": "monza",
+    "sessions": [
+      {
+        "id": "86de8c49-5922-4d4f-93ea-c0f00d3e8f2b",
+        "hourOfDay": 8,
+        "dayOfWeekend": 2,
+        "timeMultiplier": 5,
+        "sessionType": "Q",
+        "sessionDurationMinutes": 10
+      },
+      {
+        "id": "826a5a21-f9c2-45e4-b120-4393c4a9dc6a",
+        "hourOfDay": 12,
+        "dayOfWeekend": 3,
+        "timeMultiplier": 5,
+        "sessionType": "R",
+        "sessionDurationMinutes": 25
+      }
+    ]
+  }
+}

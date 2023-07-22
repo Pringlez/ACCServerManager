@@ -251,7 +251,7 @@
 				</plugins>
 			</build>
 			<properties>
-				<spring.profiles.active>dev</spring.profiles.active>
+				<spring.profiles.active>local</spring.profiles.active>
 			</properties>
 		</profile>
 		<profile>
@@ -291,7 +291,7 @@
 				</plugins>
 			</build>
 			<properties>
-				<spring.profiles.active>dev</spring.profiles.active>
+				<spring.profiles.active>local</spring.profiles.active>
 			</properties>
 		</profile>
 		<profile>
@@ -323,7 +323,7 @@
 									cucumber.plugin = pretty, html:target/report/cucumber.html
 									cucumber.features = src/test/resources/features
 									cucumber.filter.tags = @Api and not @Ignore
-									cucumber.glue = classpath:org.accmanager.service.integration.cucumber.config, classpath:org.accmanager.service.integration.cucumber.steps.common, classpath:org.accmanager.service.integration.cucumber.steps.health
+									cucumber.glue = classpath:org.accmanager.service.integration.cucumber.config, classpath:org.accmanager.service.integration.cucumber.steps
 									cucumber.junit-platform.naming-strategy = long
 								</configurationParameters>
 							</properties>
@@ -332,7 +332,7 @@
 				</plugins>
 			</build>
 			<properties>
-				<spring.profiles.active>dev</spring.profiles.active>
+				<spring.profiles.active>local</spring.profiles.active>
 			</properties>
 		</profile>
 		<profile>

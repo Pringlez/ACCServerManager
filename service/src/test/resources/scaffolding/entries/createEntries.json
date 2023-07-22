@@ -1,0 +1,60 @@
+{
+  "id": "77134375-937a-436b-b159-5e7d729dbdec",
+  "entriesList": {
+    "id": "b1b92169-2830-48cc-b55e-639584d9899d",
+    "entries": [
+      {
+        "drivers": [
+          {
+            "id": "2a64b799-93f0-417b-8af6-d0dfa476f60a",
+            "firstName": "ExampleFour",
+            "lastName": "Example",
+            "shortName": "NicknameFour",
+            "driverCategory": 3,
+            "playerID": "s*****************"
+          },
+          {
+            "id": "82148d23-ec0a-45de-a628-efcba6b5d4d2",
+            "firstName": "ExampleFive",
+            "lastName": "Example",
+            "shortName": "NicknameFive",
+            "driverCategory": 3,
+            "playerID": "s*****************"
+          }
+        ],
+        "raceNumber": -1,
+        "forcedCarModel": -1,
+        "overrideDriverInfo": 1,
+        "customCar": "9-200321-103118.json",
+        "overrideCarModelForCustomCar": 0,
+        "isServerAdmin": 1,
+        "defaultGridPosition": -1,
+        "ballastKg": 0,
+        "restrictor": 0
+      },
+      {
+        "drivers": [
+          {
+            "id": "7da29b0d-0367-46aa-bc20-7a5c37586010",
+            "firstName": "ExampleSeven",
+            "lastName": "Example",
+            "shortName": "NicknameSeven",
+            "driverCategory": 0,
+            "playerID": "s*****************"
+          }
+        ],
+        "raceNumber": -1,
+        "forcedCarModel": -1,
+        "overrideDriverInfo": 1,
+        "customCar": "9-200321-103118.json",
+        "overrideCarModelForCustomCar": 0,
+        "isServerAdmin": 1,
+        "defaultGridPosition": -1,
+        "ballastKg": 0,
+        "restrictor": 0
+      }
+    ],
+    "forceEntryList": 0,
+    "configVersion": 1
+  }
+}

@@ -8,8 +8,8 @@ spring:
     name: acc-manager
     version: 0.6.1
   profiles:
-    #active: local,h2
-    active: local,postgres
+    active: local,h2
+    #active: local,postgres
   security:
     user:
       name: acc-user
@@ -24,3 +24,5 @@ management:
   info:
     git:
       mode: full
+    env:
+      enabled: true

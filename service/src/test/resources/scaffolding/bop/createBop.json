@@ -1,0 +1,21 @@
+{
+  "id": "369c1c43-136e-48b3-ac0c-94ffb162de93",
+  "entries": [
+    {
+      "id": "2ba37b02-ee66-48ec-afa3-d815ddc686e7",
+      "track": "zolder",
+      "carModel": 7,
+      "ballast": 1,
+      "restrictor": 2
+    },
+    {
+      "id": "63faeca5-1ad7-47a6-8579-0e85a1d26679",
+      "track": "zolder",
+      "carModel": 2,
+      "restrictor": 5
+    }
+  ],
+  "disableAutosteer": 1,
+  "disableAutoLights": 0,
+  "disableAutoWiper": 0
+}

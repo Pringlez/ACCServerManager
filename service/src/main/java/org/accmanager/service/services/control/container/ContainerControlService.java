@@ -13,6 +13,7 @@ import org.accmanager.service.services.dao.InstanceDaoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,9 @@ public class ContainerControlService extends ServerControl {
 
     private final DockerClient dockerClient;
 
+    @Value("${accserver.files.directory.override:}")
+    private String accFileDirectoryOverride;
+
     @Autowired
     public ContainerControlService(DockerClient dockerClient, InstanceDaoService instanceDaoService) {
         super(instanceDaoService);
@@ -50,7 +54,7 @@ public class ContainerControlService extends ServerControl {
         CreateContainerResponse createContainerResponse = dockerClient.createContainerCmd(instance.getContainerImage())
                 .withCmd(Arrays.asList("--net=host", "--restart unless-stopped"))
                 .withName(instance.getId())
-                .withBinds(Bind.parse(format(PATH_HOST_SERVER_INSTANCE.toString(),
+                .withBinds(Bind.parse(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE,
                         instance.getId()) + PATH_CONTAINER))
                 .withExposedPorts(ExposedPort.udp(instance.getConfig().getUdpPort()),
                         ExposedPort.tcp(instance.getConfig().getTcpPort())).exec();

@@ -2,244 +2,83 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "success": {
-      "type": "boolean"
+    "id": {
+      "type": "string"
     },
-    "results": {
+    "entries": {
       "type": "array",
       "items": [
         {
           "type": "object",
           "properties": {
-            "gsp": {
-              "type": "object",
-              "properties": {
-                "serviceName": {
-                  "type": "string"
-                },
-                "isActive": {
-                  "type": "boolean"
-                },
-                "serviceInfo": {
-                  "type": "object",
-                  "properties": {
-                    "HostName": {
-                      "type": "string"
-                    },
-                    "DevServer": {
-                      "type": "boolean"
-                    },
-                    "ServerStartDate": {
-                      "type": "string"
-                    },
-                    "Proxy Host": {
-                      "type": "string"
-                    },
-                    "Proxy Port": {
-                      "type": "integer"
-                    },
-                    "PodType": {
-                      "type": "string"
-                    },
-                    "JVM UsedMem (MB)": {
-                      "type": "integer"
-                    },
-                    "JVM FreeMem (MB)": {
-                      "type": "integer"
-                    },
-                    "JVM MaxMem (MB)": {
-                      "type": "integer"
-                    },
-                    "JVM TotalMem (MB)": {
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "HostName",
-                    "DevServer",
-                    "ServerStartDate",
-                    "Proxy Host",
-                    "Proxy Port",
-                    "PodType",
-                    "JVM UsedMem (MB)",
-                    "JVM FreeMem (MB)",
-                    "JVM MaxMem (MB)",
-                    "JVM TotalMem (MB)"
-                  ]
-                },
-                "businessRegionCode": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "serviceName",
-                "isActive",
-                "serviceInfo",
-                "businessRegionCode"
-              ]
+            "id": {
+              "type": "string"
             },
-            "msgutils": {
-              "type": "object",
-              "required": [
-                "serviceName",
-                "isActive",
-                "serviceInfo",
-                "serviceStats",
-                "businessRegionCode"
-              ]
+            "track": {
+              "type": "string"
             },
-            "dbutils": {
-              "type": "object",
-              "properties": {
-                "serviceName": {
-                  "type": "string"
-                },
-                "isActive": {
-                  "type": "boolean"
-                },
-                "serviceInfo": {
-                  "type": "array",
-                  "items": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "poolName": {
-                          "type": "string"
-                        },
-                        "stats": {
-                          "type": "object",
-                          "properties": {
-                            "poolUrl": {
-                              "type": "string"
-                            },
-                            "poolSize": {
-                              "type": "integer"
-                            },
-                            "active": {
-                              "type": "integer"
-                            },
-                            "borrowedCount": {
-                              "type": "integer"
-                            },
-                            "createdCount": {
-                              "type": "integer"
-                            },
-                            "idle": {
-                              "type": "integer"
-                            },
-                            "reconnectedCount": {
-                              "type": "integer"
-                            },
-                            "releasedCount": {
-                              "type": "integer"
-                            },
-                            "releasedIdleCount": {
-                              "type": "integer"
-                            },
-                            "removeAbandonedCount": {
-                              "type": "integer"
-                            },
-                            "returnedCount": {
-                              "type": "integer"
-                            },
-                            "waitCount": {
-                              "type": "integer"
-                            }
-                          },
-                          "required": [
-                            "poolUrl",
-                            "poolSize",
-                            "active",
-                            "borrowedCount",
-                            "createdCount",
-                            "idle",
-                            "reconnectedCount",
-                            "releasedCount",
-                            "releasedIdleCount",
-                            "removeAbandonedCount",
-                            "returnedCount",
-                            "waitCount"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "poolName",
-                        "stats"
-                      ]
-                    }
-                  ]
-                },
-                "businessRegionCode": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "serviceName",
-                "isActive",
-                "serviceInfo",
-                "businessRegionCode"
-              ]
+            "carModel": {
+              "type": "integer"
             },
-            "activities": {
-              "type": "object",
-              "properties": {
-                "serviceName": {
-                  "type": "string"
-                },
-                "isActive": {
-                  "type": "boolean"
-                },
-                "serviceInfo": {
-                  "type": "object"
-                },
-                "businessRegionCode": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "serviceName",
-                "isActive",
-                "serviceInfo",
-                "businessRegionCode"
-              ]
+            "ballastKg": {
+              "type": "integer"
             },
-            "gc21": {
-              "type": "object",
-              "properties": {
-                "serviceName": {
-                  "type": "string"
-                },
-                "isActive": {
-                  "type": "boolean"
-                },
-                "serviceInfo": {
-                  "type": "null"
-                },
-                "businessRegionCode": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "serviceName",
-                "isActive",
-                "serviceInfo",
-                "businessRegionCode"
-              ]
+            "restrictor": {
+              "type": "integer"
             }
           },
           "required": [
-            "gsp",
-            "msgutils",
-            "dbutils",
-            "activities",
-            "gc21"
+            "id",
+            "track",
+            "carModel",
+            "ballastKg",
+            "restrictor"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "track": {
+              "type": "string"
+            },
+            "carModel": {
+              "type": "integer"
+            },
+            "ballastKg": {
+              "type": "integer"
+            },
+            "restrictor": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "id",
+            "track",
+            "carModel",
+            "ballastKg",
+            "restrictor"
           ]
         }
       ]
+    },
+    "disableAutosteer": {
+      "type": "integer"
+    },
+    "disableAutoLights": {
+      "type": "integer"
+    },
+    "disableAutoWiper": {
+      "type": "integer"
     }
   },
   "required": [
-    "success",
-    "results"
+    "id",
+    "entries",
+    "disableAutosteer",
+    "disableAutoLights",
+    "disableAutoWiper"
   ]
 }

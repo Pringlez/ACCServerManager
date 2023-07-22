@@ -1,0 +1,16 @@
+{
+  "id": "c3573fe9-bae6-4f9d-9961-f79925e5bb80",
+  "qualifyStandingType": 1,
+  "superpoleMaxCar": -1,
+  "pitWindowLengthSec": -1,
+  "driverStintTimeSec": -1,
+  "mandatoryPitstopCount": 0,
+  "maxTotalDrivingTime": -1,
+  "maxDriversCount": 16,
+  "isRefuellingAllowedInRace": true,
+  "isRefuellingTimeFixed": false,
+  "isMandatoryPitstopRefuellingRequired": false,
+  "isMandatoryPitstopTyreChangeRequired": false,
+  "isMandatoryPitstopSwapDriverRequired": false,
+  "tyreSetCount": 50
+}

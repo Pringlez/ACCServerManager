@@ -14,4 +14,5 @@ api/.classpath
 /frontend/build/
 /frontend/node/
 /database/
+/servers/
 /.jpb/

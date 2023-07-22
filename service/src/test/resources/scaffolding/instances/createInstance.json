@@ -1,0 +1,189 @@
+{
+  "id": "ae85423a-b502-4833-bcc2-a424d3f8281e",
+  "name": "ACC Instance Name",
+  "containerImage": "N/A",
+  "serverControl": "executable",
+  "state": "unknown",
+  "event": {
+    "id": "91098aa8-3f7d-4e98-bcbd-82d2398de655",
+    "name": "ACC Event Name",
+    "track": "mount_panorama",
+    "preRaceWaitingTimeSeconds": 80,
+    "sessionOverTimeSeconds": 120,
+    "ambientTemp": 22,
+    "trackTemp": 30,
+    "cloudLevel": 0.1,
+    "rain": 0.0,
+    "weatherRandomness": 1,
+    "postQualySeconds": 10,
+    "postRaceSeconds": 15,
+    "metaData": "mount_panorama",
+    "sessions": [
+      {
+        "id": "b754c180-70f3-4edf-ae4d-f037b6fe0604",
+        "hourOfDay": 6,
+        "dayOfWeekend": 2,
+        "timeMultiplier": 1,
+        "sessionType": "P",
+        "sessionDurationMinutes": 10
+      },
+      {
+        "id": "0555866f-10ab-45bf-b569-d8ce280ed9cc",
+        "hourOfDay": 12,
+        "dayOfWeekend": 2,
+        "timeMultiplier": 1,
+        "sessionType": "Q",
+        "sessionDurationMinutes": 10
+      },
+      {
+        "id": "4d09688d-fe20-407a-bf13-0a7c05117ce9",
+        "hourOfDay": 18,
+        "dayOfWeekend": 3,
+        "timeMultiplier": 2,
+        "sessionType": "R",
+        "sessionDurationMinutes": 20
+      }
+    ],
+    "configVersion": 1
+  },
+  "eventRules": {
+    "id": "0be87ff1-ce8a-4f9a-861f-8fe48bc57057",
+    "qualifyStandingType": 1,
+    "superpoleMaxCar": -1,
+    "pitWindowLengthSec": -1,
+    "driverStintTimeSec": -1,
+    "mandatoryPitstopCount": 0,
+    "maxTotalDrivingTime": -1,
+    "maxDriversCount": 1,
+    "isRefuellingAllowedInRace": true,
+    "isRefuellingTimeFixed": false,
+    "isMandatoryPitstopRefuellingRequired": false,
+    "isMandatoryPitstopTyreChangeRequired": false,
+    "isMandatoryPitstopSwapDriverRequired": false,
+    "tyreSetCount": 50
+  },
+  "entriesList": {
+    "id": "11c8f89b-3745-4cc5-905b-1dc0c1464281",
+    "entries": [
+      {
+        "drivers": [
+          {
+            "id": "35662497-1211-418d-918f-e405582f99d6",
+            "firstName": "ExampleOne",
+            "lastName": "Example",
+            "shortName": "NicknameOne",
+            "driverCategory": 3,
+            "playerID": "s*****************"
+          },
+          {
+            "id": "dccd1e18-b460-4759-b246-239d7094a92b",
+            "firstName": "ExampleTwo",
+            "lastName": "Example",
+            "shortName": "NicknameTwo",
+            "driverCategory": 3,
+            "playerID": "s*****************"
+          }
+        ],
+        "raceNumber": -1,
+        "forcedCarModel": -1,
+        "overrideDriverInfo": 1,
+        "customCar": "9-200321-103118.json",
+        "overrideCarModelForCustomCar": 0,
+        "isServerAdmin": 1,
+        "defaultGridPosition": -1,
+        "ballastKg": 0,
+        "restrictor": 0
+      },
+      {
+        "drivers": [
+          {
+            "id": "336df5dd-ac5a-4f55-944f-06492ed4cad5",
+            "firstName": "ExampleThree",
+            "lastName": "Example",
+            "shortName": "NicknameThree",
+            "driverCategory": 0,
+            "playerID": "s*****************"
+          }
+        ],
+        "raceNumber": -1,
+        "forcedCarModel": -1,
+        "overrideDriverInfo": 1,
+        "customCar": "9-200321-103118.json",
+        "overrideCarModelForCustomCar": 0,
+        "isServerAdmin": 1,
+        "defaultGridPosition": -1,
+        "ballastKg": 0,
+        "restrictor": 0
+      }
+    ],
+    "forceEntryList": 0,
+    "configVersion": 1
+  },
+  "assistRules": {
+    "id": "045fac40-d440-4e82-805a-e4c98c455fd0",
+    "stabilityControlLevelMax": 25,
+    "disableAutosteer": 1,
+    "disableAutoLights": 0,
+    "disableAutoWiper": 0,
+    "disableAutoEngineStart": 0,
+    "disableAutoPitLimiter": 0,
+    "disableAutoGear": 0,
+    "disableAutoClutch": 0,
+    "disableIdealLine": 0
+  },
+  "bop": {
+    "id": "6f2454e5-0e46-43e5-acda-556e5b71cd86",
+    "entries": [
+      {
+        "id": "4f608672-ff99-4281-a0b0-52994a80ea20",
+        "track": "mount_panorama",
+        "carModel": 7,
+        "ballastKg": 1,
+        "restrictor": 2
+      },
+      {
+        "id": "8de8f11c-b762-4973-9da0-403b2570e549",
+        "track": "mount_panorama",
+        "carModel": 2,
+        "ballastKg": 0,
+        "restrictor": 5
+      }
+    ],
+    "disableAutosteer": 1,
+    "disableAutoLights": 0,
+    "disableAutoWiper": 0
+  },
+  "config": {
+    "id": "d9d97d05-92d6-4cba-9382-3b0697b6d43c",
+    "tcpPort": 9232,
+    "udpPort": 9231,
+    "registerToLobby": 0,
+    "maxConnections": 85,
+    "lanDiscovery": 1,
+    "publicIP": 0,
+    "configVersion": 1
+  },
+  "settings": {
+    "id": "6b41ffcc-7a39-4592-bd6e-10e62c5463b9",
+    "serverName": "Testing Server 1",
+    "adminPassword": "adminPassword123",
+    "carGroup": "FreeForAll",
+    "trackMedalsRequirement": 0,
+    "safetyRatingRequirement": -1,
+    "racecraftRatingRequirement": -1,
+    "password": "",
+    "spectatorPassword": "",
+    "maxCarSlots": 30,
+    "dumpLeaderboards": 0,
+    "isRaceLocked": 1,
+    "isPrepPhaseLocked": 0,
+    "randomizeTrackWhenEmpty": 0,
+    "centralEntryListPath": "",
+    "allowAutoDQ": 0,
+    "shortFormationLap": 1,
+    "dumpEntryList": 0,
+    "formationLapType": 3,
+    "doDriverSwapBroadcast": 1,
+    "configVersion": 1
+  }
+}

@@ -8,6 +8,7 @@ import org.accmanager.service.exception.FileReadException;
 import org.accmanager.service.exception.FileWriteException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -24,7 +25,6 @@ import static org.accmanager.service.enums.ExceptionEnum.ERROR_CREATING_DIRECTOR
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_DELETING_INSTANCE_DIRECTORY;
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_READING_FILE;
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_WRITING_FILE;
-import static org.accmanager.service.enums.FilesEnum.ACC_SERVER_EXE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_EXECUTABLE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_CFG_FILE;
@@ -37,6 +37,12 @@ public class FileReadWriteService {
 
     private final ObjectMapper objectMapper;
     private final DefaultPrettyPrinter defaultPrettyPrinter;
+
+    @Value("${accserver.files.directory.override:}")
+    private String accFileDirectoryOverride;
+
+    @Value("${accserver.executable.name:accServer.exe}")
+    private String accExecutableName;
 
     public FileReadWriteService(ObjectMapper objectMapper, DefaultPrettyPrinter defaultPrettyPrinter) {
         this.objectMapper = objectMapper;
@@ -64,7 +70,7 @@ public class FileReadWriteService {
 
     private File createNewFile(String instanceId, String jsonFile) {
         try {
-            return new File(format(PATH_HOST_SERVER_INSTANCE_CFG_FILE.toString(), instanceId, jsonFile));
+            return new File(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_CFG_FILE, instanceId, jsonFile));
         } catch (Exception ex) {
             LOGGER.error(format(ERROR_WRITING_FILE.toString(), jsonFile, ex.getMessage()));
             throw new FileWriteException(format(ERROR_WRITING_FILE.toString(), jsonFile, ex.getMessage()), ex);
@@ -82,8 +88,8 @@ public class FileReadWriteService {
 
     public void copyExecutable(String instanceId) {
         try {
-            Files.copy(Paths.get(format(PATH_HOST_EXECUTABLE.toString()) + ACC_SERVER_EXE),
-                    Paths.get(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(), instanceId) + ACC_SERVER_EXE));
+            Files.copy(Paths.get(format(accFileDirectoryOverride + PATH_HOST_EXECUTABLE) + "/" + accExecutableName),
+                    Paths.get(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_EXECUTABLE, instanceId) + "/" + accExecutableName));
         } catch (Exception ex) {
             LOGGER.error(format(ERROR_COPYING_EXECUTABLE.toString(), ex));
             throw new FileWriteException(format(ERROR_COPYING_EXECUTABLE.toString(), ex), ex);
@@ -92,7 +98,7 @@ public class FileReadWriteService {
 
     public void deleteInstanceDirectoryConfigsAndFiles(String instanceId) {
         try {
-            Path pathHostServerInstance = Paths.get(format(PATH_HOST_SERVER_INSTANCE.toString(), instanceId));
+            Path pathHostServerInstance = Paths.get(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE, instanceId));
             Files.walk(pathHostServerInstance)
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)

@@ -12,25 +12,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SecurityIT extends BaseIT {
 
     @Test
-    public void actuatorInfoWithUser1() throws Exception {
+    public void ensureUserAuthorizedForInstancesStart() throws Exception {
         mockMvc.perform(get("/api/v1/instances/ae85423a-b502-4833-bcc2-a424d3f8281e/start").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void actuatorHealthWithUser2() throws Exception {
+    public void ensureUserUnauthorizedForInstancesRestart() throws Exception {
         mockMvc.perform(get("/api/v1/instances/ae85423a-b502-4833-bcc2-a424d3f8281e/restart").with(httpBasic("user-2", "wKQWuDzpCQ8cxeeDzktK")))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void actuatorHealthWithUser3() throws Exception {
+    public void ensureUserUnauthorizedForInstancesStart() throws Exception {
         mockMvc.perform(get("/api/v1/instances/ae85423a-b502-4833-bcc2-a424d3f8281e/start").with(httpBasic("user-3", "RTFWajHjjRBbD58PKk9h")))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void actuatorHealthWithDefaultUser() throws Exception {
+    public void ensureUnknownUserUnauthorizedForInstancesStart() throws Exception {
         mockMvc.perform(get("/api/v1/instances/ae85423a-b502-4833-bcc2-a424d3f8281e/start").with(httpBasic("acc-user", "9k7nEa45dPzVuG64")))
                 .andExpect(status().isUnauthorized());
     }

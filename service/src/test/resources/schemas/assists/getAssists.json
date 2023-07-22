@@ -2,76 +2,47 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "success": {
-      "type": "boolean"
+    "id": {
+      "type": "string"
     },
-    "results": {
-      "type": "array",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "accountId": {
-              "type": "string"
-            },
-            "accountNumber": {
-              "type": "string"
-            },
-            "accountType": {
-              "type": "string"
-            },
-            "accountName": {
-              "type": "string"
-            },
-            "integrationNumber": {
-              "type": "string"
-            },
-            "accountOwnerId": {
-              "type": "string"
-            },
-            "countryCode": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "statusCode": {
-              "type": "string"
-            },
-            "statusDate": {
-              "type": "string"
-            },
-            "createdBy": {
-              "type": "string"
-            },
-            "createdOn": {
-              "type": "string"
-            },
-            "updatedOn": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "accountId",
-            "accountNumber",
-            "accountType",
-            "accountName",
-            "integrationNumber",
-            "accountOwnerId",
-            "countryCode",
-            "description",
-            "statusCode",
-            "statusDate",
-            "createdBy",
-            "createdOn",
-            "updatedOn"
-          ]
-        }
-      ]
+    "stabilityControlLevelMax": {
+      "type": "integer"
+    },
+    "disableAutosteer": {
+      "type": "integer"
+    },
+    "disableAutoLights": {
+      "type": "integer"
+    },
+    "disableAutoWiper": {
+      "type": "integer"
+    },
+    "disableAutoEngineStart": {
+      "type": "integer"
+    },
+    "disableAutoPitLimiter": {
+      "type": "integer"
+    },
+    "disableAutoGear": {
+      "type": "integer"
+    },
+    "disableAutoClutch": {
+      "type": "integer"
+    },
+    "disableIdealLine": {
+      "type": "integer"
     }
   },
   "required": [
-    "success",
-    "results"
+    "id",
+    "stabilityControlLevelMax",
+    "disableAutosteer",
+    "disableAutoLights",
+    "disableAutoWiper",
+    "disableAutoEngineStart",
+    "disableAutoPitLimiter",
+    "disableAutoGear",
+    "disableAutoClutch",
+    "disableIdealLine"
   ]
 }

@@ -42,6 +42,7 @@ import org.accmanager.service.services.files.DirectoryReadWriteService;
 import org.accmanager.service.services.files.FileReadWriteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
@@ -83,6 +84,9 @@ public class InstanceDaoService {
     private final BopEntryRepository bopEntryRepository;
     private final DirectoryReadWriteService directoryReadWriteService;
     private final FileReadWriteService fileReadWriteService;
+
+    @Value("${accserver.files.directory.override:}")
+    private String accFileDirectoryOverride;
 
     public InstanceDaoService(InstancesRepository instancesRepository, EventRepository eventRepository, EventRulesRepository eventRulesRepository,
                               CarEntriesRepository carEntriesRepository, AssistRulesRepository assistRulesRepository, BopRepository bopRepository,
@@ -434,9 +438,9 @@ public class InstanceDaoService {
     }
 
     public void createDirectories(Instance instance) {
-        fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_CFG.toString(), instance.getId()));
-        fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(), instance.getId()));
-        fileReadWriteService.createNewDirectory(format(PATH_HOST_SERVER_INSTANCE_LOGS.toString(), instance.getId()));
+        fileReadWriteService.createNewDirectory(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_CFG, instance.getId()));
+        fileReadWriteService.createNewDirectory(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_EXECUTABLE, instance.getId()));
+        fileReadWriteService.createNewDirectory(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_LOGS, instance.getId()));
     }
 
     public DirectoryReadWriteService getDirectoryReadWriteService() {

@@ -1,53 +1,42 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "properties": {
-    "success": {
-      "type": "boolean"
+  "id": "91098aa8-3f7d-4e98-bcbd-82d2398de655",
+  "name": "ACC Event Name",
+  "track": "mount_panorama",
+  "preRaceWaitingTimeSeconds": 80,
+  "sessionOverTimeSeconds": 120,
+  "ambientTemp": 22,
+  "trackTemp": 30,
+  "cloudLevel": 0.1,
+  "rain": 0,
+  "weatherRandomness": 1,
+  "postQualySeconds": 10,
+  "postRaceSeconds": 15,
+  "metaData": "mount_panorama",
+  "sessions": [
+    {
+      "id": "b754c180-70f3-4edf-ae4d-f037b6fe0604",
+      "hourOfDay": 6,
+      "dayOfWeekend": 2,
+      "timeMultiplier": 1,
+      "sessionType": "P",
+      "sessionDurationMinutes": 10
     },
-    "results": {
-      "type": "array",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "buildVersion": {
-              "type": "null"
-            },
-            "lastCommitDate": {
-              "type": "null"
-            },
-            "buildDate": {
-              "type": "null"
-            },
-            "isActive": {
-              "type": "boolean"
-            },
-            "startedOn": {
-              "type": "string"
-            },
-            "businessRegionCode": {
-              "type": "string"
-            },
-            "configVersion": {
-              "type": "null"
-            }
-          },
-          "required": [
-            "buildVersion",
-            "lastCommitDate",
-            "buildDate",
-            "isActive",
-            "startedOn",
-            "businessRegionCode",
-            "configVersion"
-          ]
-        }
-      ]
+    {
+      "id": "0555866f-10ab-45bf-b569-d8ce280ed9cc",
+      "hourOfDay": 12,
+      "dayOfWeekend": 2,
+      "timeMultiplier": 1,
+      "sessionType": "Q",
+      "sessionDurationMinutes": 10
+    },
+    {
+      "id": "4d09688d-fe20-407a-bf13-0a7c05117ce9",
+      "hourOfDay": 18,
+      "dayOfWeekend": 3,
+      "timeMultiplier": 2,
+      "sessionType": "R",
+      "sessionDurationMinutes": 20
     }
-  },
-  "required": [
-    "success",
-    "results"
-  ]
+  ],
+  "configVersion": 1
 }

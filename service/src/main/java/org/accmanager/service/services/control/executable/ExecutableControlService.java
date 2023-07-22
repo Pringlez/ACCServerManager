@@ -6,6 +6,7 @@ import org.accmanager.service.services.dao.InstanceDaoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,6 @@ import static org.accmanager.service.enums.ExceptionEnum.ERROR_INITIALIZING_EXEC
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_PAUSING_EXECUTION;
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_STARTING_EXECUTABLE;
 import static org.accmanager.service.enums.ExceptionEnum.ERROR_STOPPING_EXECUTABLE;
-import static org.accmanager.service.enums.FilesEnum.ACC_SERVER_EXE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_LOGS;
 
@@ -27,6 +27,12 @@ import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_L
 public class ExecutableControlService extends ServerControl {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutableControlService.class);
+
+    @Value("${accserver.files.directory.override:}")
+    private String accFileDirectoryOverride;
+
+    @Value("${accserver.executable.name:accServer.exe}")
+    private String accExecutableName;
 
     private Process process;
     private ProcessBuilder processBuilder;
@@ -47,8 +53,8 @@ public class ExecutableControlService extends ServerControl {
 
     private void initializeProcessBuilder(String instanceId) {
         try {
-            processBuilder = new ProcessBuilder(format(PATH_HOST_SERVER_INSTANCE_EXECUTABLE.toString(),
-                    instanceId) + ACC_SERVER_EXE);
+            processBuilder = new ProcessBuilder(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_EXECUTABLE,
+                    instanceId) + "/" + accExecutableName);
         } catch (Exception ex) {
             LOGGER.warn(format(ERROR_INITIALIZING_EXECUTABLE.toString(), instanceId, ex));
         }
@@ -59,7 +65,7 @@ public class ExecutableControlService extends ServerControl {
         try {
             initializeProcessBuilder(instanceId);
             processBuilder.redirectErrorStream(true);
-            File log = new File(format(PATH_HOST_SERVER_INSTANCE_LOGS.toString(), instanceId),
+            File log = new File(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_LOGS, instanceId),
                     format("acc-server-%s-%s.log", instanceId, Instant.now().getEpochSecond()));
             processBuilder.redirectOutput(log);
             process = processBuilder.start();

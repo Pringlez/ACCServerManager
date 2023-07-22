@@ -1,0 +1,13 @@
+{
+  "id": "943e791a-77f2-4156-accc-2e9348eb5e20",
+  "stabilityControlLevelMax": 25,
+  "disableAutosteer": 1,
+  "disableAutoLights": 0,
+  "disableAutoWiper": 0,
+  "disableAutoEngineStart": 0,
+  "disableAutoPitLimiter": 0,
+  "disableAutoGear": 0,
+  "disableAutoClutch": 0,
+  "disableIdealLine": 0,
+  "configVersion": 1
+}

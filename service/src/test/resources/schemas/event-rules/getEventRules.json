@@ -2,52 +2,63 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "success": {
+    "id": {
+      "type": "string"
+    },
+    "qualifyStandingType": {
+      "type": "integer"
+    },
+    "superpoleMaxCar": {
+      "type": "integer"
+    },
+    "pitWindowLengthSec": {
+      "type": "integer"
+    },
+    "driverStintTimeSec": {
+      "type": "integer"
+    },
+    "mandatoryPitstopCount": {
+      "type": "integer"
+    },
+    "maxTotalDrivingTime": {
+      "type": "integer"
+    },
+    "maxDriversCount": {
+      "type": "integer"
+    },
+    "isRefuellingAllowedInRace": {
       "type": "boolean"
     },
-    "results": {
-      "type": "array",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "buildVersion": {
-              "type": "null"
-            },
-            "lastCommitDate": {
-              "type": "null"
-            },
-            "buildDate": {
-              "type": "null"
-            },
-            "isActive": {
-              "type": "boolean"
-            },
-            "startedOn": {
-              "type": "string"
-            },
-            "businessRegionCode": {
-              "type": "string"
-            },
-            "configVersion": {
-              "type": "null"
-            }
-          },
-          "required": [
-            "buildVersion",
-            "lastCommitDate",
-            "buildDate",
-            "isActive",
-            "startedOn",
-            "businessRegionCode",
-            "configVersion"
-          ]
-        }
-      ]
+    "isRefuellingTimeFixed": {
+      "type": "boolean"
+    },
+    "isMandatoryPitstopRefuellingRequired": {
+      "type": "boolean"
+    },
+    "isMandatoryPitstopTyreChangeRequired": {
+      "type": "boolean"
+    },
+    "isMandatoryPitstopSwapDriverRequired": {
+      "type": "boolean"
+    },
+    "tyreSetCount": {
+      "type": "integer"
     }
   },
   "required": [
-    "success",
-    "results"
+    "id",
+    "qualifyStandingType",
+    "superpoleMaxCar",
+    "pitWindowLengthSec",
+    "driverStintTimeSec",
+    "mandatoryPitstopCount",
+    "maxTotalDrivingTime",
+    "maxDriversCount",
+    "isRefuellingAllowedInRace",
+    "isRefuellingTimeFixed",
+    "isMandatoryPitstopRefuellingRequired",
+    "isMandatoryPitstopTyreChangeRequired",
+    "isMandatoryPitstopSwapDriverRequired",
+    "tyreSetCount"
   ]
 }

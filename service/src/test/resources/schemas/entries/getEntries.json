@@ -2,168 +2,216 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "success": {
-      "type": "boolean"
+    "id": {
+      "type": "string"
     },
-    "results": {
+    "entries": {
       "type": "array",
       "items": [
         {
           "type": "object",
           "properties": {
-            "vehicleId": {
+            "drivers": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "shortName": {
+                      "type": "string"
+                    },
+                    "driverCategory": {
+                      "type": "integer"
+                    },
+                    "playerID": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "firstName",
+                    "lastName",
+                    "shortName",
+                    "driverCategory",
+                    "playerID"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "shortName": {
+                      "type": "string"
+                    },
+                    "driverCategory": {
+                      "type": "integer"
+                    },
+                    "playerID": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "firstName",
+                    "lastName",
+                    "shortName",
+                    "driverCategory",
+                    "playerID"
+                  ]
+                }
+              ]
+            },
+            "raceNumber": {
+              "type": "integer"
+            },
+            "forcedCarModel": {
+              "type": "integer"
+            },
+            "overrideDriverInfo": {
+              "type": "integer"
+            },
+            "customCar": {
               "type": "string"
             },
-            "vehicleVIN": {
-              "type": "string"
+            "overrideCarModelForCustomCar": {
+              "type": "integer"
             },
-            "vehicleSN": {
-              "type": "string"
+            "isServerAdmin": {
+              "type": "integer"
             },
-            "vehicleType": {
-              "type": "string"
+            "defaultGridPosition": {
+              "type": "integer"
             },
-            "deviceSTID": {
-              "type": "string"
+            "ballastKg": {
+              "type": "integer"
             },
-            "deviceType": {
-              "type": "string"
-            },
-            "deviceStatus": {
-              "type": "string"
-            },
-            "mobileStatus": {
-              "type": "string"
-            },
-            "statusCode": {
-              "type": "string"
-            },
-            "statusDate": {
-              "type": "string"
-            },
-            "businessState": {
-              "type": "string"
-            },
-            "powertrain": {
-              "type": "string"
-            },
-            "engineType": {
-              "type": "string"
-            },
-            "primaryAddress": {
-              "type": "string"
-            },
-            "ownerAccountId": {
-              "type": "string"
-            },
-            "ownerAccountType": {
-              "type": "string"
-            },
-            "ownerAccountName": {
-              "type": "string"
-            },
-            "ownerAccountStatus": {
-              "type": "string"
-            },
-            "primaryDriverId": {
-              "type": "string"
-            },
-            "addressOwnerId": {
-              "type": "string"
-            },
-            "addressType": {
-              "type": "string"
-            },
-            "licensePlate": {
-              "type": "string"
-            },
-            "paintCode": {
-              "type": "string"
-            },
-            "vehicleColor": {
-              "type": "string"
-            },
-            "userColor": {
-              "type": "string"
-            },
-            "features": {
-              "type": "string"
-            },
-            "services": {
-              "type": "string"
-            },
-            "isOvd": {
-              "type": "boolean"
-            },
-            "isDmn": {
-              "type": "boolean"
-            },
-            "regionCode": {
-              "type": "string"
-            },
-            "isWelcomeCallOccurred": {
-              "type": "boolean"
-            },
-            "isWelcomeCallComplete": {
-              "type": "boolean"
-            },
-            "createdBy": {
-              "type": "string"
-            },
-            "createdOn": {
-              "type": "string"
-            },
-            "updatedBy": {
-              "type": "string"
-            },
-            "updatedOn": {
-              "type": "string"
+            "restrictor": {
+              "type": "integer"
             }
           },
           "required": [
-            "vehicleId",
-            "vehicleVIN",
-            "vehicleSN",
-            "vehicleType",
-            "deviceSTID",
-            "deviceType",
-            "deviceStatus",
-            "mobileStatus",
-            "statusCode",
-            "statusDate",
-            "businessState",
-            "powertrain",
-            "engineType",
-            "primaryAddress",
-            "ownerAccountId",
-            "ownerAccountType",
-            "ownerAccountName",
-            "ownerAccountStatus",
-            "primaryDriverId",
-            "addressOwnerId",
-            "addressType",
-            "licensePlate",
-            "paintCode",
-            "vehicleColor",
-            "userColor",
-            "features",
-            "services",
-            "isOvd",
-            "isDmn",
-            "regionCode",
-            "isWelcomeCallOccurred",
-            "isWelcomeCallComplete",
-            "createdBy",
-            "createdOn",
-            "updatedBy",
-            "updatedOn"
+            "drivers",
+            "raceNumber",
+            "forcedCarModel",
+            "overrideDriverInfo",
+            "customCar",
+            "overrideCarModelForCustomCar",
+            "isServerAdmin",
+            "defaultGridPosition",
+            "ballastKg",
+            "restrictor"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "drivers": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "shortName": {
+                      "type": "string"
+                    },
+                    "driverCategory": {
+                      "type": "integer"
+                    },
+                    "playerID": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "firstName",
+                    "lastName",
+                    "shortName",
+                    "driverCategory",
+                    "playerID"
+                  ]
+                }
+              ]
+            },
+            "raceNumber": {
+              "type": "integer"
+            },
+            "forcedCarModel": {
+              "type": "integer"
+            },
+            "overrideDriverInfo": {
+              "type": "integer"
+            },
+            "customCar": {
+              "type": "string"
+            },
+            "overrideCarModelForCustomCar": {
+              "type": "integer"
+            },
+            "isServerAdmin": {
+              "type": "integer"
+            },
+            "defaultGridPosition": {
+              "type": "integer"
+            },
+            "ballastKg": {
+              "type": "integer"
+            },
+            "restrictor": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "drivers",
+            "raceNumber",
+            "forcedCarModel",
+            "overrideDriverInfo",
+            "customCar",
+            "overrideCarModelForCustomCar",
+            "isServerAdmin",
+            "defaultGridPosition",
+            "ballastKg",
+            "restrictor"
           ]
         }
       ]
+    },
+    "forceEntryList": {
+      "type": "integer"
+    },
+    "configVersion": {
+      "type": "integer"
     }
   },
   "required": [
-    "success",
-    "results"
+    "id",
+    "entries",
+    "forceEntryList",
+    "configVersion"
   ]
 }

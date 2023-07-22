@@ -3,6 +3,7 @@ package org.accmanager.service.services.files;
 import org.accmanager.service.exception.DirectoryReadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
@@ -21,9 +22,12 @@ public class DirectoryReadWriteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryReadWriteService.class);
 
+    @Value("${accserver.files.directory.override:}")
+    private String accFileDirectoryOverride;
+
     public Optional<List<Path>> getAllServerDirectories() {
         try {
-            Path dir = Paths.get(format(PATH_HOST_SERVERS.toString()));
+            Path dir = Paths.get(format(accFileDirectoryOverride + PATH_HOST_SERVERS));
             return Optional.of(Files.walk(dir, 1)
                     .filter(p -> Files.isDirectory(p) && !p.equals(dir))
                     .map(Path::getFileName)
