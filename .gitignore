@@ -9,10 +9,6 @@ service/.project
 service/.classpath
 api/.project
 api/.classpath
-/frontend/node_modules/
-/frontend/dist/
-/frontend/build/
-/frontend/node/
 /database/
 /servers/
 /.jpb/
