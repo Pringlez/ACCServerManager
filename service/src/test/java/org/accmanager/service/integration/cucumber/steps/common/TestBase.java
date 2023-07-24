@@ -22,10 +22,9 @@ public class TestBase {
 
     protected static final String SCHEMAS_DIR = "src/test/resources/schemas/";
     protected static final String BASE_RESOURCE_DIR = "src/test/resources/";
-    protected static final String BASE_SCAFFOLDING_DIR = BASE_RESOURCE_DIR + "scaffolding/";
+    protected static final String BASE_REQUESTS_DIR = BASE_RESOURCE_DIR + "requests/";
 
     protected static String endpoint;
-    protected static String gspAccessToken;
     protected static RequestSpecification request;
     protected static Response response;
     protected static HashMap<String, String> formParam;
@@ -46,7 +45,7 @@ public class TestBase {
 
     public static File loadScaffoldingFile(String fileName, String fileDir) {
         try {
-            return new File(new File(BASE_SCAFFOLDING_DIR + fileDir), fileName);
+            return new File(new File(BASE_REQUESTS_DIR + fileDir), fileName);
         } catch (Exception e) {
             LOGGER.error("Could not load scaffolding file: {}", fileName);
             return null;
