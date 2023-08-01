@@ -8,7 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.util.DigestUtils;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PasswordEncodingTest {
 
@@ -17,34 +19,31 @@ public class PasswordEncodingTest {
     @Test
     public void testBcrypt() {
         PasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        System.out.println(bcrypt.encode(PASSWORD));
+        assertThat(bcrypt.encode(PASSWORD), notNullValue());
     }
 
     @Test
     public void testSha256() {
         PasswordEncoder sha256 = new StandardPasswordEncoder();
-        System.out.println(sha256.encode(PASSWORD));
+        assertThat(sha256.encode(PASSWORD), notNullValue());
     }
 
     @Test
     public void testLdap() {
         PasswordEncoder ldap = new LdapShaPasswordEncoder();
-        System.out.println(ldap.encode(PASSWORD));
-        String encodedPwd = ldap.encode(PASSWORD);
-        assertTrue(ldap.matches(PASSWORD, encodedPwd));
+        String encodedPassword = ldap.encode(PASSWORD);
+        assertThat(encodedPassword, notNullValue());
+        assertThat(ldap.matches(PASSWORD, encodedPassword), is(true));
     }
 
     @Test
     public void testNoOp() {
         PasswordEncoder noOp = NoOpPasswordEncoder.getInstance();
-        System.out.println(noOp.encode(PASSWORD));
+        assertThat(noOp.encode(PASSWORD), notNullValue());
     }
 
     @Test
     public void testMd5() {
-        System.out.println(DigestUtils.md5DigestAsHex(PASSWORD.getBytes()));
-        System.out.println(DigestUtils.md5DigestAsHex(PASSWORD.getBytes()));
-        String salt = PASSWORD + "saltyValue";
-        System.out.println(DigestUtils.md5DigestAsHex(salt.getBytes()));
+        assertThat(DigestUtils.md5DigestAsHex(PASSWORD.getBytes()), notNullValue());
     }
 }

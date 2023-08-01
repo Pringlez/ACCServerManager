@@ -8,12 +8,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV WINEDEBUG -all
 
 # Game Server User, Files & Permissions
-RUN groupadd -r accserver && useradd -r -d /home/accserver -g accserver accserver
-RUN mkdir -p /home/accserver/cfg
-COPY required/run-server.sh /home/accserver/
-WORKDIR /home/accserver
-RUN chown -R accserver:accserver /home/accserver
-RUN chmod -R 777 /home/accserver
+#RUN groupadd -r accserver && useradd -r -d /home/accserver -g accserver accserver
+#RUN mkdir -p /opt/accserver/cfg
+COPY required/run-server.sh /accserver/script/
+#WORKDIR /home/accserver
+#RUN chown -R accserver:accserver /home/accserver
+#RUN chmod -R 777 /home/accserver
 
 # Install System Updates & Packages
 RUN dpkg --add-architecture i386
@@ -24,8 +24,13 @@ RUN apt-get install -y --install-recommends winehq-staging
 RUN apt-get autoclean -y && wine --version
 
 # Volume
-VOLUME /home/accserver/host
+#VOLUME /accmanager
+
+WORKDIR /accserver
 
 # Starts ACC Game Server
-USER accserver
-ENTRYPOINT ["/bin/bash", "-c", "sh run-server.sh"]
+#USER accserver
+#ENTRYPOINT ["/bin/bash", "-c", "sh /accserver/script/run-server.sh"]
+
+# Debug Container
+ENTRYPOINT ["tail", "-f", "/dev/null"]

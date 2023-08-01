@@ -1,8 +1,8 @@
 #!/bin/bash
 # Remove existing configs used by acc server
-rm -r /home/accserver/cfg/current
+rm -r /accserver/servers/accmanager/instances/$SERVER_INSTANCE/cfg/current
 # Copy configs from host volume to working config directory
-cp -r /home/accserver/host/cfg/* /home/accserver/cfg
+#cp -r /servers/host/cfg/* /servers/$SERVER_INSTANCE/cfg
 # Start acc server using wine
-wine ./host/executable/accServer.exe
+wine ./accserver/servers/accmanager/instances/$SERVER_INSTANCE/accServer.exe
 exec "$@"
