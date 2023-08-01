@@ -1,5 +1,5 @@
 # ACC game server running using Wine, latest stable version from WineHQ
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 MAINTAINER John Walsh <pringlez@github.com>
 
@@ -12,8 +12,8 @@ COPY required/run-server.sh /accserver/script/
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get install wget gnupg2 software-properties-common -y
 RUN wget -qO- https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
-RUN apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main'
-RUN apt-get update && apt-get install --install-recommends winehq-staging -y
+RUN add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ impish main'
+RUN apt-get update && apt-get install --install-recommends winehq-stable -y
 RUN apt-get autoclean -y && wine --version
 
 WORKDIR /accserver

@@ -32,7 +32,7 @@ An example run container command for `acc-manager` using the latest tag:
 docker run -d --name acc-manager --restart unless-stopped -p 80:8080 -v "$(pwd)/servers:/accmanager/servers" -t acc-manager:latest
 ```
 This will map the project root -> `servers` directory, place the `accServer.exe` executable in `servers/accmanager/executable` directory. When you
-POST a create instance request, it'll copy the executable and into a uuid generated `instance` directory along with all the written json config files.
+POST a create instance request, it'll copy the executable and into an uuid generated `instance` directory along with all the written json config files.
 
 #### Override Environment Variables
 You can override a configuration parameter in the application, for example switching to the 'prod' & 'postgres' profile:

@@ -22,20 +22,20 @@ Container parameters:
 
 Running the docker container and detach, lets the container run in the background:
 ```
-docker run -d --name acc-server --restart unless-stopped --expose=9231-9232 --net=host -v <path-to-servers-directory>:/accserver -t acc-server:latest
+docker run -d --name acc-server --restart unless-stopped --expose=9231-9232 --net=host -v <path-to-servers-directory>:/accserver/servers -t acc-server:latest
 ```
 
 #### File Based Config - Volume
 Configure a volume to pass server configs & the server executable from the host to the docker container:
 ```
--v "$(pwd)/servers:/accserver"
+-v "$(pwd)/servers:/accserver/servers"
 ```
 The `$(pwd)` variable passes the current directory, should work on both Windows & Linux machines.
 
 #### Example - Run Container
 An example run container command for `acc-server` using the latest tag:
 ```
-docker run -d --name acc-server --restart unless-stopped --expose=9231-9232 --net=host -v "$(pwd)/servers:/accserver" -e SERVER_INSTANCE=ae85423a-b502-4833-bcc2-a424d3f8281e -t acc-server:latest
+docker run -d --name acc-server --restart unless-stopped --expose=9231-9232 --net=host -v "$(pwd)/servers:/accserver/servers" -e SERVER_INSTANCE=ae85423a-b502-4833-bcc2-a424d3f8281e -t acc-server:latest
 ```
 
 ### Cleaning Up:
