@@ -1,46 +1,43 @@
-# ACCServerManager
-The ACC Manager has been designed to manage multiple ACC Server docker containers. Currently, only
-capable of managing containers local to the ACC Manager application.
+# ACC Manager & ACC Server
+ACC Manager has been designed to manage multiple ACC Server docker containers. Currently, only
+capable of managing containers local to the ACC Manager's host machine.
 
 ## Setup Host
 First, you'll need to install [docker](https://docs.docker.com/get-started/) on your hosting machine. 
-I'll assume your using Linux to host your game servers, an [Ubuntu](https://docs.docker.com/engine/install/ubuntu/) guide for setting up docker. 
+I'll assume your using Linux to host your game servers, an [Ubuntu](https://docs.docker.com/engine/install/ubuntu/) guide for setting up docker.
 
-Running the jar of ACC Manager requires you install java on your host machine. I've found this [guide](https://linuxize.com/post/install-java-on-ubuntu-18-04/) easy to follow for 18.04 Ubuntu.
-The installation on other distros is fairly similar.
-
-Docker has support for Windows, the official [guide](https://docs.docker.com/docker-for-windows/install/) for Windows 10.
+Docker has support for Windows, the official [guide](https://docs.docker.com/docker-for-windows/install/) for Windows 10 / 11.
 
 ### Step 1 - Runtime
- * Java 8+ (Running ACC Manager)
- * Docker (Running ACC Server)
+ * Java 8+ (Running ACC Manager) or
+ * Docker (Running ACC Manager / ACC Server)
  
-### Step 2 - ACC Server Docker Image
-Building or downloading the docker image `acc-server-wine` in the [readme](docs/docker/acc-server/README.md).
+### Step 2 - ACC Server Container (Optional)
+Building or downloading the docker image `acc-server` in the [readme](docs/docker/acc-server/README.md).
+Due to changes to the server executable, it no longer runs reliably using wine. I may build a windows based docker image to allow
+instance to be spun up in kubernetes clusters or docker hosts.
 
-### Step 3 - Running ACC Manager
-You can download the latest available jar from GitHub. TODO...
-
-Run the pre-built jar by executing:
+### Step 3 (Java) - ACC Manager Jar
+After running a maven build, you should be able to run the jar in your `service/target` directory by executing:
 ```
-java -jar -Ddocker.username=<your-system-username> acc-manager-0.6.1.jar
+java -jar service/target/acc-manager-0.6.1.jar
 ```
 
-## Build ACC Manager
+After starting the application, place the `accServer.exe` executable in `servers/accmanager/executable` directory. When you
+POST a create instance request, it'll copy the executable and into an uuid generated `instance` directory along with all the written json config files.
+
+### Step 3 (Docker) - ACC Manager Container
+Building and running `acc-manager` using docker in the [readme](docs/docker/acc-manager/README.md).
+
+## Build ACC Manager - Production Build
 Build a production ready jar from project root directory using maven:
 ```
 mvn clean install -Pprod
 ```
 Then, run the built jar from the `service/target` directory:
 ```
-java -jar -Ddocker.username=<your-system-username> service/target/acc-manager-service-0.6.1.jar
+java -jar service/target/acc-manager-service-0.6.1.jar
 ```
-
-Jar parameters:
-* **-Ddocker.username** - Name of the host's username running the docker engine
-
-### Building ACC Manager Docker Image (_Experimental_)
-Building the docker image `acc-manager` in the [readme](docs/docker/acc-manager/README.md).
 
 ## Development
 To contribute to the project you need to set up a basic development environment. You'll need the following:
@@ -49,8 +46,6 @@ To contribute to the project you need to set up a basic development environment.
  * Maven (Build & Compile)
  * React Tools (Node, NPM, Browser Extensions)
  * Docker
-
-I'd generally recommend VS Code for frontend & Intellij for backend development.
 
 ### API Spec
 The [API specification](api/yaml/acc-manager.yaml) is used at compile time to generate a number of interfaces & java classes used within the application.
