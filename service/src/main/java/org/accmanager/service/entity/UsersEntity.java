@@ -1,22 +1,14 @@
 package org.accmanager.service.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.*;
+
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.GenerationType.AUTO;
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.GenerationType.AUTO;
 
 @Entity
 @Table(name = "USERS")

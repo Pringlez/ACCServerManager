@@ -21,11 +21,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_KILLING_CONTAINER_INSTANCE_ID;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_REMOVING_CONTAINER_INSTANCE_ID;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_RESTARTING_CONTAINER;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_STARTING_CONTAINER;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_STOPPING_CONTAINER;
+import static org.accmanager.service.enums.ExceptionEnum.*;
 import static org.accmanager.service.enums.PathsEnum.PATH_CONTAINER;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
 

@@ -16,34 +16,32 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <linkXRef>false</linkXRef>
         <input.yaml.file>acc-manager.yaml</input.yaml.file>
-        <java.version>11</java.version>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.source>11</maven.compiler.source>
+        <java.version>17</java.version>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
         <servlet.api.version>2.5</servlet.api.version>
         <project.lombok.version>1.18.28</project.lombok.version>
-        <node.version>v18.13.0</node.version>
+        <node.version>v18.18.2</node.version>
         <npm.version>8.19.3</npm.version>
-        <spring.framework.version>5.3.28</spring.framework.version>
-        <spring.boot.version>2.7.12</spring.boot.version>
-        <spring.security.version>5.8.3</spring.security.version>
-        <openapi.generator.version>5.4.0</openapi.generator.version>
-        <frontend.maven.plugin.version>1.12.0</frontend.maven.plugin.version>
-        <aspectj.maven.plugin.version>1.12.6</aspectj.maven.plugin.version>
-        <maven.resources.plugin.version>2.6</maven.resources.plugin.version>
-        <jackson.databind.version>2.15.2</jackson.databind.version>
-        <h2.version>2.1.214</h2.version>
+        <spring.framework.version>6.0.13</spring.framework.version>
+        <spring.boot.version>3.1.5</spring.boot.version>
+        <spring.security.version>6.1.5</spring.security.version>
+        <openapi.generator.version>7.0.1</openapi.generator.version>
+        <frontend.maven.plugin.version>1.14.2</frontend.maven.plugin.version>
+        <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
+        <jackson.databind.version>2.15.3</jackson.databind.version>
+        <h2.version>2.2.224</h2.version>
         <postgres.version>42.6.0</postgres.version>
-        <validation.api.version>2.0.1.Final</validation.api.version>
-        <docker.java.version>3.3.1</docker.java.version>
-        <cucumber.spring.version>7.6.0</cucumber.spring.version>
-        <rest.assured.version>5.1.1</rest.assured.version>
-        <jackson.databind.nullable.version>0.2.2</jackson.databind.nullable.version>
+        <docker.java.version>3.3.4</docker.java.version>
+        <cucumber.spring.version>7.14.0</cucumber.spring.version>
+        <rest.assured.version>5.3.2</rest.assured.version>
+        <jackson.databind.nullable.version>0.2.6</jackson.databind.nullable.version>
         <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
         <maven.jar.plugin.version>3.2.2</maven.jar.plugin.version>
         <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
-        <junit-platform.version>1.9.0</junit-platform.version>
-        <junit.jupiter.version>5.8.2</junit.jupiter.version>
-        <maven.surefire.version>3.0.0-M7</maven.surefire.version>
+        <junit-platform.version>1.10.0</junit-platform.version>
+        <junit.jupiter.version>5.10.0</junit.jupiter.version>
+        <maven.surefire.version>3.2.1</maven.surefire.version>
     </properties>
 
     <dependencies>

@@ -1,27 +1,30 @@
 package org.accmanager.service.config.security;
 
 import org.accmanager.service.services.security.UserAuthDetailsService;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
-import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
-import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.password.*;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableMethodSecurity
+public class SecurityConfig {
 
     private final UserAuthDetailsService userAuthDetailsService;
 
@@ -29,25 +32,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userAuthDetailsService = userAuthDetailsService;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorize -> {
-                    authorize.antMatchers("/h2-console/**").permitAll();
-                    authorize.antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll();
-                }).authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and().formLogin()
-                .and().httpBasic()
-                .and().cors()
-                .and().csrf().ignoringAntMatchers("/h2-console/**", "/api/**");
-        http.headers().frameOptions().sameOrigin();
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/webjars/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/resources/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll())
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .formLogin(withDefaults())
+                .httpBasic(withDefaults())
+                .cors(AbstractHttpConfigurer::disable)
+                //.csrf(csrf -> csrf.ignoringRequestMatchers(PathRequest.toH2Console()))
+                .csrf(csrf -> csrf.ignoringRequestMatchers(PathRequest.toH2Console()))
+                .headers(request -> request.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+        return http.build();
     }
+
+    /*@Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/", "/webjars/**", "/login", "/resources/**", "/h2-console/**").permitAll())
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .formLogin(withDefaults())
+                .httpBasic(withDefaults())
+                .cors(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.ignoringRequestMatchers(PathRequest.toH2Console()))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
+                .csrf(request -> request.ignoringRequestMatchers("/h2-console/**", "/api/**"))
+                .headers(request -> request.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+        return http.build();
+    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         String encodingId = "bcrypt";
-        Map<String, PasswordEncoder> encoders = new HashMap();
+        Map<String, PasswordEncoder> encoders = new HashMap<>();
         encoders.put(encodingId, new BCryptPasswordEncoder());
         encoders.put("ldap", new LdapShaPasswordEncoder());
         encoders.put("MD5", new MessageDigestPasswordEncoder("MD5"));
@@ -55,10 +75,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new DelegatingPasswordEncoder(encodingId, encoders);
     }
 
-    @Override
+    /*@Override
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(userAuthDetailsService);
-    }
+    }*/
 
     // In-memory username & password setup
     /*

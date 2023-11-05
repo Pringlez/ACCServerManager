@@ -15,10 +15,7 @@ import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_INITIALIZING_EXECUTABLE;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_PAUSING_EXECUTION;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_STARTING_EXECUTABLE;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_STOPPING_EXECUTABLE;
+import static org.accmanager.service.enums.ExceptionEnum.*;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_LOGS;
 
