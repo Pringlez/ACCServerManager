@@ -20,8 +20,15 @@ import java.util.Comparator;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.ExceptionEnum.*;
-import static org.accmanager.service.enums.PathsEnum.*;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_COPYING_EXECUTABLE;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_CREATING_DIRECTORY;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_DELETING_INSTANCE_DIRECTORY;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_READING_FILE;
+import static org.accmanager.service.enums.ExceptionEnum.ERROR_WRITING_FILE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_EXECUTABLE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_CFG_FILE;
+import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
 
 @Service
 public class FileReadWriteService {
