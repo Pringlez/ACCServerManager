@@ -1,8 +1,8 @@
 package org.accmanager.service.services.security;
 
-import org.accmanager.service.entity.UsersAuthorityEntity;
-import org.accmanager.service.entity.UsersEntity;
-import org.accmanager.service.repository.UsersRepository;
+import org.accmanager.service.identity.entity.UsersAuthorityEntity;
+import org.accmanager.service.identity.entity.UsersEntity;
+import org.accmanager.service.identity.repository.UsersRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

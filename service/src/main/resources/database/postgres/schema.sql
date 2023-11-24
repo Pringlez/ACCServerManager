@@ -225,13 +225,16 @@ create table users
 (
     user_id                 integer not null
         primary key,
-    account_non_expired     boolean,
-    account_non_locked      boolean,
-    credential_updated      timestamp,
-    credentials_non_expired boolean,
-    enabled                 boolean,
+    username                varchar(255),
     password                varchar(255),
-    username                varchar(255)
+    is_test_user            boolean,
+    token_validation        timestamp,
+    user_creation           timestamp,
+    enabled                 boolean,
+    account_non_expired     boolean,
+    credentials_non_expired boolean,
+    account_non_locked      boolean,
+    credential_updated      timestamp
 );
 
 alter table users
@@ -246,6 +249,14 @@ create table users_authority
 
 alter table users_authority
     owner to postgres;
+
+create table users_validation
+(
+    user_id                 integer not null,
+    password_reset_token    varchar(255),
+    password_reset_issued   timestamp,
+    creation                timestamp
+);
 
 create table users_roles
 (

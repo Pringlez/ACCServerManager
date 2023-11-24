@@ -1,11 +1,11 @@
 package org.accmanager.service.startup;
 
-import org.accmanager.service.entity.RolesEntity;
-import org.accmanager.service.entity.UsersAuthorityEntity;
-import org.accmanager.service.entity.UsersEntity;
-import org.accmanager.service.repository.UsersAuthorityRepository;
-import org.accmanager.service.repository.UsersRepository;
-import org.accmanager.service.repository.UsersRolesRepository;
+import org.accmanager.service.identity.entity.RolesEntity;
+import org.accmanager.service.identity.entity.UsersAuthorityEntity;
+import org.accmanager.service.identity.entity.UsersEntity;
+import org.accmanager.service.identity.repository.UsersAuthorityRepository;
+import org.accmanager.service.identity.repository.UsersRepository;
+import org.accmanager.service.identity.repository.UsersRolesRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -60,6 +60,9 @@ public class UserDataLoader implements CommandLineRunner {
                 .setUsername("user-1")
                 .setPassword(passwordEncoder.encode("vxUdzhqrwt8eqQS7yszq"))
                 .setRoles(new HashSet<>(List.of(adminRole)))
+                .setTestUser(false)
+                //.setTokenValidationTime(Instant.now())
+                .setUserCreation(Instant.now())
                 .setEnabled(true)
                 .setAccountNonExpired(true)
                 .setCredentialsNonExpired(true)
@@ -70,6 +73,9 @@ public class UserDataLoader implements CommandLineRunner {
                 .setUsername("user-2")
                 .setPassword(passwordEncoder.encode("wKQWuDzpCQ8cxeeDzktK"))
                 .setRoles(new HashSet<>(List.of(userRole)))
+                .setTestUser(false)
+                //.setTokenValidationTime(Instant.now())
+                .setUserCreation(Instant.now())
                 .setEnabled(true)
                 .setAccountNonExpired(true)
                 .setCredentialsNonExpired(true)
@@ -80,7 +86,10 @@ public class UserDataLoader implements CommandLineRunner {
                 .setUsername("user-3")
                 .setPassword(passwordEncoder.encode("RTFWajHjjRBbD58PKk9h"))
                 .setRoles(new HashSet<>(List.of(adminRole)))
-                .setEnabled(false)
+                .setTestUser(false)
+                //.setTokenValidationTime(Instant.now())
+                .setUserCreation(Instant.now())
+                .setEnabled(true)
                 .setAccountNonExpired(true)
                 .setCredentialsNonExpired(true)
                 .setAccountNonLocked(true)

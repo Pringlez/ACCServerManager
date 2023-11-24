@@ -3,6 +3,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.5</version>
+    </parent>
+
     <groupId>org.accmanager</groupId>
     <artifactId>acc-manager</artifactId>
     <version>0.6.1</version>
@@ -42,6 +48,19 @@
         <junit-platform.version>1.10.0</junit-platform.version>
         <junit.jupiter.version>5.10.0</junit.jupiter.version>
         <maven.surefire.version>3.2.1</maven.surefire.version>
+        <thymeleaf.security.version>3.1.1.RELEASE</thymeleaf.security.version>
+        <handlebars.version>4.3.1</handlebars.version>
+        <thymeleaf.layout.version>3.3.0</thymeleaf.layout.version>
+        <j2html.version>1.6.0</j2html.version>
+        <jetbrains.annotations.version>24.1.0</jetbrains.annotations.version>
+        <javafaker.version>1.0.2</javafaker.version>
+        <apache.commons.version>3.13.0</apache.commons.version>
+        <webjar.locator.version>0.55</webjar.locator.version>
+        <webjar.bootstrap.version>5.3.2</webjar.bootstrap.version>
+        <webjar.bootstrap-icons.version>1.11.1</webjar.bootstrap-icons.version>
+        <webjar.htmx.version>1.9.8</webjar.htmx.version>
+        <webjar.hyperscript.version>0.9.12</webjar.hyperscript.version>
+        <webjar.popper.version>2.11.7</webjar.popper.version>
     </properties>
 
     <dependencies>

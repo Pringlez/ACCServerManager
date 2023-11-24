@@ -1,6 +1,9 @@
 docker:
   host: tcp://localhost:2375
   verify: false
+external:
+  server:
+    address: http://localhost:8080
 server:
   port: 8080
 spring:
@@ -10,9 +13,33 @@ spring:
   profiles:
     active: local,h2
     #active: local,postgres
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   security:
     user:
       name: acc-user
+  thymeleaf:
+    cache: false
+    prefix: classpath:/static/public/
+  mail:
+    scheduler:
+      persistence:
+        enabled: false
+        redis:
+          embedded: false
+          enabled: false
+    host: smtp.gmail.com
+    port: 587
+    username: example@gmail.com
+    password: superPassword
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+            required: false
 management:
   endpoints:
     web:
