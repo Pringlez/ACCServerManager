@@ -32,5 +32,4 @@ public class ClickToEdit {
         model.addAttribute("contact", contact);
         return "click-to-edit-default";
     }
-
 }

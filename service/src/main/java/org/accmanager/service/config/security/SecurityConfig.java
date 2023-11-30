@@ -2,6 +2,7 @@ package org.accmanager.service.config.security;
 
 import org.accmanager.service.identity.config.DaoOverride;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -34,25 +35,28 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern("/")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/public/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/webjars/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/logout")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/resources/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")).permitAll())
+                        .requestMatchers(PathRequest.toH2Console()).permitAll())
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/public/sign-in").permitAll()
                         .loginProcessingUrl("/public/do-sign-in")
+                        .defaultSuccessUrl("/private/")
                         .failureUrl("/public/sign-in?error=true")
                         .usernameParameter("username")
                         .passwordParameter("password")
                 )
-                .logout(user -> user.logoutRequestMatcher(new AntPathRequestMatcher("/public/logout"))
+                .logout(user -> user.logoutUrl("/public/logout")
+                        .logoutSuccessUrl("/?message=logout")
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                 )
                 .httpBasic(withDefaults())
                 .cors(AbstractHttpConfigurer::disable)
-                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")))
-                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/**")))
+                .csrf(AbstractHttpConfigurer::disable)
+//                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")))
+//                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/**")))
+//                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/public/**")))
+//                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/private/**")))
                 .headers(request -> request.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
         return http.build();
     }

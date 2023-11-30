@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/private/")
+@RequestMapping("/private")
 public class TopSecret {
 
     @GetMapping("/")
@@ -24,5 +24,4 @@ public class TopSecret {
     public String data() {
         return "<p>hi! %s </p>".formatted(new Date().toString());
     }
-
 }

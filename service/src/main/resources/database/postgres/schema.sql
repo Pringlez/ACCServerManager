@@ -169,7 +169,7 @@ alter table instances
 
 create table roles
 (
-    role_id   integer not null
+    role_id   varchar(255) not null
         primary key,
     role_name varchar(255)
 );
@@ -223,7 +223,7 @@ alter table settings
 
 create table users
 (
-    user_id                 integer not null
+    user_id                 varchar(255) not null
         primary key,
     username                varchar(255),
     password                varchar(255),
@@ -242,7 +242,7 @@ alter table users
 
 create table users_authority
 (
-    authority_id integer not null
+    authority_id varchar(255) not null
         primary key,
     permission   varchar(255)
 );
@@ -252,18 +252,20 @@ alter table users_authority
 
 create table users_validation
 (
-    user_id                 integer not null,
+    user_id                 varchar(255) not null,
     password_reset_token    varchar(255),
     password_reset_issued   timestamp,
-    creation                timestamp
+    creation                timestamp,
+    token                   varchar(255),
+    token_issued            timestamp
 );
 
 create table users_roles
 (
-    user_id integer not null
+    user_id varchar(255) not null
         constraint fk12v220v0594jj67ajy0u6xdvu
             references users,
-    role_id integer not null
+    role_id varchar(255) not null
         constraint fkoaraxqcxi9fou9oqpjrc4nx68
             references roles,
     primary key (user_id, role_id)
@@ -274,10 +276,10 @@ alter table users_roles
 
 create table users_roles_authorities
 (
-    role_id      integer not null
+    role_id      varchar(255) not null
         constraint fkgyxt1q1kpaonv4nynd05hk7qw
             references roles,
-    authority_id integer not null
+    authority_id varchar(255) not null
         constraint fkcms6o7cpx3bo7q4offrq20a0b
             references users_authority,
     primary key (role_id, authority_id)

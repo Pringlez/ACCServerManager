@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public
-interface UserValidationRepository extends JpaRepository<UsersValidationEntity, Long> {
+public interface UserValidationRepository extends JpaRepository<UsersValidationEntity, String> {
+
     Optional<UsersValidationEntity> findByToken(String token);
 }

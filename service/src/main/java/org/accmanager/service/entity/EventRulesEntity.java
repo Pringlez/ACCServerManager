@@ -3,8 +3,11 @@ package org.accmanager.service.entity;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
 @Table(name = "EVENT_RULES")
@@ -26,6 +29,7 @@ public class EventRulesEntity {
     private int tyreSetCount;
 
     @Id
+    @GeneratedValue(strategy = UUID)
     @Column(name = "EVENT_RULES_ID")
     public String getEventRulesId() {
         return eventRulesId;

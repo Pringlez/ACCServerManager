@@ -3,8 +3,11 @@ package org.accmanager.service.entity;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
 @Table(name = "BOP_ENTRY")
@@ -18,6 +21,7 @@ public class BopEntryEntity {
     private int restrictor;
 
     @Id
+    @GeneratedValue(strategy = UUID)
     @Column(name = "BOP_ENTRY_ID")
     public String getBopEntryId() {
         return bopEntryId;

@@ -18,16 +18,16 @@ import java.util.stream.Collectors;
 
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.FetchType.EAGER;
-import static jakarta.persistence.GenerationType.AUTO;
+import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
 @Table(name = "USERS")
 public class UsersEntity {
 
     @Id
-    @GeneratedValue(strategy = AUTO)
+    @GeneratedValue(strategy = UUID)
     @Column(name = "USER_ID")
-    private Long userId;
+    private String userId;
 
     @Basic
     @Column(name = "USERNAME")
@@ -100,11 +100,11 @@ public class UsersEntity {
         return new UsersEntity();
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public UsersEntity setUserId(Long userId) {
+    public UsersEntity setUserId(String userId) {
         this.userId = userId;
         return this;
     }

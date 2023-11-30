@@ -51,11 +51,11 @@ public class InputCatalog {
     @PostMapping(path = "/checkbox", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String checkbox(@RequestParam Map<String, String> parameters) {
-
-        if (parameters.containsKey("checkbox"))
-            if (parameters.containsKey(parameters.get("checkbox")))
+        if (parameters.containsKey("checkbox")) {
+            if (parameters.containsKey(parameters.get("checkbox"))) {
                 return p("Checkbox " + parameters.get("checkbox") + " checked.").render();
-
+            }
+        }
         return p("Checkbox " + parameters.get("checkbox") + " unchecked.").render();
     }
 
@@ -81,7 +81,6 @@ public class InputCatalog {
     @ResponseBody
     public String selectMultiple(@RequestParam("demo-select-multiple") String[] selection) {
         ContainerTag<PTag> p = p("Selected");
-
         for (String s : selection)
             p.with(span(" " + s));
         return p.render();
@@ -111,9 +110,7 @@ public class InputCatalog {
     @PostMapping(path = "/color", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String color(@RequestParam("demo-color") String color) {
-
         Color c = Color.decode(color);
-
         return p(join(
                 "Hex:",
                 color,
@@ -134,23 +131,21 @@ public class InputCatalog {
     @ResponseBody
     public String text(@RequestHeader("HX-Trigger-Name") String trigger, @RequestParam Map<String, String> parameters) {
         String target = parameters.get(trigger);
-        if (!parameters.containsKey(trigger))
+        if (!parameters.containsKey(trigger)) {
             return "";
+        }
         return p(trigger + " set to " + target).render();
     }
 
     @PostMapping(path = "/file", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
-    public String file(
-            @RequestParam("demo-file") MultipartFile file,
-            @RequestParam Map<String, String> parameters) {
+    public String file(@RequestParam("demo-file") MultipartFile file, @RequestParam Map<String, String> parameters) {
         ContainerTag<PTag> p = p("File uploaded! ").with(join(br(),
                 " File name: " + file.getName(), br(),
                 " File length: " + file.getSize() + " bytes", br(),
                 " File type: " + file.getContentType(), br(),
                 " Original file name: " + file.getOriginalFilename()
         ));
-
         return p.render();
     }
 
@@ -163,14 +158,10 @@ public class InputCatalog {
     @PostMapping(path = "/submit", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String submit(@RequestParam Map<String, String> parameters) {
-
         var p = p("Form submitted!");
-
-        for (String s : parameters.keySet())
+        for (String s : parameters.keySet()) {
             p.with(join(br(), s + ":" + parameters.get(s)));
-
+        }
         return p.render();
     }
-
-
 }

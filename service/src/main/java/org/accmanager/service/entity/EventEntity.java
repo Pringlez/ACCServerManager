@@ -3,8 +3,11 @@ package org.accmanager.service.entity;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
 @Table(name = "EVENT")
@@ -26,6 +29,7 @@ public class EventEntity {
     private String sessionId;
 
     @Id
+    @GeneratedValue(strategy = UUID)
     @Column(name = "EVENT_ID")
     public String getEventId() {
         return eventId;

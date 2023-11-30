@@ -2,13 +2,15 @@ package org.accmanager.service.identity.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.UUID;
+
+import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
 @Table(name = "USERS_VALIDATION")
@@ -16,7 +18,7 @@ public class UsersValidationEntity {
 
     @Id
     @Column(name = "USER_ID", nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(name = "PASSWORD_RESET_TOKEN")
     private String passwordResetToken;
@@ -28,8 +30,11 @@ public class UsersValidationEntity {
     @CreationTimestamp
     private Instant creation;
 
+    @Column(name = "TOKEN")
     private String token;
-    private Instant tokenIssue;
+
+    @Column(name = "TOKEN_ISSUED")
+    private Instant tokenIssued;
 
     public UsersValidationEntity() {
     }
@@ -38,11 +43,11 @@ public class UsersValidationEntity {
         this.userId = userId.getUserId();
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -63,7 +68,7 @@ public class UsersValidationEntity {
     }
 
     public void newPasswordResetToken() {
-        setPasswordResetToken(UUID.randomUUID().toString());
+        setPasswordResetToken(java.util.UUID.randomUUID().toString());
         setPasswordResetIssued(Instant.now());
     }
 
@@ -84,20 +89,20 @@ public class UsersValidationEntity {
     }
 
     public void newToken() {
-        setToken(UUID.randomUUID().toString());
-        setTokenIssue(Instant.now());
+        setToken(java.util.UUID.randomUUID().toString());
+        setTokenIssued(Instant.now());
     }
 
-    public Instant getTokenIssue() {
-        return tokenIssue;
+    public Instant getTokenIssued() {
+        return tokenIssued;
     }
 
-    public void setTokenIssue(Instant tokenIssue) {
-        this.tokenIssue = tokenIssue;
+    public void setTokenIssued(Instant tokenIssued) {
+        this.tokenIssued = tokenIssued;
     }
 
     public boolean tokenIsCurrent() {
-        return Math.abs(Duration.between(getTokenIssue(), Instant.now()).toMillis()) < 1000 * 60 * 60 * 24;
+        return Math.abs(Duration.between(getTokenIssued(), Instant.now()).toMillis()) < 1000 * 60 * 60 * 24;
     }
 
     public boolean passwordValidationIsCurrent() {

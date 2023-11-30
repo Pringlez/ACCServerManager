@@ -3,8 +3,11 @@ package org.accmanager.service.entity;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
 @Table(name = "BOP")
@@ -17,6 +20,7 @@ public class BopEntity {
     private int disableAutoWiper;
 
     @Id
+    @GeneratedValue(strategy = UUID)
     @Column(name = "BOP_ID")
     public String getBopId() {
         return bopId;

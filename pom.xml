@@ -48,7 +48,7 @@
         <junit-platform.version>1.10.0</junit-platform.version>
         <junit.jupiter.version>5.10.0</junit.jupiter.version>
         <maven.surefire.version>3.2.1</maven.surefire.version>
-        <thymeleaf.security.version>3.1.1.RELEASE</thymeleaf.security.version>
+        <thymeleaf.security.version>3.1.2.RELEASE</thymeleaf.security.version>
         <handlebars.version>4.3.1</handlebars.version>
         <thymeleaf.layout.version>3.3.0</thymeleaf.layout.version>
         <j2html.version>1.6.0</j2html.version>

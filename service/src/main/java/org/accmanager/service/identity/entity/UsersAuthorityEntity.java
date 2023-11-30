@@ -10,16 +10,16 @@ import jakarta.persistence.Table;
 
 import java.util.Set;
 
-import static jakarta.persistence.GenerationType.AUTO;
+import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
 @Table(name = "USERS_AUTHORITY")
 public class UsersAuthorityEntity {
 
     @Id
-    @GeneratedValue(strategy = AUTO)
+    @GeneratedValue(strategy = UUID)
     @Column(name = "AUTHORITY_ID")
-    private Long authorityId;
+    private String authorityId;
 
     @Basic
     @Column(name = "PERMISSION")
@@ -32,11 +32,11 @@ public class UsersAuthorityEntity {
         return new UsersAuthorityEntity();
     }
 
-    public Long getAuthorityId() {
+    public String getAuthorityId() {
         return authorityId;
     }
 
-    public UsersAuthorityEntity setAuthorityId(Long authorityId) {
+    public UsersAuthorityEntity setAuthorityId(String authorityId) {
         this.authorityId = authorityId;
         return this;
     }

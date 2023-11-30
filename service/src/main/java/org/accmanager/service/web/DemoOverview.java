@@ -14,5 +14,4 @@ public class DemoOverview {
         model.addAttribute("now", new Date());
         return "index";
     }
-
 }

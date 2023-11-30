@@ -2,15 +2,20 @@ package org.accmanager.service.identity.user;
 
 import jakarta.mail.AuthenticationFailedException;
 import org.accmanager.service.exception.IdentityServiceException;
+import org.accmanager.service.identity.entity.RolesEntity;
 import org.accmanager.service.identity.entity.UsersEntity;
 import org.accmanager.service.identity.entity.UsersValidationEntity;
 import org.accmanager.service.identity.repository.UserValidationRepository;
 import org.accmanager.service.identity.repository.UsersRepository;
+import org.accmanager.service.identity.repository.UsersRolesRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import static org.accmanager.service.exception.IdentityServiceException.Reason.BAD_EMAIL;
@@ -23,6 +28,7 @@ import static org.accmanager.service.exception.IdentityServiceException.Reason.B
 public class UserService {
 
     private final UsersRepository usersRepository;
+    private final UsersRolesRepository usersRolesRepository;
     private final UserValidationRepository userValidationRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
@@ -33,9 +39,10 @@ public class UserService {
     @Value("${spring.mail.username}")
     private String emailSender;
 
-    public UserService(UsersRepository usersRepository, UserValidationRepository userValidationRepository,
+    public UserService(UsersRepository usersRepository, UsersRolesRepository usersRolesRepository, UserValidationRepository userValidationRepository,
                        PasswordEncoder passwordEncoder, EmailSenderService emailSenderService) {
         this.usersRepository = usersRepository;
+        this.usersRolesRepository = usersRolesRepository;
         this.userValidationRepository = userValidationRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailSenderService = emailSenderService;
@@ -95,23 +102,18 @@ public class UserService {
         if (password == null) {
             throw new IdentityServiceException(BAD_PASSWORD, "No password set.");
         }
-
         if (password.length() < 12) {
             throw new IdentityServiceException(BAD_PASSWORD, "Password is too short.");
         }
-
         if (password.length() > 200) {
             throw new IdentityServiceException(BAD_PASSWORD, "Password is too long.");
         }
-
         if (!password.trim().equals(password)) {
             throw new IdentityServiceException(BAD_PASSWORD, "No spaces in password.");
         }
-
         if (password.contains(" ")) {
             throw new IdentityServiceException(BAD_PASSWORD, "No spaces in password.");
         }
-
         String clean = password.replaceAll("[^\\n\\r\\t\\p{Print}]", "");
         if (!password.equals(clean)) {
             throw new IdentityServiceException(BAD_PASSWORD, "No non-printable characters in password.");
@@ -134,6 +136,8 @@ public class UserService {
 
         Optional<UsersEntity> foundUser = usersRepository.findByUsername(username);
 
+        Optional<RolesEntity> userRole = usersRolesRepository.findByRoleName("USER");
+
         if (foundUser.isPresent()) {
             throw new IdentityServiceException(BAD_EMAIL, "Email already exists.");
         }
@@ -142,6 +146,14 @@ public class UserService {
         newUser.setUsername(username.trim().toLowerCase());
         newUser.setPassword(passwordEncoder.encode(pass));
         newUser.setTestUser(isTestUser);
+        //newUser.setTokenValidation(Instant.now());
+        newUser.setUserCreation(Instant.now());
+        newUser.setRoles(new HashSet<>(List.of(userRole.orElse(new RolesEntity()))));
+        newUser.setEnabled(true);
+        newUser.setAccountNonExpired(true);
+        newUser.setCredentialsNonExpired(true);
+        newUser.setAccountNonLocked(true);
+        newUser.setCredentialUpdated(Instant.now());
 
         if (!passwordEncoder.matches(pass, newUser.getPassword())) {
             throw new IllegalArgumentException("The passwordEncoder just failed to match an encoded password!");
@@ -151,7 +163,7 @@ public class UserService {
 
         UsersValidationEntity usersValidation = new UsersValidationEntity(newUser);
         usersValidation.newToken();
-        userValidationRepository.save(usersValidation);
+        usersValidation = userValidationRepository.save(usersValidation);
 
         sendConfirmationMail(newUser);
 
