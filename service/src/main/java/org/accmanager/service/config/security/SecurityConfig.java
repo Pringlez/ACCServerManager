@@ -1,6 +1,5 @@
 package org.accmanager.service.config.security;
 
-import org.accmanager.service.identity.config.DaoOverride;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -39,7 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/public/sign-in").permitAll()
                         .loginProcessingUrl("/public/do-sign-in")
-                        .defaultSuccessUrl("/private/")
+                        .defaultSuccessUrl("/private")
                         .failureUrl("/public/sign-in?error=true")
                         .usernameParameter("username")
                         .passwordParameter("password")
@@ -68,7 +66,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider authProvider = new DaoOverride();
+        DaoAuthenticationProvider authProvider = new AuthProviderConfig();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;

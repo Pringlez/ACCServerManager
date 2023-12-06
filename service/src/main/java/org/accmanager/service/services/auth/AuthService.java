@@ -1,13 +1,14 @@
-package org.accmanager.service.identity.user;
+package org.accmanager.service.services.auth;
 
 import jakarta.mail.AuthenticationFailedException;
 import org.accmanager.service.exception.IdentityServiceException;
-import org.accmanager.service.identity.entity.RolesEntity;
-import org.accmanager.service.identity.entity.UsersEntity;
-import org.accmanager.service.identity.entity.UsersValidationEntity;
-import org.accmanager.service.identity.repository.UserValidationRepository;
-import org.accmanager.service.identity.repository.UsersRepository;
-import org.accmanager.service.identity.repository.UsersRolesRepository;
+import org.accmanager.service.entity.auth.RolesEntity;
+import org.accmanager.service.entity.auth.UsersEntity;
+import org.accmanager.service.entity.auth.UsersValidationEntity;
+import org.accmanager.service.repository.auth.UserValidationRepository;
+import org.accmanager.service.repository.auth.UsersRepository;
+import org.accmanager.service.repository.auth.UsersRolesRepository;
+import org.accmanager.service.services.email.EmailSenderService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +26,7 @@ import static org.accmanager.service.exception.IdentityServiceException.Reason.B
 import static org.accmanager.service.exception.IdentityServiceException.Reason.BAD_TOKEN;
 
 @Service
-public class UserService {
+public class AuthService {
 
     private final UsersRepository usersRepository;
     private final UsersRolesRepository usersRolesRepository;
@@ -39,7 +40,7 @@ public class UserService {
     @Value("${spring.mail.username}")
     private String emailSender;
 
-    public UserService(UsersRepository usersRepository, UsersRolesRepository usersRolesRepository, UserValidationRepository userValidationRepository,
+    public AuthService(UsersRepository usersRepository, UsersRolesRepository usersRolesRepository, UserValidationRepository userValidationRepository,
                        PasswordEncoder passwordEncoder, EmailSenderService emailSenderService) {
         this.usersRepository = usersRepository;
         this.usersRolesRepository = usersRolesRepository;
@@ -50,51 +51,45 @@ public class UserService {
 
     public UsersValidationEntity validation(UsersEntity user) {
         return userValidationRepository.findById(user.getUserId()).orElseThrow(() ->
-                new IllegalArgumentException("Need to save the user before using validation"));
+                new IllegalArgumentException("Need to save the user before using validation."));
     }
 
     private void sendConfirmationMail(UsersEntity user) {
-        final SimpleMailMessage mailMessage = new SimpleMailMessage();
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getUsername());
-        mailMessage.setSubject("ChangeNode: Finish Setting Up Your Account");
+        mailMessage.setSubject("ACC Manager: Account Setup");
         mailMessage.setFrom(emailSender);
-        mailMessage.setText("Thank you for registering!\n" +
-                "Please click on the below link to activate your account.\n\n" +
-                serverAddress + "/public/sign-up/confirm?token="
-                + validation(user).getToken());
-
+        mailMessage.setText("Thank you for registering!\n" + "Please click on the below link to activate your account.\n\n" +
+                serverAddress + "/public/sign-up/confirm?token=" + validation(user).getToken());
         emailSenderService.sendEmail(mailMessage);
     }
 
     private void sendPasswordResetLink(UsersEntity user) {
-        final SimpleMailMessage mailMessage = new SimpleMailMessage();
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getUsername());
-        mailMessage.setSubject("ChangeNode: Password Reset Link");
+        mailMessage.setSubject("ACC Manager: Password Reset Link");
         mailMessage.setFrom(emailSender);
         mailMessage.setText("Here's your password reset link. Only valid for apx two hours.\n" +
-                "Please click on the below link to reset your account password.\n\n" +
-                serverAddress + "/public/password-reset?token="
-                + validation(user).getPasswordResetToken());
-
+                "Please click on the below link to reset your account password.\n\n" + serverAddress
+                + "/public/password-reset?token=" + validation(user).getPasswordResetToken());
         emailSenderService.sendEmail(mailMessage);
     }
 
-
     private void checkEmailAddress(String address) throws IdentityServiceException {
         if (!address.contains("@")) {
-            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address (1)");
+            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address, 800 error code");
         }
         if (address.endsWith("@")) {
-            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address (2)");
+            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address, 801 error code");
         }
         if (address.startsWith("@")) {
-            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address (3)");
+            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address, 802 error code");
         }
         if (address.length() < 5) {
-            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address (4)");
+            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address, 803 error code");
         }
         if (!address.contains(".")) {
-            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address (5)");
+            throw new IdentityServiceException(BAD_EMAIL, "Invalid email address, 804 error code");
         }
     }
 
@@ -121,10 +116,11 @@ public class UserService {
     }
 
     public UsersEntity signIn(String username, String pass) throws IdentityServiceException {
-        UsersEntity user = usersRepository.findByUsername(username).orElseThrow(() -> new IdentityServiceException(BAD_LOGIN, "Unknown Email"));
+        UsersEntity user = usersRepository.findByUsername(username).orElseThrow(() ->
+                new IdentityServiceException(BAD_LOGIN, "Unknown email address."));
 
         if (!passwordEncoder.matches(pass, user.getPassword())) {
-            throw new IdentityServiceException(BAD_LOGIN, "Invalid Login (1)");
+            throw new IdentityServiceException(BAD_LOGIN, "Invalid login credentials.");
         }
 
         return user;
@@ -156,7 +152,7 @@ public class UserService {
         newUser.setCredentialUpdated(Instant.now());
 
         if (!passwordEncoder.matches(pass, newUser.getPassword())) {
-            throw new IllegalArgumentException("The passwordEncoder just failed to match an encoded password!");
+            throw new IllegalArgumentException("Could not match an encoded password!");
         }
 
         newUser = usersRepository.save(newUser);
@@ -170,7 +166,6 @@ public class UserService {
         return newUser;
     }
 
-
     public void deleteUser(UsersEntity user) {
         if (!user.isTestUser()) {
             throw new IllegalArgumentException("Can only delete test users!");
@@ -181,8 +176,9 @@ public class UserService {
     }
 
     private UsersEntity existingUserSignup(UsersEntity user) throws AuthenticationFailedException {
-        if (user.getTokenValidation() != null)
+        if (user.getTokenValidation() != null) {
             return user;
+        }
         if (validation(user).tokenIsCurrent()) {
             sendConfirmationMail(user);
         } else {
@@ -194,13 +190,14 @@ public class UserService {
 
     public Optional<UsersEntity> confirmUser(String confirmationToken) throws IdentityServiceException {
         UsersValidationEntity usersValidation = userValidationRepository.findByToken(confirmationToken).orElseThrow(() ->
-                new IdentityServiceException(BAD_TOKEN, "Invalid Token (21)"));
+                new IdentityServiceException(BAD_TOKEN, "Invalid token, 900 error code!"));
 
         UsersEntity user = usersRepository.findById(usersValidation.getUserId()).orElseThrow(() ->
-                new IdentityServiceException(BAD_TOKEN, "Invalid Token (22)"));
+                new IdentityServiceException(BAD_TOKEN, "Invalid token, 901 error code!"));
 
-        if (!validation(user).tokenIsCurrent())
-            throw new IdentityServiceException(BAD_TOKEN, "");
+        if (!validation(user).tokenIsCurrent()) {
+            throw new IdentityServiceException(BAD_TOKEN, "Invalid token, 902 error code!");
+        }
 
         user.markTokenAsValid();
         UsersEntity savedUser = usersRepository.save(user);
@@ -222,41 +219,41 @@ public class UserService {
 
     public UsersValidationEntity requestPasswordReset(String username) throws IdentityServiceException, AuthenticationFailedException {
         UsersEntity user = usersRepository.findByUsername(username).orElseThrow(()
-                -> new IdentityServiceException(BAD_PASSWORD_RESET, "Missing email address. (a)"));
+                -> new IdentityServiceException(BAD_PASSWORD_RESET, "Missing email address."));
 
         if (!user.validated()) {
-            throw new IdentityServiceException(BAD_TOKEN, "User never activated (should resend activation email)");
+            throw new IdentityServiceException(BAD_TOKEN, "User never activated, should resend activation email.");
         }
 
-        UsersValidationEntity uv = userValidationRepository.findById(user.getUserId()).orElseThrow(()
-                -> new IdentityServiceException(BAD_PASSWORD_RESET, "No validation token found. (b)"));
+        UsersValidationEntity usersValidation = userValidationRepository.findById(user.getUserId()).orElseThrow(()
+                -> new IdentityServiceException(BAD_PASSWORD_RESET, "No validation token found."));
 
-        if (uv.getPasswordResetIssued() != null) {
-            if (uv.passwordValidationIsCurrent()) {
-                return uv;
+        if (usersValidation.getPasswordResetIssued() != null) {
+            if (usersValidation.passwordValidationIsCurrent()) {
+                return usersValidation;
             }
         }
 
-        uv.newPasswordResetToken();
-        uv = userValidationRepository.save(uv);
+        usersValidation.newPasswordResetToken();
+        usersValidation = userValidationRepository.save(usersValidation);
 
         sendPasswordResetLink(user);
 
-        return uv;
+        return usersValidation;
     }
 
     public UsersEntity updatePassword(String username, String passwordResetToken, String newPassword) throws IdentityServiceException {
         UsersEntity user = usersRepository.findByUsername(username).orElseThrow(() ->
-                new IdentityServiceException(BAD_PASSWORD_RESET, "No user found with this email. (c)"));
+                new IdentityServiceException(BAD_PASSWORD_RESET, "No user found with this email."));
 
         UsersValidationEntity usersValidationEntity = userValidationRepository.findById(user.getUserId()).orElseThrow(()
-                -> new IdentityServiceException(BAD_PASSWORD_RESET, "No user validation token[s] found. (d)"));
+                -> new IdentityServiceException(BAD_PASSWORD_RESET, "No user validation token found."));
 
         if (!usersValidationEntity.getPasswordResetToken().equals(passwordResetToken)) {
-            throw new IdentityServiceException(BAD_PASSWORD_RESET, "Invalid/expired token. (e)");
+            throw new IdentityServiceException(BAD_PASSWORD_RESET, "Invalid or expired token.");
         }
         if (!usersValidationEntity.passwordValidationIsCurrent()) {
-            throw new IdentityServiceException(BAD_PASSWORD_RESET, "Token expired. (f)");
+            throw new IdentityServiceException(BAD_PASSWORD_RESET, "Validation token expired.");
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));

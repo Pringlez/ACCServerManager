@@ -1,16 +1,13 @@
-package org.accmanager.service.identity.entity;
+package org.accmanager.service.entity.auth;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Duration;
 import java.time.Instant;
-
-import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
 @Table(name = "USERS_VALIDATION")

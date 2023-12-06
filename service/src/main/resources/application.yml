@@ -9,7 +9,7 @@ server:
 spring:
   application:
     name: acc-manager
-    version: 0.6.1
+    version: 0.7.0
   profiles:
     active: local,h2
     #active: local,postgres

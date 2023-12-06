@@ -1,4 +1,4 @@
-package org.accmanager.service.identity.user;
+package org.accmanager.service.services.email;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

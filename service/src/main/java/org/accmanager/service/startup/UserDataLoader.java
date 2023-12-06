@@ -1,11 +1,11 @@
 package org.accmanager.service.startup;
 
-import org.accmanager.service.identity.entity.RolesEntity;
-import org.accmanager.service.identity.entity.UsersAuthorityEntity;
-import org.accmanager.service.identity.entity.UsersEntity;
-import org.accmanager.service.identity.repository.UsersAuthorityRepository;
-import org.accmanager.service.identity.repository.UsersRepository;
-import org.accmanager.service.identity.repository.UsersRolesRepository;
+import org.accmanager.service.entity.auth.RolesEntity;
+import org.accmanager.service.entity.auth.UsersAuthorityEntity;
+import org.accmanager.service.entity.auth.UsersEntity;
+import org.accmanager.service.repository.auth.UsersAuthorityRepository;
+import org.accmanager.service.repository.auth.UsersRepository;
+import org.accmanager.service.repository.auth.UsersRolesRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

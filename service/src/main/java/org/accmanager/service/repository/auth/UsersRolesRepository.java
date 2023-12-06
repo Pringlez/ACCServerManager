@@ -1,6 +1,6 @@
-package org.accmanager.service.identity.repository;
+package org.accmanager.service.repository.auth;
 
-import org.accmanager.service.identity.entity.RolesEntity;
+import org.accmanager.service.entity.auth.RolesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

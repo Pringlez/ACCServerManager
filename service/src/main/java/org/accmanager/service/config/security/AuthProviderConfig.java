@@ -1,4 +1,4 @@
-package org.accmanager.service.identity.config;
+package org.accmanager.service.config.security;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,7 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class DaoOverride extends DaoAuthenticationProvider {
+public class AuthProviderConfig extends DaoAuthenticationProvider {
 
     public PasswordEncoder passwordEncoder;
 

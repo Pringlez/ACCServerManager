@@ -1,6 +1,6 @@
-package org.accmanager.service.identity.repository;
+package org.accmanager.service.repository.auth;
 
-import org.accmanager.service.identity.entity.UsersValidationEntity;
+import org.accmanager.service.entity.auth.UsersValidationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

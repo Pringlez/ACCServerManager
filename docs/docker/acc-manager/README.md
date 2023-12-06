@@ -8,7 +8,7 @@ mvn clean install -DskipTests -Pprod
 ```
 Run the following command in the __root__ project directory to package everything into a docker image:
 ```
-docker build -f ./docs/docker/acc-manager/Dockerfile -t acc-manager:0.6.1 -t acc-manager:latest .
+docker build -f ./docs/docker/acc-manager/Dockerfile -t acc-manager:0.7.0 -t acc-manager:latest .
 ```
 
 ### Running ACC Manager Docker Container

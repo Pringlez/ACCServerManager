@@ -20,7 +20,7 @@ instance to be spun up in kubernetes clusters or docker hosts.
 ### Step 3 (Java) - ACC Manager Jar
 After running a maven build, you should be able to run the jar in your `service/target` directory by executing:
 ```
-java -jar service/target/acc-manager-0.6.1.jar
+java -jar service/target/acc-manager-0.7.0.jar
 ```
 
 After starting the application, place the `accServer.exe` executable in `servers/accmanager/executable` directory. When you
@@ -36,7 +36,7 @@ mvn clean install -Pprod
 ```
 Then, run the built jar from the `service/target` directory:
 ```
-java -jar service/target/acc-manager-service-0.6.1.jar
+java -jar service/target/acc-manager-service-0.7.0.jar
 ```
 
 ## Development

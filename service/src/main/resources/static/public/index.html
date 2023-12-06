@@ -3,18 +3,12 @@
       xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout ">
 <head>
     <title>HTMX-Demo</title>
-    <!--/* Used only for editing in Pinegrow. Remove comment to display -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+    <!--/* Used for Pinegrow -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <!--*/-->
 </head>
 <body>
 <section layout:fragment="content">
-    <div class="container">
-        <br/>
-        <div class="alert alert-success">
-            <strong>If this looks ok...</strong> Bootstrap is working.
-        </div>
-    </div>
     <div class="container">
         <a th:href="@{/public/click-to-edit}">Click To Edit</a>
     </div>
@@ -34,9 +28,9 @@
         <a th:href="@{/private/}">Spring Security Integration</a>
     </div>
 </section>
-<!--/* Used only for editing in Pinegrow. Remove comment to display -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"></script>
+<!--/* Used for Pinegrow -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 <!--*/-->
 </body>
 </html>

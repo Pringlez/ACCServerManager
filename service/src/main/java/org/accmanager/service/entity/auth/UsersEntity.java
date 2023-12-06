@@ -1,4 +1,4 @@
-package org.accmanager.service.identity.entity;
+package org.accmanager.service.entity.auth;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
