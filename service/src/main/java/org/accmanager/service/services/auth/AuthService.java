@@ -142,7 +142,6 @@ public class AuthService {
         newUser.setUsername(username.trim().toLowerCase());
         newUser.setPassword(passwordEncoder.encode(pass));
         newUser.setTestUser(isTestUser);
-        //newUser.setTokenValidation(Instant.now());
         newUser.setUserCreation(Instant.now());
         newUser.setRoles(new HashSet<>(List.of(userRole.orElse(new RolesEntity()))));
         newUser.setEnabled(true);

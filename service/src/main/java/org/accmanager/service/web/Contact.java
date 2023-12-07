@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Contact {
+
     private String firstName;
     private String lastName;
     private String email;
