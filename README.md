@@ -1,6 +1,5 @@
-# ACC Manager & ACC Server
-ACC Manager has been designed to manage multiple ACC Server docker containers. Currently, only
-capable of managing containers local to the ACC Manager's host machine.
+# ACC Manager
+ACC Manager is tool for managing multiple game serer docker containers, and local servers on the filesystem.
 
 ## Setup Host
 First, you'll need to install [docker](https://docs.docker.com/get-started/) on your hosting machine. 

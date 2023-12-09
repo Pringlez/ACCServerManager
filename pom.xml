@@ -27,6 +27,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <spring.boot.version>3.1.6</spring.boot.version>
         <spring.security.version>6.1.5</spring.security.version>
+        <node.version>v20.10.0</node.version>
+        <npm.version>10.2.3</npm.version>
+        <frontend.maven.plugin.version>1.15.0</frontend.maven.plugin.version>
         <openapi.generator.version>7.1.0</openapi.generator.version>
         <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
         <jackson.databind.version>2.16.0</jackson.databind.version>

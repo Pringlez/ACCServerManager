@@ -12,3 +12,5 @@ api/.classpath
 /database/
 /servers/
 /.jpb/
+/node_modules/
+/service/node/
