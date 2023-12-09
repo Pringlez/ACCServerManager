@@ -1,4 +1,4 @@
-package org.accmanager.service.web;
+package org.accmanager.service.api.web;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/public/todo")
+@RequestMapping("/web/todo")
 public class ToDoList {
 
     @GetMapping

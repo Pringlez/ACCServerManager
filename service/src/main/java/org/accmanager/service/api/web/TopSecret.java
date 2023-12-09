@@ -1,4 +1,4 @@
-package org.accmanager.service.web;
+package org.accmanager.service.api.web;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

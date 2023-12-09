@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>Click To Edit</title>
@@ -7,7 +7,7 @@
 <body>
 <section layout:fragment="content">
     <div class="container">
-        <form hx-post="/public/click-to-edit/edit/1" hx-target="this" hx-swap="outerHTML">
+        <form hx-post="/web/click-to-edit/edit/1" hx-target="this" hx-swap="outerHTML">
             <div>
                 <label>First Name</label> :
                 <span th:text="${contact.firstName}"></span>

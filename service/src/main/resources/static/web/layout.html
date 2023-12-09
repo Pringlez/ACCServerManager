@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout ">
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
+    <link th:rel="stylesheet" th:href="@{/web/css/style.build.tailwind.css}">
+    <style>
+        .htmx-indicator {
+            background-color: #374151;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-slate-900">
+<nav class="bg-gray-600 dark:bg-gray-800">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                <div class="flex flex-shrink-0 items-center">
+                    <img class="h-8 w-auto" src="/web/logo.png" alt="ACC Manager">
+                </div>
+                <div class="hidden sm:ml-6 sm:block">
+                    <div class="flex space-x-4">
+                        <a th:href="@{/}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Home</a>
+                        <a th:href="@{/web/click-to-edit}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Click To Edit</a>
+                        <a th:href="@{/web/infinite-scroll}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Infinite Scroll</a>
+                        <a th:href="@{/web/todo}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">ToDo</a>
+                        <a th:href="@{/web/input}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Input Catalog</a>
+                        <a th:href="@{/web/value-select}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Value Select</a>
+                        <a th:href="@{/web/contact-us}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Contact Us</a>
+                        <a th:href="@{/private/}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile menu, show/hide based on menu state. -->
+    <div class="sm:hidden" id="mobile-menu">
+        <div class="space-y-1 px-2 pb-3 pt-2">
+            <a th:href="@{/}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Home</a>
+            <a th:href="@{/web/click-to-edit}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Click To Edit</a>
+            <a th:href="@{/web/infinite-scroll}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Infinite Scroll</a>
+            <a th:href="@{/web/todo}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">ToDo</a>
+            <a th:href="@{/web/input}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Input Catalog</a>
+            <a th:href="@{/web/value-select}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Value Select</a>
+            <a th:href="@{/private/}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Profile</a>
+        </div>
+    </div>
+</nav>
+<div th:if="${!#strings.isEmpty(message)}" class="bg-blue-100 border border-blue-400 text-white-700 px-4 py-3 rounded relative" role="alert">
+    <span class="block sm:inline" th:text="${message}"></span>
+</div>
+<div th:if="${!#strings.isEmpty(error)}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+    <span class="block sm:inline" th:text="${error}"></span>
+</div>
+<section layout:fragment="content">
+    <p>Page content goes here</p>
+</section>
+<footer class="bg-gray-600 dark:bg-gray-800">
+    <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+      <span class="text-sm text-gray-500 sm:text-center dark:text-white-200 block rounded-md">2024 <a th:href="@{/}">ACC Manager™</a>
+    </span>
+        <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-300 sm:mt-0">
+            <li>
+                <a th:href="@{/web/sign-in}" class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Sign In</a>
+            </li>
+            <li>
+                <a th:href="@{/web/sign-up}" class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Sign Up</a>
+            </li>
+            <li>
+                <a th:href="@{/web/contact-us}" class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Contact Us</a>
+            </li>
+            <li>
+                <span class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Rendered at <span th:text="${#dates.format(now, 'dd/MMM/yyyy HH:mm')}"></span></span>
+            </li>
+        </ul>
+    </div>
+</footer>
+</body>
+</html>

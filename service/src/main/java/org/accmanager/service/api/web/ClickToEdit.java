@@ -1,4 +1,4 @@
-package org.accmanager.service.web;
+package org.accmanager.service.api.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/public/click-to-edit")
+@RequestMapping("/web/click-to-edit")
 public class ClickToEdit {
 
     @GetMapping

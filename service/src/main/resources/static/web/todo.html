@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Click To Edit</title>
@@ -34,7 +34,7 @@
                         <input type="checkbox"/>
                     </td>
                     <td>
-                        <button class="btn btn-danger" hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s" hx-trigger="click" th:attr="hx-delete=@{/public/todo/delete}">
+                        <button class="btn btn-danger" hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s" hx-trigger="click" th:attr="hx-delete=@{/web/todo/delete}">
                             Delete
                         </button>
                     </td>
@@ -48,7 +48,7 @@
                     <input autofocus="autofocus" class="form-control form-control-plaintext" id="new-todo" name="new-todo" placeholder="To do..." required type="text">
                 </td>
                 <td class="w-25">
-                    <button _="on htmx:afterRequest put '' into #new-todo.value" id="mon" hx-include="#new-todo" th:attr="hx-post=@{/public/todo/create}" hx-target="#todo-list" hx-swap="beforeend"
+                    <button _="on htmx:afterRequest put '' into #new-todo.value" id="mon" hx-include="#new-todo" th:attr="hx-post=@{/web/todo/create}" hx-target="#todo-list" hx-swap="beforeend"
                             hx-trigger="click" class="btn btn-primary">Add
                     </button>
                 </td>

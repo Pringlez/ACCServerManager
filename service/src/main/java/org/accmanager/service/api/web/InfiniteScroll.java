@@ -1,4 +1,4 @@
-package org.accmanager.service.web;
+package org.accmanager.service.api.web;
 
 import org.intellij.lang.annotations.Language;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import java.util.List;
  * different approach.
  */
 @Controller
-@RequestMapping("/public/infinite-scroll")
+@RequestMapping("/web/infinite-scroll")
 public class InfiniteScroll {
 
     @GetMapping
@@ -45,7 +45,7 @@ public class InfiniteScroll {
 
     @Language("html")
     final String loadHtml = """
-             <tr hx-get="/public/infinite-scroll/page/%d"
+             <tr hx-get="/web/infinite-scroll/page/%d"
                  hx-trigger="revealed"
                  hx-swap="afterend">
                  <td>%s</td>

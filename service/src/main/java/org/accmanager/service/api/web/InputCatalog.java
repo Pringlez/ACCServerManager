@@ -1,4 +1,4 @@
-package org.accmanager.service.web;
+package org.accmanager.service.api.web;
 
 import j2html.tags.ContainerTag;
 import j2html.tags.specialized.PTag;
@@ -27,7 +27,7 @@ import static j2html.TagCreator.p;
 import static j2html.TagCreator.span;
 
 @Controller
-@RequestMapping("/public/input")
+@RequestMapping("/web/input")
 public class InputCatalog {
 
     @GetMapping

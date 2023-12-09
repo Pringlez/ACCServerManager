@@ -6,6 +6,10 @@ external:
     address: http://localhost:8080
 server:
   port: 8080
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
 spring:
   application:
     name: acc-manager
@@ -21,7 +25,8 @@ spring:
       name: acc-user
   thymeleaf:
     cache: false
-    prefix: classpath:/static/public/
+    prefix: classpath:/static/web/
+    darkMode: true
   mail:
     scheduler:
       persistence:

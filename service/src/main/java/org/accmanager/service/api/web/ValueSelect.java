@@ -1,4 +1,4 @@
-package org.accmanager.service.web;
+package org.accmanager.service.api.web;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/public/value-select")
+@RequestMapping("/web/value-select")
 public class ValueSelect {
 
     /**

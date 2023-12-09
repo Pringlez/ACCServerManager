@@ -1,10 +1,10 @@
 package org.accmanager.service.services.auth;
 
 import jakarta.mail.AuthenticationFailedException;
-import org.accmanager.service.exception.IdentityServiceException;
 import org.accmanager.service.entity.auth.RolesEntity;
 import org.accmanager.service.entity.auth.UsersEntity;
 import org.accmanager.service.entity.auth.UsersValidationEntity;
+import org.accmanager.service.exception.IdentityServiceException;
 import org.accmanager.service.repository.auth.UserValidationRepository;
 import org.accmanager.service.repository.auth.UsersRepository;
 import org.accmanager.service.repository.auth.UsersRolesRepository;
@@ -60,7 +60,7 @@ public class AuthService {
         mailMessage.setSubject("ACC Manager: Account Setup");
         mailMessage.setFrom(emailSender);
         mailMessage.setText("Thank you for registering!\n" + "Please click on the below link to activate your account.\n\n" +
-                serverAddress + "/public/sign-up/confirm?token=" + validation(user).getToken());
+                serverAddress + "/web/sign-up/confirm?token=" + validation(user).getToken());
         emailSenderService.sendEmail(mailMessage);
     }
 
@@ -71,7 +71,7 @@ public class AuthService {
         mailMessage.setFrom(emailSender);
         mailMessage.setText("Here's your password reset link. Only valid for apx two hours.\n" +
                 "Please click on the below link to reset your account password.\n\n" + serverAddress
-                + "/public/password-reset?token=" + validation(user).getPasswordResetToken());
+                + "/web/password-reset?token=" + validation(user).getPasswordResetToken());
         emailSenderService.sendEmail(mailMessage);
     }
 

@@ -4,7 +4,7 @@ module.exports = {
   content: [
     './service/src/main/resources/static/**/*.{html,js}'
   ],
-  darkMode: true,
+  darkMode: 'class',
   theme: {
     extend: {},
   },
