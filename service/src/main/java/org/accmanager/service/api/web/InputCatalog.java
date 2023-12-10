@@ -2,6 +2,7 @@ package org.accmanager.service.api.web;
 
 import j2html.tags.ContainerTag;
 import j2html.tags.specialized.PTag;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +31,16 @@ import static j2html.TagCreator.span;
 @RequestMapping("/web/input")
 public class InputCatalog {
 
+    @Value("${spring.thymeleaf.darkMode:false}")
+    private boolean darkMode;
+
+    private static final String IS_DARK_MODE = "isDarkMode";
+
     @GetMapping
     public String start(Model model) {
         model.addAttribute("now", new Date().toInstant());
-        return "input-catalog";
+        model.addAttribute(IS_DARK_MODE, darkMode);
+        return "pages/general/input-catalog";
     }
 
     @DeleteMapping(path = "/delete", produces = MediaType.TEXT_HTML_VALUE)

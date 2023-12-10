@@ -1,5 +1,6 @@
 package org.accmanager.service.api.web;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,13 +11,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/private")
-public class TopSecret {
+@RequestMapping("/web/profile")
+public class UserProfile {
 
-    @GetMapping("/")
+    @Value("${spring.thymeleaf.darkMode:false}")
+    private boolean darkMode;
+
+    private static final String IS_DARK_MODE = "isDarkMode";
+
+    @GetMapping("/details")
     public String index(Model model) {
         model.addAttribute("now", new Date());
-        return "private-index";
+        model.addAttribute(IS_DARK_MODE, darkMode);
+        model.addAttribute("nickname", "Backend Populated");
+        return "pages/profile/user-profile";
     }
 
     @GetMapping(path = "/data", produces = MediaType.TEXT_HTML_VALUE)

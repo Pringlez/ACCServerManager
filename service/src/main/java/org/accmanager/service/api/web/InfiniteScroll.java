@@ -1,6 +1,7 @@
 package org.accmanager.service.api.web;
 
 import org.intellij.lang.annotations.Language;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,10 +29,16 @@ import java.util.List;
 @RequestMapping("/web/infinite-scroll")
 public class InfiniteScroll {
 
+    @Value("${spring.thymeleaf.darkMode:false}")
+    private boolean darkMode;
+
+    private static final String IS_DARK_MODE = "isDarkMode";
+
     @GetMapping
     public String start(Model model) {
         model.addAttribute("now", new Date().toInstant());
-        return "infinite-scroll";
+        model.addAttribute(IS_DARK_MODE, darkMode);
+        return "pages/general/infinite-scroll";
     }
 
     @Language("html")
@@ -45,13 +52,13 @@ public class InfiniteScroll {
 
     @Language("html")
     final String loadHtml = """
-             <tr hx-get="/web/infinite-scroll/page/%d"
+            <tr hx-get="/web/infinite-scroll/page/%d"
                  hx-trigger="revealed"
                  hx-swap="afterend">
                  <td>%s</td>
                  <td>%s</td>
                  <td>%s</td>
-             </tr>
+            </tr>
             """;
 
     @GetMapping(value = "/page/{id}", produces = MediaType.TEXT_HTML_VALUE)

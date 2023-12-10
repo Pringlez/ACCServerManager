@@ -1,5 +1,6 @@
 package org.accmanager.service.api.web;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +17,17 @@ import java.util.Date;
 @RequestMapping("/web/todo")
 public class ToDoList {
 
+    @Value("${spring.thymeleaf.darkMode:false}")
+    private boolean darkMode;
+
+    private static final String IS_DARK_MODE = "isDarkMode";
+
     @GetMapping
     public String start(Model model) {
         model.addAttribute("now", new Date().toInstant());
         model.addAttribute("item", "Get Stuff Done");
-        return "todo";
+        model.addAttribute(IS_DARK_MODE, darkMode);
+        return "pages/general/todo";
     }
 
     @DeleteMapping(path = "/delete", produces = MediaType.TEXT_HTML_VALUE)
@@ -41,6 +48,6 @@ public class ToDoList {
         // https://youtrack.jetbrains.com/issue/IDEA-276625
         //
         //noinspection SpringMVCViewInspection
-        return "todo :: todo";
+        return "pages/general/todo :: pages/general/todo";
     }
 }

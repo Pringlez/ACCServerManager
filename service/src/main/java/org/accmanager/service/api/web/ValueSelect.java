@@ -3,6 +3,7 @@ package org.accmanager.service.api.web;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import org.intellij.lang.annotations.Language;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,18 +19,23 @@ import java.util.Date;
 @RequestMapping("/web/value-select")
 public class ValueSelect {
 
+    @Value("${spring.thymeleaf.darkMode:false}")
+    private boolean darkMode;
+
+    private static final String IS_DARK_MODE = "isDarkMode";
+
     /**
      * IntelliJ has a plugin that supports handlebars inline (and file template) syntax highlighting.
      * <p>
      * https://plugins.jetbrains.com/plugin/6884-handlebars-mustache
      */
     @Language("handlebars")
-    private final String handleBarTemplate =
-            """
-                    {{#each}}
+    private final String handleBarTemplate = """
+            {{#each}}
                     <option value="{{this}}">{{{this}}}</option>
-                    {{/each}}
-                    """;
+            {{/each}}
+            """;
+
     private final String[] java8 = {"lambdas", "collections", "streams"};
     private final String[] java9 = {"collections", "streams", "optionals", "interfaces", "jshell"};
     private final String[] java10 = {"var"};
@@ -43,7 +49,8 @@ public class ValueSelect {
     private final String[] java18 = {"UTF-8 by default", "jwebserver"};
     private final String[] java19 = {"virtual threads", "structured concurrency", "vector api"};
     private final String[] java20 = {"scoped values", "record patterns"};
-    Template template;
+
+    public Template template;
 
     public ValueSelect() {
         Handlebars handlebars = new Handlebars();
@@ -57,7 +64,8 @@ public class ValueSelect {
     @GetMapping
     public String start(Model model) {
         model.addAttribute("now", new Date().toInstant());
-        return "value-select";
+        model.addAttribute(IS_DARK_MODE, darkMode);
+        return "pages/general/value-select";
     }
 
     @GetMapping(value = "/models", produces = MediaType.TEXT_HTML_VALUE)

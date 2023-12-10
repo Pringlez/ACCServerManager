@@ -31,13 +31,20 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(mvcMatcherBuilder.pattern("/**/*.html")).denyAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/web/**")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/web/ping")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/web/logout")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/web/error")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/web/password-reset")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/web/forgot-password")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/web/sign-up")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/web/sign-up/confirm")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/web/assets/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/webjars/**")).permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll())
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/web/sign-in").permitAll()
                         .loginProcessingUrl("/web/do-sign-in")
-                        .defaultSuccessUrl("/private")
+                        .defaultSuccessUrl("/web/profile/details")
                         .failureUrl("/web/sign-in?error=true")
                         .usernameParameter("username")
                         .passwordParameter("password")
@@ -54,7 +61,7 @@ public class SecurityConfig {
 //                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")))
 //                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/**")))
 //                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/web/**")))
-//                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/private/**")))
+//                .csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/web/profile/**")))
                 .headers(request -> request.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
         return http.build();
     }

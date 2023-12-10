@@ -9,7 +9,7 @@ server:
   error:
     whitelabel:
       enabled: false
-    path: /error
+    path: /web/error
 spring:
   application:
     name: acc-manager

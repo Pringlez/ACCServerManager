@@ -1,12 +1,15 @@
 <!doctype html>
 <html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout ">
+      xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>Home</title>
 </head>
 <body>
 <section layout:fragment="content">
-    <h1 class="text-2xl text-blue-600 text-center mt-6">Hello TailWind CSS</h1>
+    <h1 class="text-2xl text-blue-600 text-center">Content goes here...</h1>
+    <div th:if="${!#strings.isEmpty(message)}" class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline" th:text="${message}"></span>
+    </div>
 </section>
 </body>
 </html>

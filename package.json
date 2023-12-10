@@ -7,8 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "build:postcss": "NODE_ENV=production postcss service/src/main/resources/static/web/css/style.tailwind.css -o service/target/classes/static/web/css/style.build.tailwind.css",
-    "watch:postcss": "NODE_ENV=development postcss service/src/main/resources/static/web/css/style.tailwind.css -o service/src/main/resources/static/web/css/style.dev.tailwind.css -w"
+    "build:postcss": "NODE_ENV=production postcss service/src/main/resources/static/web/assets/css/style.tailwind.css -o service/target/classes/static/web/assets/css/style.build.tailwind.css",
+    "watch:postcss": "NODE_ENV=development postcss service/src/main/resources/static/web/assets/css/style.tailwind.css -o service/src/main/resources/static/web/assets/css/style.dev.tailwind.css -w"
   },
   "keywords": [],
   "author": "",

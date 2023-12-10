@@ -92,14 +92,14 @@ public class WebController implements ErrorController {
             modelMap.addAttribute(ERROR, "Invalid login, check your credentials!");
         }
         response.addHeader("HX-Redirect", "/");
-        return "sign-in";
+        return "pages/account/sign-in";
     }
 
     @GetMapping("/password-reset")
     public String passwordResetKey(@RequestParam(name = "token") String key, ModelMap modelMap, Model model) {
         model.addAttribute(IS_DARK_MODE, darkMode);
         modelMap.put("key", key);
-        return "password-reset";
+        return "pages/account/password-reset";
     }
 
     @PostMapping("/password-reset")
@@ -120,7 +120,7 @@ public class WebController implements ErrorController {
     @GetMapping("/forgot-password")
     public String forgotPassword(Model model) {
         model.addAttribute(IS_DARK_MODE, darkMode);
-        return "forgot-password";
+        return "pages/account/forgot-password";
     }
 
     @PostMapping("/forgot-password")
@@ -138,13 +138,13 @@ public class WebController implements ErrorController {
             modelMap.addAttribute(MESSAGE, "Unable to send email right now, try again later.");
         }
 
-        return "forgot-password";
+        return "pages/account/forgot-password";
     }
 
     @GetMapping("/sign-up")
     public String signUpPage(Model model) {
         model.addAttribute(IS_DARK_MODE, darkMode);
-        return "sign-up";
+        return "pages/account/sign-up";
     }
 
     @PostMapping("/sign-up")
@@ -161,7 +161,7 @@ public class WebController implements ErrorController {
             modelMap.addAttribute(ERROR, "Can't send email - email server is down or unreachable");
             authenticationFailedException.printStackTrace();
         }
-        return "sign-up";
+        return "pages/account/sign-up";
     }
 
     @GetMapping("/sign-up/confirm")

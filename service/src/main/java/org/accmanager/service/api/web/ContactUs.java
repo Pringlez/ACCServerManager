@@ -19,6 +19,6 @@ public class ContactUs {
     public String start(Model model) {
         model.addAttribute("now", new Date().toInstant());
         model.addAttribute("isDarkMode", darkMode);
-        return "contact-us";
+        return "pages/general/contact-us";
     }
 }
