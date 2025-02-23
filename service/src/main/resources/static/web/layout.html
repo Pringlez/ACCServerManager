@@ -16,6 +16,19 @@
 <nav class="bg-gray-600 dark:bg-gray-800">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
+            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                <button type="button" 
+                        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        aria-controls="mobile-menu"
+                        aria-expanded="false"
+                        _="on click toggle .hidden on #mobile-menu">
+                    <span class="absolute -inset-0.5"></span>
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="flex flex-shrink-0 items-center">
                     <img class="h-8 w-auto" src="/web/assets/images/logo.png" alt="ACC Manager">
@@ -29,14 +42,14 @@
                         <a th:href="@{/web/input}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Input Catalog</a>
                         <a th:href="@{/web/value-select}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Value Select</a>
                         <a th:href="@{/web/profile/details}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Profile</a>
-                        <a sec:authorize ="isAuthenticated()" th:href="@{/web/logout}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</a>
+                        <a sec:authorize="isAuthenticated()" th:href="@{/web/logout}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</a>
+                        <a sec:authorize="isAnonymous()" th:href="@{/web/sign-in}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Login</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Mobile menu, show/hide based on menu state. -->
-    <div class="sm:hidden" id="mobile-menu">
+    <div class="sm:hidden hidden" id="mobile-menu">
         <div class="space-y-1 px-2 pb-3 pt-2">
             <a th:href="@{/}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Home</a>
             <a th:href="@{/web/click-to-edit}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Click To Edit</a>
@@ -45,7 +58,8 @@
             <a th:href="@{/web/input}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Input Catalog</a>
             <a th:href="@{/web/value-select}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Value Select</a>
             <a th:href="@{/web/profile/details}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Profile</a>
-            <a sec:authorize ="isAuthenticated()" th:href="@{/web/logout}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/web/logout}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/web/sign-in}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Login</a>
         </div>
     </div>
 </nav>
@@ -62,9 +76,6 @@
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
       <span class="text-sm text-gray-500 sm:text-center dark:text-white-200 block rounded-md">Rendered at <span th:text="${#dates.format(now, 'dd/MMM/yyyy HH:mm')}"></span></span>
         <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-300 sm:mt-0">
-            <li>
-                <a th:href="@{/web/sign-in}" class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Sign In</a>
-            </li>
             <li>
                 <a th:href="@{/web/sign-up}" class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Sign Up</a>
             </li>
