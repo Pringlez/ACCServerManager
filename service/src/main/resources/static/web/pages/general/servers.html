@@ -8,7 +8,7 @@
 <body>
 <section layout:fragment="content">
     <div class="container px-4 mx-auto">
-        <form hx-post="/web/click-to-edit/edit/1" hx-target="this" hx-swap="outerHTML">
+        <form hx-post="/web/servers/edit/1" hx-target="this" hx-swap="outerHTML">
             <div>
                 <label>First Name</label> :
                 <span th:text="${contact.firstName}"></span>
