@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/web/contact-us")
-public class ContactUs {
+@RequestMapping("/web/contact-admin")
+public class ContactAdmin {
 
     @Value("${spring.thymeleaf.darkMode:false}")
     private boolean darkMode;
@@ -19,6 +19,6 @@ public class ContactUs {
     public String start(Model model) {
         model.addAttribute("now", new Date().toInstant());
         model.addAttribute("isDarkMode", darkMode);
-        return "pages/general/contact-us";
+        return "pages/general/contact-admin";
     }
 }

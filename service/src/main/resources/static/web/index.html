@@ -1,28 +1,13 @@
 <!doctype html>
-<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>Home</title>
 </head>
 <body>
 <section layout:fragment="content">
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-blue-600 text-center mb-8">ACC Server Manager</h1>
-        
-        <div class="mb-12 text-center">
-            <p class="text-xl text-gray-700 dark:text-gray-300 mb-4">
-                Welcome to your all-in-one solution for managing acc game servers.
-            </p>
-        </div>
-
-        <!-- Background Image Section -->
-        <div class="mb-12 relative h-[400px] rounded-lg shadow-xl overflow-hidden">
-            <div class="absolute inset-0">
-                <img src="/web/assets/images/carousel/server-1.jpg" alt="Game Server" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-            </div>
-        </div>
-
+    <div class="max-w-6xl mx-auto px-4">
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-lg shadow-lg text-white">
@@ -42,40 +27,45 @@
                 <div class="dark:text-sm opacity-90">64GB / 128GB</div>
             </div>
         </div>
-
         <!-- Feature Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                 <div class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4">
-                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/>
+                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Quick Setup</h3>
-                <p class="text-gray-600 dark:text-gray-300">Manage your game server configs in minutes and start, stop, restart instances.</p>
+                <p class="text-gray-600 dark:text-gray-300">Manage your game server configs in minutes and start, stop,
+                    restart instances.</p>
             </div>
-            
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                 <div class="flex items-center justify-center w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full mb-4">
-                    <svg class="w-6 h-6 text-green-600 dark:text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    <svg class="w-6 h-6 text-green-600 dark:text-green-300" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Performance Monitoring</h3>
-                <p class="text-gray-600 dark:text-gray-300">Real-time metrics and monitoring to keep your server running optimally.</p>
+                <p class="text-gray-600 dark:text-gray-300">Real-time metrics and monitoring to keep your server running
+                    optimally.</p>
             </div>
-            
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                 <div class="flex items-center justify-center w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full mb-4">
-                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3z"/>
+                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-300" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3z"/>
                     </svg>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Config Presets</h3>
-                <p class="text-gray-600 dark:text-gray-300">Configure your servers with saved & pre-configured presets.</p>
+                <p class="text-gray-600 dark:text-gray-300">Configure your servers with saved & pre-configured
+                    presets.</p>
             </div>
         </div>
-
         <div class="grid md:grid-cols-2 gap-8 mb-12">
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                 <h2 class="text-2xl font-semibold text-blue-600 mb-4">Key Features</h2>
@@ -85,7 +75,6 @@
                     <li>✓ User-friendly control panel</li>
                 </ul>
             </div>
-
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                 <h2 class="text-2xl font-semibold text-blue-600 mb-4">Getting Started</h2>
                 <ul class="space-y-3 text-gray-700 dark:text-gray-300">
@@ -95,8 +84,8 @@
                 </ul>
             </div>
         </div>
-
-        <div th:if="${!#strings.isEmpty(message)}" class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+        <div th:if="${!#strings.isEmpty(message)}"
+             class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
             <span class="block sm:inline" th:text="${message}"></span>
         </div>
     </div>

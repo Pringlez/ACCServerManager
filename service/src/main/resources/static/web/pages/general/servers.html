@@ -1,12 +1,13 @@
 <!doctype html>
-<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>Click To Edit</title>
+    <title>Servers</title>
 </head>
 <body>
 <section layout:fragment="content">
-    <div class="container">
+    <div class="container px-4 mx-auto">
         <form hx-post="/web/click-to-edit/edit/1" hx-target="this" hx-swap="outerHTML">
             <div>
                 <label>First Name</label> :

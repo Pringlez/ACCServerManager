@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout"
+<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
@@ -13,60 +15,38 @@
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-slate-900">
-<nav class="bg-gray-600 dark:bg-gray-800">
-    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div class="relative flex h-16 items-center justify-between">
-            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                <button type="button" 
-                        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                        aria-controls="mobile-menu"
-                        aria-expanded="false"
-                        _="on click toggle .hidden on #mobile-menu">
-                    <span class="absolute -inset-0.5"></span>
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </button>
+<nav class="bg-white border-gray-200 dark:bg-gray-900">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-center mx-auto p-4">
+        <!-- Burger Menu Button -->
+        <button _="on click toggle .hidden on #navbar-default"
+                type="button" 
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            <span class="sr-only">Open main menu</span>
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+            </svg>
+        </button>
+        <!-- Navigation Menu -->
+        <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+            <div class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 dark:border-gray-700">
+                <a th:href="@{/}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Home</a>
+                <a th:href="@{/web/servers}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Servers</a>
+                <a th:href="@{/web/management}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Management</a>
+                <a th:href="@{/web/templates}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Templates</a>
+                <a th:href="@{/web/configs}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Configs</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/web/profile/details}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Profile</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/web/logout}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</a>
+                <a sec:authorize="isAnonymous()" th:href="@{/web/sign-in}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Login</a>
             </div>
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div class="flex flex-shrink-0 items-center">
-                    <img class="h-8 w-auto" src="/web/assets/images/logo.png" alt="ACC Manager">
-                </div>
-                <div class="hidden sm:ml-6 sm:block">
-                    <div class="flex space-x-4">
-                        <a th:href="@{/}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Home</a>
-                        <a th:href="@{/web/click-to-edit}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Click To Edit</a>
-                        <a th:href="@{/web/infinite-scroll}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Infinite Scroll</a>
-                        <a th:href="@{/web/todo}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">ToDo</a>
-                        <a th:href="@{/web/input}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Input Catalog</a>
-                        <a th:href="@{/web/value-select}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Value Select</a>
-                        <a th:href="@{/web/profile/details}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Profile</a>
-                        <a sec:authorize="isAuthenticated()" th:href="@{/web/logout}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</a>
-                        <a sec:authorize="isAnonymous()" th:href="@{/web/sign-in}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Login</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="sm:hidden hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pb-3 pt-2">
-            <a th:href="@{/}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Home</a>
-            <a th:href="@{/web/click-to-edit}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Click To Edit</a>
-            <a th:href="@{/web/infinite-scroll}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Infinite Scroll</a>
-            <a th:href="@{/web/todo}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">ToDo</a>
-            <a th:href="@{/web/input}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Input Catalog</a>
-            <a th:href="@{/web/value-select}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Value Select</a>
-            <a th:href="@{/web/profile/details}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Profile</a>
-            <a sec:authorize="isAuthenticated()" th:href="@{/web/logout}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</a>
-            <a sec:authorize="isAnonymous()" th:href="@{/web/sign-in}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Login</a>
         </div>
     </div>
 </nav>
-<div th:if="${!#strings.isEmpty(message)}" class="bg-blue-100 border border-blue-400 text-white-700 px-4 py-3 rounded relative" role="alert">
+<div th:if="${!#strings.isEmpty(message)}"
+     class="bg-blue-100 border border-blue-400 text-white-700 px-4 py-3 rounded relative" role="alert">
     <span class="block sm:inline" th:text="${message}"></span>
 </div>
-<div th:if="${!#strings.isEmpty(error)}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+<div th:if="${!#strings.isEmpty(error)}"
+     class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
     <span class="block sm:inline" th:text="${error}"></span>
 </div>
 <section layout:fragment="content">
@@ -74,13 +54,16 @@
 </section>
 <footer class="bg-gray-600 dark:bg-gray-800">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-      <span class="text-sm text-gray-500 sm:text-center dark:text-white-200 block rounded-md">Rendered at <span th:text="${#dates.format(now, 'dd/MMM/yyyy HH:mm')}"></span></span>
+        <span class="text-sm text-gray-500 sm:text-center dark:text-white-200 block rounded-md">Rendered at <span
+                th:text="${#dates.format(now, 'dd/MMM/yyyy HH:mm')}"></span></span>
         <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-300 sm:mt-0">
             <li>
-                <a th:href="@{/web/sign-up}" class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Sign Up</a>
+                <a th:href="@{/web/sign-up}"
+                   class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Sign Up</a>
             </li>
             <li>
-                <a th:href="@{/web/contact-us}" class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Contact Us</a>
+                <a th:href="@{/web/contact-us}"
+                   class="me-4 md:me-6 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2">Help</a>
             </li>
         </ul>
     </div>

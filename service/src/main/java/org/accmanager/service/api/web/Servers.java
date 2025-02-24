@@ -1,5 +1,6 @@
 package org.accmanager.service.api.web;
 
+import org.accmanager.service.api.web.model.Contact;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/web/click-to-edit")
-public class ClickToEdit {
+@RequestMapping("/web/servers")
+public class Servers {
 
     @Value("${spring.thymeleaf.darkMode:false}")
     private boolean darkMode;
@@ -24,7 +25,7 @@ public class ClickToEdit {
         model.addAttribute("contact", Contact.demoContact());
         model.addAttribute("now", new Date().toInstant());
         model.addAttribute(IS_DARK_MODE, darkMode);
-        return "pages/general/click-to-edit";
+        return "pages/general/servers";
     }
 
     @PostMapping("/edit/{id}")
@@ -32,13 +33,13 @@ public class ClickToEdit {
         model.addAttribute("contact", contact);
         model.addAttribute("id", id);
         model.addAttribute(IS_DARK_MODE, darkMode);
-        return "pages/general/click-to-edit-form";
+        return "pages/general/servers-form";
     }
 
     @PostMapping("/commit")
     public String editPost(Contact contact, Model model) {
         model.addAttribute("contact", contact);
         model.addAttribute(IS_DARK_MODE, darkMode);
-        return "pages/general/click-to-edit-default";
+        return "pages/general/servers-default";
     }
 }

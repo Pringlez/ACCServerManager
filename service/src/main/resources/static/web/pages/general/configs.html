@@ -1,5 +1,6 @@
 <!doctype html>
-<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Click To Edit</title>
@@ -12,7 +13,7 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <div class="container">
+    <div class="container px-4 mx-auto">
         <table class="table table-hover">
             <thead>
             <tr>
@@ -34,7 +35,8 @@
                         <input type="checkbox"/>
                     </td>
                     <td>
-                        <button class="btn btn-danger" hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s" hx-trigger="click" th:attr="hx-delete=@{/web/todo/delete}">
+                        <button class="btn btn-danger" hx-confirm="Are you sure?" hx-target="closest tr"
+                                hx-swap="outerHTML swap:1s" hx-trigger="click" th:attr="hx-delete=@{/web/configs/delete}">
                             Delete
                         </button>
                     </td>
@@ -45,10 +47,12 @@
         <table class="table">
             <tr>
                 <td colspan="2">
-                    <input autofocus="autofocus" class="form-control form-control-plaintext" id="new-todo" name="new-todo" placeholder="To do..." required type="text">
+                    <input autofocus="autofocus" class="form-control form-control-plaintext" id="new-todo"
+                           name="new-todo" placeholder="To do..." required type="text">
                 </td>
                 <td class="w-25">
-                    <button _="on htmx:afterRequest put '' into #new-todo.value" id="mon" hx-include="#new-todo" th:attr="hx-post=@{/web/todo/create}" hx-target="#todo-list" hx-swap="beforeend"
+                    <button _="on htmx:afterRequest put '' into #new-todo.value" id="mon" hx-include="#new-todo"
+                            th:attr="hx-post=@{/web/configs/create}" hx-target="#todo-list" hx-swap="beforeend"
                             hx-trigger="click" class="btn btn-primary">Add
                     </button>
                 </td>

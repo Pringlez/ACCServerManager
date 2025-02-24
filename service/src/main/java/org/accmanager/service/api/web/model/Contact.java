@@ -1,4 +1,4 @@
-package org.accmanager.service.api.web;
+package org.accmanager.service.api.web.model;
 
 import com.github.javafaker.Faker;
 

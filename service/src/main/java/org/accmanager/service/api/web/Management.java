@@ -28,8 +28,8 @@ import static j2html.TagCreator.p;
 import static j2html.TagCreator.span;
 
 @Controller
-@RequestMapping("/web/input")
-public class InputCatalog {
+@RequestMapping("/web/management")
+public class Management {
 
     @Value("${spring.thymeleaf.darkMode:false}")
     private boolean darkMode;
@@ -40,7 +40,7 @@ public class InputCatalog {
     public String start(Model model) {
         model.addAttribute("now", new Date().toInstant());
         model.addAttribute(IS_DARK_MODE, darkMode);
-        return "pages/general/input-catalog";
+        return "pages/general/management";
     }
 
     @DeleteMapping(path = "/delete", produces = MediaType.TEXT_HTML_VALUE)

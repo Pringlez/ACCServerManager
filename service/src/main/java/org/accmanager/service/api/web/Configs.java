@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/web/todo")
-public class ToDoList {
+@RequestMapping("/web/configs")
+public class Configs {
 
     @Value("${spring.thymeleaf.darkMode:false}")
     private boolean darkMode;
@@ -27,7 +27,7 @@ public class ToDoList {
         model.addAttribute("now", new Date().toInstant());
         model.addAttribute("item", "Get Stuff Done");
         model.addAttribute(IS_DARK_MODE, darkMode);
-        return "pages/general/todo";
+        return "pages/general/configs";
     }
 
     @DeleteMapping(path = "/delete", produces = MediaType.TEXT_HTML_VALUE)
@@ -48,6 +48,6 @@ public class ToDoList {
         // https://youtrack.jetbrains.com/issue/IDEA-276625
         //
         //noinspection SpringMVCViewInspection
-        return "pages/general/todo :: pages/general/todo";
+        return "pages/general/configs :: pages/general/configs";
     }
 }
