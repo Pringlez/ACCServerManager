@@ -47,7 +47,7 @@ public class Templates {
     public String start(Model model) {
         model.addAttribute("now", new Date().toInstant());
         model.addAttribute(IS_DARK_MODE, darkMode);
-        return "pages/general/management";
+        return "pages/general/templates";
     }
 
     @DeleteMapping(path = "/delete", produces = MediaType.TEXT_HTML_VALUE)

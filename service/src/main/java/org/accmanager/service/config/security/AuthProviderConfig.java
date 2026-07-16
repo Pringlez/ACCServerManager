@@ -6,11 +6,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class AuthProviderConfig extends DaoAuthenticationProvider {
-
-    public PasswordEncoder passwordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -25,7 +22,7 @@ public class AuthProviderConfig extends DaoAuthenticationProvider {
                     .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "No password"));
         }
         String presentedPassword = authentication.getCredentials().toString();
-        if (!this.passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
+        if (getPasswordEncoder() == null || !getPasswordEncoder().matches(presentedPassword, userDetails.getPassword())) {
             this.logger.debug("Failed to authenticate since password does not match stored value");
             throw new BadCredentialsException(this.messages
                     .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));

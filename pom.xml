@@ -27,13 +27,12 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
         <spring.boot.version>3.4.2</spring.boot.version>
-        <spring.security.version>6.2.2</spring.security.version>
-        <node.version>v20.10.0</node.version>
-        <npm.version>10.2.3</npm.version>
+        <node.version>v20.18.1</node.version>
+        <npm.version>10.8.2</npm.version>
         <frontend.maven.plugin.version>1.15.1</frontend.maven.plugin.version>
         <openapi.generator.version>7.11.0</openapi.generator.version>
         <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
-        <jackson.databind.version>2.18.2</jackson.databind.version>
+
         <h2.version>2.3.232</h2.version>
         <postgres.version>42.7.5</postgres.version>
         <docker.java.version>3.3.4</docker.java.version>
