@@ -57,6 +57,31 @@ mvn clean install
 ```
 You can run the production maven build by adding `-Pprod` flag. This will run optimised webpack that will bundle the frontends assets & source code.
 
+#### Running Unit & Security Tests
+Standard unit and quick security tests (files ending in `*Test.java`, such as `PasswordEncodingTest.java`) are executed during the standard test phase:
+```bash
+mvn test
+```
+
+#### Running UI & Integration Tests
+Full integration and UI tests (files ending in `*IT.java`) are managed by the Maven Failsafe plugin. These include:
+* **MockMvc-based UI Page Rendering** (`UiPageRenderingIT.java`): Validates Thymeleaf page structures, dark mode attributes, error page routing, and authentication status.
+* **HtmlUnit WebClient Behavior** (`HtmxBehaviorIT.java`): Asserts HTMX dynamic attributes, hyperscript triggers, and REST API responses against an active, random-port Tomcat server.
+
+To run the entire suite (both unit and UI/integration tests):
+```bash
+mvn verify
+```
+
+To run only the integration and UI tests:
+```bash
+mvn failsafe:integration-test
+```
+*Note: If you have modified static web files (`.html`, `.css`) or H2 database schema files (`schema.sql`, `data.sql`), make sure to run resource processing first so the compiled class path is fully up-to-date:*
+```bash
+mvn process-resources failsafe:integration-test
+```
+
 To execute cucumber tests using the commandline, use the following maven profile:
 ```
 mvn clean install -P dev-cucumber
