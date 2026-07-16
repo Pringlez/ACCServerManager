@@ -20,13 +20,13 @@ public class SecurityIT extends BaseIT {
     @Test
     public void ensureUserUnauthorizedForInstancesRestart() throws Exception {
         mockMvc.perform(get("/api/v1/instances/ae85423a-b502-4833-bcc2-a424d3f8281e/restart").with(httpBasic("user-2", "wKQWuDzpCQ8cxeeDzktK")))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     public void ensureUserUnauthorizedForInstancesStart() throws Exception {
         mockMvc.perform(get("/api/v1/instances/ae85423a-b502-4833-bcc2-a424d3f8281e/start").with(httpBasic("user-3", "RTFWajHjjRBbD58PKk9h")))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

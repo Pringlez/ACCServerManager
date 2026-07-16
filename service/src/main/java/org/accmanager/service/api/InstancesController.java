@@ -74,21 +74,21 @@ public class InstancesController implements InstancesApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('read.instance')")
+    @PreAuthorize("hasAuthority('write.instance')")
     @Override
     public ResponseEntity<Void> startInstanceById(String instanceId) {
         serverControl.startInstance(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('read.instance')")
+    @PreAuthorize("hasAuthority('write.instance')")
     @Override
     public ResponseEntity<Void> restartInstanceById(String instanceId) {
         serverControl.restartInstance(instanceId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('read.instance')")
+    @PreAuthorize("hasAuthority('write.instance')")
     @Override
     public ResponseEntity<Void> stopInstanceById(String instanceId) {
         serverControl.stopInstance(instanceId);

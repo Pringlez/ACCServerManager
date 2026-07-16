@@ -48,6 +48,6 @@ public class Configs {
         // https://youtrack.jetbrains.com/issue/IDEA-276625
         //
         //noinspection SpringMVCViewInspection
-        return "pages/general/configs :: pages/general/configs";
+        return "pages/general/configs :: todo";
     }
 }

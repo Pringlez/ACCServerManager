@@ -85,7 +85,7 @@ public class UserDataLoader implements CommandLineRunner {
         usersRepository.save(UsersEntity.builder()
                 .setUsername("user-3")
                 .setPassword(passwordEncoder.encode("RTFWajHjjRBbD58PKk9h"))
-                .setRoles(new HashSet<>(List.of(adminRole)))
+                .setRoles(new HashSet<>(List.of(userRole)))
                 .setTestUser(false)
                 //.setTokenValidation(Instant.now())
                 .setUserCreation(Instant.now())

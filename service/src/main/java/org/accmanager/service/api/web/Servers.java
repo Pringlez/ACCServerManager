@@ -36,6 +36,13 @@ public class Servers {
         return "pages/general/servers-form";
     }
 
+    @GetMapping("/commit")
+    public String commitGet(Model model) {
+        model.addAttribute("contact", Contact.demoContact());
+        model.addAttribute(IS_DARK_MODE, darkMode);
+        return "pages/general/servers-default";
+    }
+
     @PostMapping("/commit")
     public String editPost(Contact contact, Model model) {
         model.addAttribute("contact", contact);
