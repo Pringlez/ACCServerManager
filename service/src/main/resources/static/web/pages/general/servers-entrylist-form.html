@@ -118,5 +118,40 @@
                 classes.forEach(c => input.classList.remove(c));
             }
         }
+
+        // Form dirty checking to prevent accidental navigation away
+        let isSubmitting = false;
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function() {
+                isSubmitting = true;
+            });
+        }
+
+        function isFormDirty() {
+            let dirty = false;
+            inputs.forEach(input => {
+                const original = input.getAttribute('data-original');
+                if (original !== null) {
+                    let changed = false;
+                    if (input.type === 'hidden') {
+                        changed = false;
+                    } else {
+                        changed = input.value !== original;
+                    }
+                    if (changed) {
+                        dirty = true;
+                    }
+                }
+            });
+            return dirty;
+        }
+
+        window.addEventListener('beforeunload', function (e) {
+            if (!isSubmitting && isFormDirty()) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
     });
 </script>

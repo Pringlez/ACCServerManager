@@ -73,16 +73,12 @@ To run the entire suite (both unit and UI/integration tests):
 mvn verify
 ```
 
-To run only the integration and UI tests:
-```bash
-mvn failsafe:integration-test
-```
 *Note: If you have modified static web files (`.html`, `.css`) or H2 database schema files (`schema.sql`, `data.sql`), make sure to run resource processing first so the compiled class path is fully up-to-date:*
 ```bash
 mvn process-resources failsafe:integration-test
 ```
 
-To execute cucumber tests using the commandline, use the following maven profile:
+To execute cucumber tests using the command line, use the following maven profile:
 ```
 mvn clean install -P dev-cucumber
 ```

@@ -72,10 +72,13 @@ public class ServerControlManager extends ServerControl {
     }
 
     public boolean isPortFree(int port) {
+        if (port < 1 || port > 65535) {
+            return false;
+        }
         try (java.net.ServerSocket ss = new java.net.ServerSocket(port);
              java.net.DatagramSocket ds = new java.net.DatagramSocket(port)) {
             return true;
-        } catch (java.io.IOException e) {
+        } catch (java.io.IOException | IllegalArgumentException e) {
             return false;
         }
     }

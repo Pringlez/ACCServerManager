@@ -21,7 +21,20 @@ public class LocalDockerConfig {
 
     @Bean
     public DockerClientConfig dockerClientConfig() {
-        return DefaultDockerClientConfig.createDefaultConfigBuilder().build();
+        DefaultDockerClientConfig.Builder configBuilder = DefaultDockerClientConfig.createDefaultConfigBuilder();
+        DockerClientConfig tempConfig = configBuilder.build();
+        String currentHost = tempConfig.getDockerHost().toString();
+
+        if (currentHost.startsWith("tcp://localhost:2375") || currentHost.startsWith("tcp://127.0.0.1:2375")) {
+            String defaultHost = "unix:///var/run/docker.sock";
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                defaultHost = "npipe:////./pipe/docker_engine";
+            }
+            configBuilder.withDockerHost(defaultHost);
+        }
+
+        return configBuilder.build();
     }
 
     @Bean
