@@ -51,7 +51,7 @@ public class FileReadWriteService {
 
     public Optional<Object> readJsonFile(String instanceId, FilesEnum filesEnum, Class<?> cls) {
         try {
-            return Optional.of(objectMapper.readValue(createNewFile(instanceId, filesEnum.toString()), cls));
+            return Optional.ofNullable(objectMapper.readValue(createNewFile(instanceId, filesEnum.toString()), cls));
         } catch (IOException ex) {
             LOGGER.error(format(ERROR_READING_FILE.toString(), filesEnum, ex.getMessage()));
             throw new FileReadException(format(ERROR_READING_FILE.toString(), filesEnum, ex.getMessage()), ex);

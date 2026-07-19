@@ -7,11 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.Instant;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
@@ -22,8 +23,7 @@ import static org.accmanager.service.enums.ExceptionEnum.ERROR_STOPPING_EXECUTAB
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_EXECUTABLE;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE_LOGS;
 
-@Service
-@ConditionalOnProperty(prefix = "accserver", name = "control", havingValue = "executable")
+@Service("executableControlService")
 public class ExecutableControlService extends ServerControl {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutableControlService.class);
@@ -34,8 +34,7 @@ public class ExecutableControlService extends ServerControl {
     @Value("${accserver.executable.name:accServer.exe}")
     private String accExecutableName;
 
-    private Process process;
-    private ProcessBuilder processBuilder;
+    private final Map<String, Process> processes = new ConcurrentHashMap<>();
 
     @Autowired
     public ExecutableControlService(InstanceDaoService instanceDaoService) {
@@ -47,28 +46,30 @@ public class ExecutableControlService extends ServerControl {
         getDaoService().createDirectories(instance);
         getDaoService().writeInstanceConfiguration(instance);
         getDaoService().copyExecutable(instance.getId());
-        initializeProcessBuilder(instance.getId());
         return instance.getId();
     }
 
-    private void initializeProcessBuilder(String instanceId) {
-        try {
-            processBuilder = new ProcessBuilder(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_EXECUTABLE,
-                    instanceId) + "/" + accExecutableName);
-        } catch (Exception ex) {
-            LOGGER.warn(format(ERROR_INITIALIZING_EXECUTABLE.toString(), instanceId, ex));
+    private ProcessBuilder createProcessBuilder(String instanceId) {
+        String os = System.getProperty("os.name").toLowerCase();
+        String executablePath = format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_EXECUTABLE, instanceId) + "/" + accExecutableName;
+        
+        if (os.contains("win")) {
+            return new ProcessBuilder(executablePath);
+        } else {
+            // macOS or Linux: Use wine
+            return new ProcessBuilder("wine64", executablePath);
         }
     }
 
     @Override
     public void startInstance(String instanceId) {
         try {
-            initializeProcessBuilder(instanceId);
+            ProcessBuilder processBuilder = createProcessBuilder(instanceId);
             processBuilder.redirectErrorStream(true);
             File log = new File(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_LOGS, instanceId),
                     format("acc-server-%s-%s.log", instanceId, Instant.now().getEpochSecond()));
             processBuilder.redirectOutput(log);
-            process = processBuilder.start();
+            processes.put(instanceId, processBuilder.start());
         } catch (Exception ex) {
             LOGGER.warn(format(ERROR_STARTING_EXECUTABLE.toString(), instanceId, ex));
         }
@@ -76,12 +77,17 @@ public class ExecutableControlService extends ServerControl {
 
     @Override
     public void stopInstance(String instanceId) {
-        try {
-            if (process.isAlive()) {
-                process.destroy();
+        Process process = processes.get(instanceId);
+        if (process != null) {
+            try {
+                if (process.isAlive()) {
+                    process.destroy();
+                }
+            } catch (Exception ex) {
+                LOGGER.warn(format(ERROR_STOPPING_EXECUTABLE.toString(), instanceId, ex));
+            } finally {
+                processes.remove(instanceId);
             }
-        } catch (Exception ex) {
-            LOGGER.warn(format(ERROR_STOPPING_EXECUTABLE.toString(), instanceId, ex));
         }
     }
 
@@ -108,5 +114,10 @@ public class ExecutableControlService extends ServerControl {
     @Override
     public String inspectInstance(String instanceId) {
         return null;
+    }
+
+    @Override
+    public String getContainerStats(String instanceId) {
+        return "N/A";
     }
 }

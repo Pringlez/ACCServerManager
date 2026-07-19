@@ -147,6 +147,12 @@ public class WebController implements ErrorController {
         return "pages/account/sign-up";
     }
 
+    @GetMapping("/faq")
+    public String faqPage(Model model) {
+        model.addAttribute(IS_DARK_MODE, darkMode);
+        return "pages/general/faq";
+    }
+
     @PostMapping("/sign-up")
     public String signUp(UsersEntity user, @RequestParam(name = "password-confirm") String confirm, ModelMap modelMap) {
         try {

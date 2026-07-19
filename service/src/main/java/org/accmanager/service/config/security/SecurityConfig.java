@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern("/web/sign-up")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/web/sign-up/confirm")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/web/contact-admin")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/web/faq")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/web/assets/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/webjars/**")).permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll())

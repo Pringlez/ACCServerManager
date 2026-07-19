@@ -1,0 +1,298 @@
+<!doctype html>
+<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <title>Edit Server Configuration</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800 dark:text-white tracking-tight">Edit Server Configuration</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1" th:text="'Server ID: ' + ${instance.id}"></p>
+            </div>
+            <a th:href="@{/web/servers}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-semibold transition-colors shadow-sm">
+                Back to Servers
+            </a>
+        </div>
+
+        <!-- Alert Notification Area -->
+        <div th:if="${error != null}" class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-400 border border-rose-100 dark:border-rose-900/30 font-medium mb-6 flex items-center gap-3">
+            <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <span th:text="${error}">Error message</span>
+        </div>
+
+        <!-- Running State Warning -->
+        <div th:if="${isRunning}" class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/20 text-amber-800 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30 font-medium mb-6 flex items-center gap-3">
+            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <span>This server is currently running. You cannot modify the configuration while it is running. Please stop the server first.</span>
+        </div>
+
+        <!-- Tab Controls -->
+        <div class="border-b border-slate-200 dark:border-slate-800 mb-6">
+            <nav class="flex gap-4 -mb-px">
+                <button type="button" onclick="switchTab('general')" id="tab-btn-general" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400 transition-colors">
+                    General & Network
+                </button>
+                <button type="button" onclick="switchTab('assists')" id="tab-btn-assists" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors">
+                    Assist Rules
+                </button>
+                <button type="button" onclick="switchTab('event')" id="tab-btn-event" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors">
+                    Event & Weather
+                </button>
+            </nav>
+        </div>
+
+        <!-- Configuration Form -->
+        <form th:action="@{/web/servers/{id}/edit(id=${instance.id})}" method="POST" class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+            
+            <!-- PANEL: General & Network -->
+            <div id="panel-general" class="tab-panel">
+                <h2 class="text-lg font-semibold text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/60 pb-2">Settings Configuration</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Server Name</label>
+                        <input type="text" name="serverName" required th:value="${instance.settings != null ? instance.settings.serverName : ''}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Admin Password</label>
+                        <input type="text" name="adminPassword" required th:value="${instance.settings != null ? instance.settings.adminPassword : ''}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Server Password</label>
+                        <input type="text" name="password" th:value="${instance.settings != null ? instance.settings.password : ''}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Spectator Password</label>
+                        <input type="text" name="spectatorPassword" th:value="${instance.settings != null ? instance.settings.spectatorPassword : ''}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Max Car Slots</label>
+                        <input type="number" name="maxCarSlots" required th:value="${instance.settings != null ? instance.settings.maxCarSlots : 30}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                </div>
+
+                <h2 class="text-lg font-semibold text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/60 pb-2">Network Configuration</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">TCP Port</label>
+                        <input type="number" name="tcpPort" required th:value="${instance.config != null ? instance.config.tcpPort : 9232}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">UDP Port</label>
+                        <input type="number" name="udpPort" required th:value="${instance.config != null ? instance.config.udpPort : 9231}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Max Connections</label>
+                        <input type="number" name="maxConnections" required th:value="${instance.config != null ? instance.config.maxConnections : 85}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: Assist Rules -->
+            <div id="panel-assists" class="tab-panel hidden">
+                <h2 class="text-lg font-semibold text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/60 pb-2">Assist Rules (assistsRules.json)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Max Stability Control %</label>
+                        <input type="number" name="stabilityControlLevelMax" required th:value="${instance.assistRules != null ? instance.assistRules.stabilityControlLevelMax : 25}" th:disabled="${isRunning}" min="0" max="100" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Steering Assist (Gamepad)</label>
+                        <select name="disableAutosteer" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                            <option value="0" th:selected="${instance.assistRules != null && instance.assistRules.disableAutosteer == 0}">Allowed / Enabled</option>
+                            <option value="1" th:selected="${instance.assistRules != null && instance.assistRules.disableAutosteer == 1}">Forcibly Disabled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Automatic Headlights</label>
+                        <select name="disableAutoLights" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                            <option value="0" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoLights == 0}">Allowed / Enabled</option>
+                            <option value="1" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoLights == 1}">Forcibly Disabled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Automatic Windshield Wipers</label>
+                        <select name="disableAutoWiper" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                            <option value="0" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoWiper == 0}">Allowed / Enabled</option>
+                            <option value="1" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoWiper == 1}">Forcibly Disabled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Automatic Engine Start</label>
+                        <select name="disableAutoEngineStart" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                            <option value="0" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoEngineStart == 0}">Allowed / Enabled</option>
+                            <option value="1" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoEngineStart == 1}">Forcibly Disabled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Automatic Pit Limiter</label>
+                        <select name="disableAutoPitLimiter" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                            <option value="0" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoPitLimiter == 0}">Allowed / Enabled</option>
+                            <option value="1" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoPitLimiter == 1}">Forcibly Disabled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Automatic Gear Shifts</label>
+                        <select name="disableAutoGear" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                            <option value="0" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoGear == 0}">Allowed / Enabled</option>
+                            <option value="1" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoGear == 1}">Forcibly Disabled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Automatic Clutch</label>
+                        <select name="disableAutoClutch" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                            <option value="0" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoClutch == 0}">Allowed / Enabled</option>
+                            <option value="1" th:selected="${instance.assistRules != null && instance.assistRules.disableAutoClutch == 1}">Forcibly Disabled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Dynamic Ideal Line</label>
+                        <select name="disableIdealLine" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                            <option value="0" th:selected="${instance.assistRules != null && instance.assistRules.disableIdealLine == 0}">Allowed / Enabled</option>
+                            <option value="1" th:selected="${instance.assistRules != null && instance.assistRules.disableIdealLine == 1}">Forcibly Disabled</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: Event & Weather -->
+            <div id="panel-event" class="tab-panel hidden">
+                <h2 class="text-lg font-semibold text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/60 pb-2">Event & Environmental Configurations (event.json)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Track</label>
+                        <select name="track" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                            <option value="monza" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'monza'}">Monza</option>
+                            <option value="spa" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'spa'}">Spa</option>
+                            <option value="barcelona" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'barcelona'}">Barcelona</option>
+                            <option value="brands_hatch" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'brands_hatch'}">Brands Hatch</option>
+                            <option value="hungaroring" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'hungaroring'}">Hungaroring</option>
+                            <option value="misano" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'misano'}">Misano</option>
+                            <option value="nurburgring" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'nurburgring'}">Nurburgring</option>
+                            <option value="paul_ricard" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'paul_ricard'}">Paul Ricard</option>
+                            <option value="silverstone" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'silverstone'}">Silverstone</option>
+                            <option value="zandvoort" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'zandvoort'}">Zandvoort</option>
+                            <option value="zolder" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'zolder'}">Zolder</option>
+                            <option value="mount_panorama" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'mount_panorama'}">Mount Panorama</option>
+                            <option value="kyalami" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'kyalami'}">Kyalami</option>
+                            <option value="suzuka" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'suzuka'}">Suzuka</option>
+                            <option value="laguna_seca" th:selected="${instance.event != null && instance.event.track != null && instance.event.track.toString() == 'laguna_seca'}">Laguna Seca</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Pre-Race Waiting Seconds</label>
+                        <input type="number" name="preRaceWaitingTimeSeconds" required th:value="${instance.event != null ? instance.event.preRaceWaitingTimeSeconds : 120}" th:disabled="${isRunning}" min="30" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Session Overtime Seconds</label>
+                        <input type="number" name="sessionOverTimeSeconds" required th:value="${instance.event != null ? instance.event.sessionOverTimeSeconds : 180}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Ambient Temp (°C)</label>
+                        <input type="number" name="ambientTemp" required th:value="${instance.event != null ? instance.event.ambientTemp : 30}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Cloud Level (0.0 - 1.0)</label>
+                        <input type="number" step="0.1" name="cloudLevel" required th:value="${instance.event != null ? instance.event.cloudLevel : 0.1}" th:disabled="${isRunning}" min="0" max="1" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Rain Chance / Level (0 - 100)</label>
+                        <input type="number" name="rain" required th:value="${instance.event != null ? instance.event.rain : 0}" th:disabled="${isRunning}" min="0" max="100" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Weather Randomness (1 - 7)</label>
+                        <input type="number" name="weatherRandomness" required th:value="${instance.event != null ? instance.event.weatherRandomness : 1}" th:disabled="${isRunning}" min="1" max="7" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Post Qualy Seconds</label>
+                        <input type="number" name="postQualySeconds" required th:value="${instance.event != null ? instance.event.postQualySeconds : 10}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Post Race Seconds</label>
+                        <input type="number" name="postRaceSeconds" required th:value="${instance.event != null ? instance.event.postRaceSeconds : 15}" th:disabled="${isRunning}" class="w-full mt-1 p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white disabled:opacity-50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Persistent to DB Option -->
+            <div class="border-t border-slate-100 dark:border-slate-800 mt-6 pt-4 mb-6">
+                <label class="relative flex items-start gap-3 cursor-pointer">
+                    <div class="flex items-center h-5">
+                        <input id="persistToDb" name="persistToDb" type="checkbox" th:disabled="${isRunning}" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer disabled:opacity-50">
+                    </div>
+                    <div class="text-sm">
+                        <span class="font-semibold text-slate-800 dark:text-white">Save and persist configurations to Database</span>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5">When checked, settings will be persisted to the DB tables (SETTINGS, CONFIG, ASSIST_RULES) and linked to this server instance's database record.</p>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="flex justify-end gap-3 border-t border-slate-100 dark:border-slate-800 pt-4">
+                <a th:href="@{/web/servers}" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold transition-colors">
+                    Cancel
+                </a>
+                <button type="submit" th:disabled="${isRunning}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors shadow-sm">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>
+
+<script type="text/javascript">
+    function switchTab(tabId) {
+        // Hide all tab panels
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
+        // Show selected tab panel
+        document.getElementById('panel-' + tabId).classList.remove('hidden');
+        
+        // Update button styles
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('border-indigo-600', 'text-indigo-600', 'dark:text-indigo-400');
+            btn.classList.add('border-transparent', 'text-slate-500');
+        });
+        const currentBtn = document.getElementById('tab-btn-' + tabId);
+        currentBtn.classList.add('border-indigo-600', 'text-indigo-600', 'dark:text-indigo-400');
+        currentBtn.classList.remove('border-transparent', 'text-slate-500');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            if (input.type === 'checkbox') {
+                input.setAttribute('data-original', input.checked);
+            } else {
+                input.setAttribute('data-original', input.value);
+            }
+            input.addEventListener('input', checkChange);
+            input.addEventListener('change', checkChange);
+        });
+
+        function checkChange(e) {
+            const input = e.target;
+            const original = input.getAttribute('data-original');
+            let changed = false;
+            
+            if (input.type === 'checkbox') {
+                changed = String(input.checked) !== original;
+            } else {
+                changed = input.value !== original;
+            }
+            
+            const highlightClass = 'ring-2 ring-amber-500/30 border-amber-500 bg-amber-50/30 dark:bg-amber-950/20';
+            const classes = highlightClass.split(' ');
+            
+            if (changed) {
+                classes.forEach(c => input.classList.add(c));
+            } else {
+                classes.forEach(c => input.classList.remove(c));
+            }
+        }
+    });
+</script>

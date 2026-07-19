@@ -157,6 +157,7 @@ create table instances
     bop_id          varchar(255),
     config_id       varchar(255),
     container_image varchar(255),
+    control_type    varchar(255),
     entries_id      varchar(255),
     event_id        varchar(255),
     event_rules_id  varchar(255),

@@ -1,0 +1,114 @@
+<!doctype html>
+<html th:classappend="${isDarkMode} ? dark" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <title>Frequently Asked Questions</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight sm:text-4xl">Documentation & FAQ</h1>
+            <p class="text-md text-slate-500 dark:text-slate-400 mt-2.5">Find answers to technical questions about Docker setup, databases, server configurations, and general orchestration.</p>
+        </div>
+
+        <!-- Sections Menu -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 text-center text-xs font-bold uppercase tracking-wider">
+            <a href="#general" class="p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-100 dark:hover:border-indigo-900/50 transition-all">General</a>
+            <a href="#configs" class="p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-100 dark:hover:border-indigo-900/50 transition-all">Configs</a>
+            <a href="#docker" class="p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-100 dark:hover:border-indigo-900/50 transition-all">Docker Setup</a>
+            <a href="#database" class="p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-100 dark:hover:border-indigo-900/50 transition-all">Database</a>
+        </div>
+
+        <div class="space-y-12">
+            <!-- SECTION 1: GENERAL -->
+            <div id="general" class="scroll-mt-6">
+                <h2 class="text-xl font-extrabold text-slate-800 dark:text-white mb-6 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800/80 pb-3">
+                    <span class="p-1.5 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-lg">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </span>
+                    General Information
+                </h2>
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white">What is ACC Server Manager?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">It is a modern web-based control panel designed to streamline Assetto Corsa Competizione (ACC) dedicated server orchestration. It allows simulation administrators to manage multiple server configurations, configure race weekend sessions, maintain entry lists, and deploy presets natively or in Docker containers.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white">Are there default credentials for first-time login?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">Yes. Upon database initialization, the application pre-seeds standard users:
+                            <br><span class="font-semibold text-slate-700 dark:text-slate-300">Administrator:</span> Username: <code class="font-mono bg-slate-50 dark:bg-slate-950 px-1.5 py-0.5 rounded text-indigo-500">user-1</code> | Password: <code class="font-mono bg-slate-50 dark:bg-slate-950 px-1.5 py-0.5 rounded text-indigo-500">vxUdzhqrwt8eqQS7yszq</code>
+                            <br><span class="font-semibold text-slate-700 dark:text-slate-300">Standard User:</span> Username: <code class="font-mono bg-slate-50 dark:bg-slate-950 px-1.5 py-0.5 rounded text-indigo-500">user-2</code> | Password: <code class="font-mono bg-slate-50 dark:bg-slate-950 px-1.5 py-0.5 rounded text-indigo-500">wKQWuDzpCQ8cxeeDzktK</code>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: CONFIGS -->
+            <div id="configs" class="scroll-mt-6">
+                <h2 class="text-xl font-extrabold text-slate-800 dark:text-white mb-6 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800/80 pb-3">
+                    <span class="p-1.5 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </span>
+                    Server Configurations
+                </h2>
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white">How does the application update game settings?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">The <code class="font-mono bg-slate-50 dark:bg-slate-950 px-1.5 py-0.5 rounded text-indigo-500">InstanceDaoService</code> reads and writes standard ACC JSON settings directly from/to the server configuration directories. This includes files such as <code class="font-mono">settings.json</code>, <code class="font-mono">event.json</code>, <code class="font-mono">eventRules.json</code>, <code class="font-mono">entrylist.json</code>, and <code class="font-mono">assistRules.json</code>.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white">Where can I read more about official server configuration parameters?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">For a complete mapping of properties like track medals, weather randomness, and formation laps, please refer to the official <a href="https://www.assettocorsa.net/forum/index.php?threads/assetto-corsa-competizione-dedicated-server-manual.50508/" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold inline-flex items-center gap-0.5">ACC Dedicated Server Manual <svg class="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a> or standard community guides.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: DOCKER SETUP -->
+            <div id="docker" class="scroll-mt-6">
+                <h2 class="text-xl font-extrabold text-slate-800 dark:text-white mb-6 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800/80 pb-3">
+                    <span class="p-1.5 bg-sky-50 dark:bg-sky-950/30 text-sky-600 dark:text-sky-400 rounded-lg">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </span>
+                    Docker Orchestration
+                </h2>
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white">How does Docker container integration work?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">When the app is configured with the <code class="font-mono bg-slate-50 dark:bg-slate-950 px-1.5 py-0.5 rounded text-indigo-500">container</code> control profile, <code class="font-mono">ContainerControlService</code> binds configuration directories on the physical host directly to the container's virtual workspace. It maps the game server ports dynamically and communicates directly with your host's Docker socket.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white">What Docker Java client library is utilized?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">We utilize the enterprise-grade <code class="font-mono">docker-java</code> client library to handle socket bindings, commands, and containers. You can inspect its documentation on the official <a href="https://github.com/docker-java/docker-java" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold inline-flex items-center gap-0.5">docker-java Repository <svg class="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: DATABASE -->
+            <div id="database" class="scroll-mt-6">
+                <h2 class="text-xl font-extrabold text-slate-800 dark:text-white mb-6 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800/80 pb-3">
+                    <span class="p-1.5 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 rounded-lg">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3z"></path></svg>
+                    </span>
+                    Database Persistence
+                </h2>
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white">What relational databases are supported?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">The application is equipped with full JPA support for two engines:
+                            <br><span class="font-semibold text-slate-700 dark:text-slate-300">1. H2 Database:</span> An extremely fast, local SQL database (can run completely in-memory or save to local filesystem), ideal for immediate local testing.
+                            <br><span class="font-semibold text-slate-700 dark:text-slate-300">2. PostgreSQL:</span> Fully compatible with standard production deployments by adjusting standard Spring DataSource credentials inside your environment properties.
+                        </p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white">How are users, roles, and event setups persisted?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">Credentials, active tokens, roles (e.g. <code class="font-mono">ADMIN</code>, <code class="font-mono">USER</code>), and preconfigured track presets are persisted via standard SQL schemas mapped directly to tables such as <code class="font-mono">USERS</code>, <code class="font-mono">ROLES</code>, <code class="font-mono">EVENT</code>, and <code class="font-mono">SESSIONS</code>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -10,80 +10,155 @@
     <div class="max-w-6xl mx-auto px-4">
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-lg shadow-lg text-white">
-                <div class="text-2xl font-bold mb-2">Managed Servers</div>
-                <div class="dark:text-sm opacity-90">Currently 0</div>
+            <!-- Managed Servers -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm text-gray-800 dark:text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-semibold tracking-wider uppercase text-slate-500 dark:text-slate-400">Managed Servers</span>
+                    <span class="p-2 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </span>
+                </div>
+                <div class="text-3xl font-extrabold" th:text="${serverCount}">0</div>
+                <div class="text-xs text-slate-400 mt-1">Total server folders</div>
             </div>
-            <div class="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-lg shadow-lg text-white">
-                <div class="text-2xl font-bold mb-2">CPU</div>
-                <div class="dark:text-sm opacity-90">0%</div>
+
+            <!-- Active Running Servers -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm text-gray-800 dark:text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-semibold tracking-wider uppercase text-slate-500 dark:text-slate-400">Running State</span>
+                    <span class="p-2 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </span>
+                </div>
+                <div class="text-3xl font-extrabold flex items-center gap-2">
+                    <span th:text="${activeServerCount}">0</span>
+                    <span th:if="${activeServerCount > 0}" class="flex h-3 w-3 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                </div>
+                <div class="text-xs text-slate-400 mt-1">Servers currently active</div>
             </div>
-            <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-lg shadow-lg text-white">
-                <div class="text-2xl font-bold mb-2">Memory</div>
-                <div class="dark:text-sm opacity-90">1024MB / 4096MB</div>
+
+            <!-- CPU Utilization -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm text-gray-800 dark:text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-semibold tracking-wider uppercase text-slate-500 dark:text-slate-400">Host CPU</span>
+                    <span class="p-2 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                    </span>
+                </div>
+                <div class="text-3xl font-extrabold" th:text="${cpuLoad} + '%'">0%</div>
+                <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2">
+                    <div class="bg-indigo-500 h-1.5 rounded-full transition-all duration-500" th:style="'width: ' + ${cpuLoad} + '%'"></div>
+                </div>
             </div>
-            <div class="bg-gradient-to-br from-red-500 to-red-600 p-6 rounded-lg shadow-lg text-white">
-                <div class="text-2xl font-bold mb-2">Disk</div>
-                <div class="dark:text-sm opacity-90">64GB / 128GB</div>
+
+            <!-- Memory Utilization -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm text-gray-800 dark:text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-semibold tracking-wider uppercase text-slate-500 dark:text-slate-400">Process Memory</span>
+                    <span class="p-2 bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    </span>
+                </div>
+                <div class="text-xl font-extrabold mt-1">
+                    <span th:text="${usedMem}">1024</span><span class="text-xs text-slate-400 font-normal"> MB / </span><span th:text="${totalMem}">4096</span><span class="text-xs text-slate-400 font-normal"> MB</span>
+                </div>
+                <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2.5">
+                    <div class="bg-purple-500 h-1.5 rounded-full transition-all duration-500" th:style="'width: ' + (${usedMem} * 100 / ${totalMem}) + '%'"></div>
+                </div>
             </div>
         </div>
-        <!-- Feature Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <div class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4">
-                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor"
-                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
+        <!-- Active Server Overviews -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl shadow-sm overflow-hidden mb-8">
+            <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800/60 flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-white">Local Server Monitor</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Active instances running locally via <span class="font-semibold text-slate-700 dark:text-slate-300" th:text="${controlType}">Docker</span>.</p>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Quick Setup</h3>
-                <p class="text-gray-600 dark:text-gray-300">Manage your game server configs in minutes and start, stop,
-                    restart instances.</p>
+                <a th:href="@{/web/servers}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold transition-colors">
+                    <span>Advanced Controls</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
             </div>
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <div class="flex items-center justify-center w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full mb-4">
-                    <svg class="w-6 h-6 text-green-600 dark:text-green-300" fill="none" stroke="currentColor"
-                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Performance Monitoring</h3>
-                <p class="text-gray-600 dark:text-gray-300">Real-time metrics and monitoring to keep your server running
-                    optimally.</p>
+
+            <!-- Empty State -->
+            <div th:if="${#lists.isEmpty(instances)}" class="p-12 text-center">
+                <svg class="mx-auto h-12 w-12 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+                <h3 class="text-sm font-semibold text-slate-800 dark:text-white">No instances found</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">There are no server configurations registered on the filesystem.</p>
             </div>
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <div class="flex items-center justify-center w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full mb-4">
-                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-300" fill="none" stroke="currentColor"
-                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3z"/>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Config Presets</h3>
-                <p class="text-gray-600 dark:text-gray-300">Configure your servers with saved & pre-configured
-                    presets.</p>
-            </div>
+
+            <!-- Read-Only Monitor List -->
+            <table th:if="${!#lists.isEmpty(instances)}" class="min-w-full divide-y divide-slate-100 dark:divide-slate-800/80">
+                <thead class="bg-slate-50 dark:bg-slate-950/40">
+                <tr>
+                    <th scope="col" class="px-6 py-3.5 text-left text-xs font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase">Local Server Name</th>
+                    <th scope="col" class="px-6 py-3.5 text-left text-xs font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase">State</th>
+                    <th scope="col" class="px-6 py-3.5 text-left text-xs font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase">Network Ports</th>
+                    <th scope="col" class="px-6 py-3.5 text-left text-xs font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase">Fast Action</th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 bg-white dark:bg-slate-900">
+                <tr th:each="item : ${instances}" th:id="'server-' + ${item.instance.id}">
+                    <!-- Name -->
+                    <td class="px-6 py-5 whitespace-nowrap">
+                        <div class="flex items-center gap-3">
+                            <span class="p-2 bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 rounded-lg">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            </span>
+                            <div>
+                                <div class="text-sm font-semibold text-slate-800 dark:text-white" th:text="${item.instance.settings != null && item.instance.settings.serverName != null && !#strings.isEmpty(item.instance.settings.serverName) ? item.instance.settings.serverName : item.instance.id}">Server Instance</div>
+                                <div class="text-xs text-slate-400 font-mono mt-0.5" th:text="${item.instance.id}">ID</div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <!-- Status -->
+                    <td class="px-6 py-5 whitespace-nowrap text-sm">
+                        <span th:if="${item.status == 'running'}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
+                            <span class="flex h-1.5 w-1.5 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                            </span>
+                            Active
+                        </span>
+                        <span th:if="${item.status == 'stopped'}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-600 dark:bg-slate-800/40 dark:text-slate-400">
+                            <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
+                            Offline
+                        </span>
+                    </td>
+
+                    <!-- Ports -->
+                    <td class="px-6 py-5 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 font-mono" th:text="'TCP: ' + ${item.instance.config != null ? item.instance.config.tcpPort : '9232'} + ' | UDP: ' + ${item.instance.config != null ? item.instance.config.udpPort : '9231'}">
+                        TCP: 9232 | UDP: 9231
+                    </td>
+
+                    <!-- Direct toggle action -->
+                    <td class="px-6 py-5 whitespace-nowrap text-sm font-medium">
+                        <button th:if="${item.status == 'stopped'}"
+                                th:attr="hx-post=@{/web/servers/{id}/start(id=${item.instance.id})}"
+                                hx-target="this"
+                                hx-swap="outerHTML"
+                                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer">
+                            Start Server
+                        </button>
+                        <button th:if="${item.status == 'running'}"
+                                th:attr="hx-post=@{/web/servers/{id}/stop(id=${item.instance.id})}"
+                                hx-target="this"
+                                hx-swap="outerHTML"
+                                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer">
+                            Stop Server
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="grid md:grid-cols-2 gap-8 mb-12">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-semibold text-blue-600 mb-4">Key Features</h2>
-                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
-                    <li>✓ Easy server management</li>
-                    <li>✓ Real-time monitoring and statistics</li>
-                    <li>✓ User-friendly control panel</li>
-                </ul>
-            </div>
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-semibold text-blue-600 mb-4">Getting Started</h2>
-                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
-                    <li>✓ Create an account or sign in</li>
-                    <li>✓ Set up your first game server</li>
-                    <li>✓ Configure server settings</li>
-                </ul>
-            </div>
-        </div>
+
         <div th:if="${!#strings.isEmpty(message)}"
              class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
             <span class="block sm:inline" th:text="${message}"></span>

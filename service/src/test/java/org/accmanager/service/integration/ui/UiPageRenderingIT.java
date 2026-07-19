@@ -2,6 +2,16 @@ package org.accmanager.service.integration.ui;
 
 import org.accmanager.service.integration.BaseIT;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.accmanager.service.repository.InstancesRepository;
+import org.accmanager.service.repository.ConfigRepository;
+import org.accmanager.service.repository.SettingsRepository;
+import org.accmanager.service.repository.AssistRulesRepository;
+import org.accmanager.service.entity.InstancesEntity;
+import org.accmanager.service.entity.SettingsEntity;
+import org.accmanager.service.entity.ConfigEntity;
+import org.accmanager.service.entity.AssistRulesEntity;
 import org.springframework.boot.test.context.SpringBootTest;
 import jakarta.servlet.RequestDispatcher;
 import org.springframework.http.MediaType;
@@ -13,6 +23,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UiPageRenderingIT extends BaseIT {
+
+    @Autowired
+    private InstancesRepository instancesRepository;
+
+    @Autowired
+    private ConfigRepository configRepository;
+
+    @Autowired
+    private SettingsRepository settingsRepository;
+
+    @Autowired
+    private AssistRulesRepository assistRulesRepository;
 
     // ==================== PUBLIC PAGES ====================
 
@@ -37,17 +59,17 @@ public class UiPageRenderingIT extends BaseIT {
     }
 
     @Test
-    void homePage_containsFeatureCards() throws Exception {
+    void homePage_containsLocalServerMonitor() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Quick Setup")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Local Server Monitor")));
     }
 
     @Test
-    void homePage_containsGettingStartedSection() throws Exception {
+    void homePage_containsInstancesTable() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Getting Started")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Local Server Name")));
     }
 
     @Test
@@ -268,6 +290,29 @@ public class UiPageRenderingIT extends BaseIT {
                 .andExpect(model().attribute("isDarkMode", true));
     }
 
+    // ==================== FAQ ====================
+
+    @Test
+    void faqPage_returnsOk() throws Exception {
+        mockMvc.perform(get("/web/faq"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void faqPage_containsDarkModeAttribute() throws Exception {
+        mockMvc.perform(get("/web/faq"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("isDarkMode", true));
+    }
+
+    @Test
+    void faqPage_containsFaqSections() throws Exception {
+        mockMvc.perform(get("/web/faq"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Docker Setup")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Database")));
+    }
+
     // ==================== SERVERS (authenticated) ====================
 
     @Test
@@ -277,27 +322,25 @@ public class UiPageRenderingIT extends BaseIT {
     }
 
     @Test
-    void serversPage_containsForm() throws Exception {
+    void serversPage_containsInstanceTitle() throws Exception {
         mockMvc.perform(get("/web/servers").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Click To Edit")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Server Instances")));
     }
 
     @Test
-    void serversPage_containsContactFields() throws Exception {
+    void serversPage_containsTableHeaders() throws Exception {
         mockMvc.perform(get("/web/servers").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("First Name")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Last Name")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Email")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Server Name")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Status")));
     }
 
     @Test
-    void serversPage_containsDemoContactData() throws Exception {
+    void serversPage_containsInstanceData() throws Exception {
         mockMvc.perform(get("/web/servers").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Bob")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Smith")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Test Instance")));
     }
 
     @Test
@@ -364,17 +407,17 @@ public class UiPageRenderingIT extends BaseIT {
     }
 
     @Test
-    void configsPage_containsTodoList() throws Exception {
+    void configsPage_containsPresetsTitle() throws Exception {
         mockMvc.perform(get("/web/configs").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("To Do")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Event Presets")));
     }
 
     @Test
-    void configsPage_containsAddButton() throws Exception {
+    void configsPage_containsDeployButton() throws Exception {
         mockMvc.perform(get("/web/configs").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Add")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Deploy Setup")));
     }
 
     @Test
@@ -385,10 +428,10 @@ public class UiPageRenderingIT extends BaseIT {
     }
 
     @Test
-    void configsPage_containsDemoItem() throws Exception {
+    void configsPage_containsTrackTemp() throws Exception {
         mockMvc.perform(get("/web/configs").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Get Stuff Done")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Track Temp")));
     }
 
     @Test
@@ -413,10 +456,16 @@ public class UiPageRenderingIT extends BaseIT {
     }
 
     @Test
-    void profileDetailsPage_containsNicknameAttribute() throws Exception {
+    void profileDetailsPage_containsUsersAttribute() throws Exception {
         mockMvc.perform(get("/web/profile/details").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("nickname", "Backend Populated"));
+                .andExpect(model().attribute("users", org.hamcrest.Matchers.notNullValue()));
+    }
+
+    @Test
+    void profileDetailsPage_whenStandardUser_returnsForbidden() throws Exception {
+        mockMvc.perform(get("/web/profile/details").with(httpBasic("user-2", "wKQWuDzpCQ8cxeeDzktK")))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -489,54 +538,30 @@ public class UiPageRenderingIT extends BaseIT {
                 .andExpect(redirectedUrl("/web/sign-in?error=true"));
     }
 
-    // ==================== SERVERS FORM ====================
+    // ==================== SERVERS POWER CONTROLS ====================
 
     @Test
-    void serversEditForm_returnsOk_whenAuthenticated() throws Exception {
-        mockMvc.perform(post("/web/servers/edit/1")
-                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq"))
-                        .param("firstName", "John")
-                        .param("lastName", "Doe")
-                        .param("email", "john@example.com"))
+    void serversStart_returnsOk_whenAuthenticated() throws Exception {
+        mockMvc.perform(post("/web/servers/test-id/start")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(view().name("pages/general/servers-form"));
+                .andExpect(view().name("pages/general/servers :: server-row"));
     }
 
     @Test
-    void serversEditForm_containsSubmittedData() throws Exception {
-        mockMvc.perform(post("/web/servers/edit/1")
-                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq"))
-                        .param("firstName", "John")
-                        .param("lastName", "Doe")
-                        .param("email", "john@example.com"))
+    void serversStop_returnsOk_whenAuthenticated() throws Exception {
+        mockMvc.perform(post("/web/servers/test-id/stop")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("John")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Doe")));
+                .andExpect(view().name("pages/general/servers :: server-row"));
     }
 
     @Test
-    void serversEditForm_unauthenticated_returnsUnauthorized() throws Exception {
-        mockMvc.perform(post("/web/servers/edit/1"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    // ==================== SERVERS COMMIT ====================
-
-    @Test
-    void serversCommit_returnsOk_whenAuthenticated() throws Exception {
-        mockMvc.perform(post("/web/servers/commit")
-                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq"))
-                        .param("firstName", "John")
-                        .param("lastName", "Doe")
-                        .param("email", "john@example.com"))
+    void serversRestart_returnsOk_whenAuthenticated() throws Exception {
+        mockMvc.perform(post("/web/servers/test-id/restart")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().isOk())
-                .andExpect(view().name("pages/general/servers-default"));
-    }
-
-    @Test
-    void serversCommit_unauthenticated_returnsUnauthorized() throws Exception {
-        mockMvc.perform(post("/web/servers/commit"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(view().name("pages/general/servers :: server-row"));
     }
 
     // ==================== LAYOUT CONTENT ====================
@@ -547,7 +572,7 @@ public class UiPageRenderingIT extends BaseIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Home")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Servers")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Management")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Event Presets")));
     }
 
     @Test
@@ -603,6 +628,8 @@ public class UiPageRenderingIT extends BaseIT {
                 .andExpect(model().attribute("isDarkMode", true));
         mockMvc.perform(get("/web/contact-admin"))
                 .andExpect(model().attribute("isDarkMode", true));
+        mockMvc.perform(get("/web/faq"))
+                .andExpect(model().attribute("isDarkMode", true));
     }
 
     @Test
@@ -617,5 +644,168 @@ public class UiPageRenderingIT extends BaseIT {
                 .andExpect(model().attribute("isDarkMode", true));
         mockMvc.perform(get("/web/profile/details").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(model().attribute("isDarkMode", true));
+    }
+
+    // ==================== SERVER CONFIG EDITING ====================
+
+    @Test
+    void editServerPage_returnsOk_whenAuthenticated() throws Exception {
+        Mockito.when(serverControl.inspectInstance("test-instance")).thenReturn("{\"containerStatus\" : \"stopped\"}");
+
+        mockMvc.perform(get("/web/servers/test-instance/edit").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("isRunning", false))
+                .andExpect(model().attribute("instance", org.hamcrest.Matchers.notNullValue()))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Edit Server Configuration")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Test Instance")));
+    }
+
+    @Test
+    void editServer_savesConfig_whenStopped() throws Exception {
+        Mockito.when(serverControl.inspectInstance("test-instance")).thenReturn("{\"containerStatus\" : \"stopped\"}");
+
+        mockMvc.perform(post("/web/servers/test-instance/edit")
+                        .param("serverName", "My Awesome Server")
+                        .param("adminPassword", "admin123")
+                        .param("password", "pass123")
+                        .param("spectatorPassword", "spec123")
+                        .param("maxCarSlots", "40")
+                        .param("tcpPort", "9232")
+                        .param("udpPort", "9231")
+                        .param("maxConnections", "100")
+                        .param("stabilityControlLevelMax", "25")
+                        .param("disableAutosteer", "1")
+                        .param("disableAutoLights", "0")
+                        .param("disableAutoWiper", "0")
+                        .param("disableAutoEngineStart", "0")
+                        .param("disableAutoPitLimiter", "0")
+                        .param("disableAutoGear", "0")
+                        .param("disableAutoClutch", "0")
+                        .param("disableIdealLine", "0")
+                        .param("track", "spa")
+                        .param("preRaceWaitingTimeSeconds", "120")
+                        .param("sessionOverTimeSeconds", "180")
+                        .param("ambientTemp", "30")
+                        .param("cloudLevel", "0.1")
+                        .param("rain", "0")
+                        .param("weatherRandomness", "1")
+                        .param("postQualySeconds", "10")
+                        .param("postRaceSeconds", "15")
+                        .param("persistToDb", "false")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/web/servers"));
+
+        Mockito.verify(instanceDaoService, Mockito.times(1)).writeInstanceConfiguration(Mockito.any());
+    }
+
+    @Test
+    void editServer_doesNotSave_whenRunning() throws Exception {
+        Mockito.when(serverControl.inspectInstance("test-instance")).thenReturn("{\"containerStatus\" : \"running\"}");
+
+        mockMvc.perform(post("/web/servers/test-instance/edit")
+                        .param("serverName", "My Awesome Server")
+                        .param("adminPassword", "admin123")
+                        .param("password", "pass123")
+                        .param("spectatorPassword", "spec123")
+                        .param("maxCarSlots", "40")
+                        .param("tcpPort", "9232")
+                        .param("udpPort", "9231")
+                        .param("maxConnections", "100")
+                        .param("stabilityControlLevelMax", "25")
+                        .param("disableAutosteer", "1")
+                        .param("disableAutoLights", "0")
+                        .param("disableAutoWiper", "0")
+                        .param("disableAutoEngineStart", "0")
+                        .param("disableAutoPitLimiter", "0")
+                        .param("disableAutoGear", "0")
+                        .param("disableAutoClutch", "0")
+                        .param("disableIdealLine", "0")
+                        .param("track", "spa")
+                        .param("preRaceWaitingTimeSeconds", "120")
+                        .param("sessionOverTimeSeconds", "180")
+                        .param("ambientTemp", "30")
+                        .param("cloudLevel", "0.1")
+                        .param("rain", "0")
+                        .param("weatherRandomness", "1")
+                        .param("postQualySeconds", "10")
+                        .param("postRaceSeconds", "15")
+                        .param("persistToDb", "false")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("isRunning", true))
+                .andExpect(model().attribute("error", org.hamcrest.Matchers.containsString("Cannot modify configuration while server is running")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Cannot modify configuration while server is running")));
+
+        Mockito.verify(instanceDaoService, Mockito.never()).writeInstanceConfiguration(Mockito.any());
+    }
+
+    @Test
+    void editServer_savesToDb_whenPersistToDbIsTrue() throws Exception {
+        Mockito.when(serverControl.inspectInstance("test-instance")).thenReturn("{\"containerStatus\" : \"stopped\"}");
+
+        mockMvc.perform(post("/web/servers/test-instance/edit")
+                        .param("serverName", "Database Persisted Server")
+                        .param("adminPassword", "secureAdmin123")
+                        .param("password", "securePass123")
+                        .param("spectatorPassword", "secureSpec123")
+                        .param("maxCarSlots", "35")
+                        .param("tcpPort", "9332")
+                        .param("udpPort", "9331")
+                        .param("maxConnections", "95")
+                        .param("stabilityControlLevelMax", "15")
+                        .param("disableAutosteer", "1")
+                        .param("disableAutoLights", "0")
+                        .param("disableAutoWiper", "0")
+                        .param("disableAutoEngineStart", "1")
+                        .param("disableAutoPitLimiter", "0")
+                        .param("disableAutoGear", "0")
+                        .param("disableAutoClutch", "0")
+                        .param("disableIdealLine", "1")
+                        .param("track", "spa")
+                        .param("preRaceWaitingTimeSeconds", "100")
+                        .param("sessionOverTimeSeconds", "150")
+                        .param("ambientTemp", "25")
+                        .param("cloudLevel", "0.3")
+                        .param("rain", "20")
+                        .param("weatherRandomness", "3")
+                        .param("postQualySeconds", "12")
+                        .param("postRaceSeconds", "18")
+                        .param("persistToDb", "true")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/web/servers"));
+
+        Mockito.verify(instanceDaoService, Mockito.times(1)).writeInstanceConfiguration(Mockito.any());
+
+        java.util.Optional<InstancesEntity> instanceEntityOpt = instancesRepository.findById("test-instance");
+        org.junit.jupiter.api.Assertions.assertTrue(instanceEntityOpt.isPresent());
+        InstancesEntity instanceEntity = instanceEntityOpt.get();
+        org.junit.jupiter.api.Assertions.assertEquals("Database Persisted Server", instanceEntity.getInstanceName());
+
+        org.junit.jupiter.api.Assertions.assertNotNull(instanceEntity.getSettingsId());
+        java.util.Optional<SettingsEntity> settingsEntityOpt = settingsRepository.findSettingsEntityBySettingsId(instanceEntity.getSettingsId());
+        org.junit.jupiter.api.Assertions.assertTrue(settingsEntityOpt.isPresent());
+        SettingsEntity settingsEntity = settingsEntityOpt.get();
+        org.junit.jupiter.api.Assertions.assertEquals("Database Persisted Server", settingsEntity.getServerInstanceName());
+        org.junit.jupiter.api.Assertions.assertEquals("secureAdmin123", settingsEntity.getAdminPassword());
+        org.junit.jupiter.api.Assertions.assertEquals(35, settingsEntity.getMaxCarSlots());
+
+        org.junit.jupiter.api.Assertions.assertNotNull(instanceEntity.getConfigId());
+        java.util.Optional<ConfigEntity> configEntityOpt = configRepository.findConfigEntityByConfigId(instanceEntity.getConfigId());
+        org.junit.jupiter.api.Assertions.assertTrue(configEntityOpt.isPresent());
+        ConfigEntity configEntity = configEntityOpt.get();
+        org.junit.jupiter.api.Assertions.assertEquals(9332, configEntity.getTcpPort());
+        org.junit.jupiter.api.Assertions.assertEquals(9331, configEntity.getUdpPort());
+        org.junit.jupiter.api.Assertions.assertEquals(95, configEntity.getMaxConnections());
+
+        org.junit.jupiter.api.Assertions.assertNotNull(instanceEntity.getAssistRulesId());
+        java.util.Optional<AssistRulesEntity> assistRulesEntityOpt = assistRulesRepository.findAssistsEntityByAssistsId(instanceEntity.getAssistRulesId());
+        org.junit.jupiter.api.Assertions.assertTrue(assistRulesEntityOpt.isPresent());
+        AssistRulesEntity assistRulesEntity = assistRulesEntityOpt.get();
+        org.junit.jupiter.api.Assertions.assertEquals(15, assistRulesEntity.getStabilityControlLevelMax());
+        org.junit.jupiter.api.Assertions.assertEquals(1, assistRulesEntity.getDisableAutoSteer());
+        org.junit.jupiter.api.Assertions.assertEquals(1, assistRulesEntity.getDisableAutoEngineStart());
+        org.junit.jupiter.api.Assertions.assertEquals(1, assistRulesEntity.getDisableIdealLine());
     }
 }

@@ -22,8 +22,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "accserver.test=true")
 @Import(HtmxBehaviorIT.TestSecurity.class)
+@org.springframework.security.test.context.support.WithMockUser(username = "admin", authorities = "write.instance")
 public class HtmxBehaviorIT extends BaseIT {
 
     @TestConfiguration
@@ -110,163 +111,113 @@ public class HtmxBehaviorIT extends BaseIT {
     @Test
     void configsPage_deleteButton_hasHxDeleteAttribute() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement deleteBtn = page.getFirstByXPath("//button[contains(text(), 'Delete')]");
+        HtmlElement deleteBtn = page.getFirstByXPath("//button[contains(@hx-delete, '/web/configs/delete/')]");
         assertNotNull(deleteBtn);
-        assertEquals("/web/configs/delete", deleteBtn.getAttribute("hx-delete"));
+        assertTrue(deleteBtn.getAttribute("hx-delete").startsWith("/web/configs/delete/"));
     }
 
     @Test
-    void configsPage_deleteButton_hasHxTargetClosestTr() throws Exception {
+    void configsPage_deleteButton_hasHxTargetPreset() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement deleteBtn = page.getFirstByXPath("//button[contains(text(), 'Delete')]");
+        HtmlElement deleteBtn = page.getFirstByXPath("//button[contains(@hx-delete, '/web/configs/delete/')]");
         assertNotNull(deleteBtn);
-        assertEquals("closest tr", deleteBtn.getAttribute("hx-target"));
+        assertTrue(deleteBtn.getAttribute("hx-target").startsWith("#preset-"));
     }
 
     @Test
     void configsPage_deleteButton_hasHxSwapOuterHTML() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement deleteBtn = page.getFirstByXPath("//button[contains(text(), 'Delete')]");
+        HtmlElement deleteBtn = page.getFirstByXPath("//button[contains(@hx-delete, '/web/configs/delete/')]");
         assertNotNull(deleteBtn);
-        String swap = deleteBtn.getAttribute("hx-swap");
-        assertNotNull(swap);
-        assertTrue(swap.contains("outerHTML"));
+        assertEquals("outerHTML", deleteBtn.getAttribute("hx-swap"));
     }
 
     @Test
     void configsPage_deleteButton_hasHxConfirm() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement deleteBtn = page.getFirstByXPath("//button[contains(text(), 'Delete')]");
+        HtmlElement deleteBtn = page.getFirstByXPath("//button[contains(@hx-delete, '/web/configs/delete/')]");
         assertNotNull(deleteBtn);
-        assertEquals("Are you sure?", deleteBtn.getAttribute("hx-confirm"));
+        assertEquals("Are you sure you want to delete this preset?", deleteBtn.getAttribute("hx-confirm"));
     }
 
     @Test
-    void configsPage_addButton_hasHxPost() throws Exception {
+    void configsPage_deployForm_hasHxPost() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement addBtn = page.getHtmlElementById("mon");
-        assertNotNull(addBtn);
-        assertEquals("/web/configs/create", addBtn.getAttribute("hx-post"));
+        HtmlForm form = page.getForms().get(0);
+        assertNotNull(form);
+        assertEquals("/web/configs/deploy", form.getAttribute("hx-post"));
     }
 
     @Test
-    void configsPage_addButton_hasHxTargetTodoList() throws Exception {
+    void configsPage_deployForm_hasHxTargetNotificationArea() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement addBtn = page.getHtmlElementById("mon");
-        assertNotNull(addBtn);
-        assertEquals("#todo-list", addBtn.getAttribute("hx-target"));
+        HtmlForm form = page.getForms().get(0);
+        assertNotNull(form);
+        assertEquals("#notification-area", form.getAttribute("hx-target"));
     }
 
     @Test
-    void configsPage_addButton_hasHxSwapBeforeend() throws Exception {
+    void configsPage_deployForm_hasHxSwapInnerHTML() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement addBtn = page.getHtmlElementById("mon");
-        assertNotNull(addBtn);
-        assertEquals("beforeend", addBtn.getAttribute("hx-swap"));
-    }
-
-    @Test
-    void configsPage_addButton_hasHxIncludeNewTodo() throws Exception {
-        HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement addBtn = page.getHtmlElementById("mon");
-        assertNotNull(addBtn);
-        assertEquals("#new-todo", addBtn.getAttribute("hx-include"));
-    }
-
-    @Test
-    void configsPage_addButton_hasHxTriggerClick() throws Exception {
-        HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement addBtn = page.getHtmlElementById("mon");
-        assertNotNull(addBtn);
-        assertEquals("click", addBtn.getAttribute("hx-trigger"));
+        HtmlForm form = page.getForms().get(0);
+        assertNotNull(form);
+        assertEquals("innerHTML", form.getAttribute("hx-swap"));
     }
 
     // ==================== SERVERS PAGE - HTMX ATTRIBUTES ====================
 
     @Test
-    void serversPage_formHasHxPost() throws Exception {
+    void serversPage_startBtn_hasHxPost() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/servers");
-        HtmlForm form = page.getForms().get(0);
-        assertNotNull(form);
-        assertEquals("/web/servers/edit/1", form.getAttribute("hx-post"));
+        HtmlElement startBtn = page.getFirstByXPath("//button[contains(@hx-post, '/web/servers/')]");
+        assertNotNull(startBtn);
+        assertTrue(startBtn.getAttribute("hx-post").contains("/start"));
     }
 
     @Test
-    void serversPage_formHasHxTargetSelf() throws Exception {
+    void serversPage_startBtn_hasHxTargetClosestTr() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/servers");
-        HtmlForm form = page.getForms().get(0);
-        assertNotNull(form);
-        assertEquals("this", form.getAttribute("hx-target"));
+        HtmlElement startBtn = page.getFirstByXPath("//button[contains(@hx-post, '/web/servers/')]");
+        assertNotNull(startBtn);
+        assertEquals("closest tr", startBtn.getAttribute("hx-target"));
     }
 
     @Test
-    void serversPage_formHasHxSwapOuterHTML() throws Exception {
+    void serversPage_startBtn_hasHxSwapOuterHTML() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/servers");
-        HtmlForm form = page.getForms().get(0);
-        assertNotNull(form);
-        assertEquals("outerHTML", form.getAttribute("hx-swap"));
-    }
-
-    // ==================== SERVERS DEFAULT PAGE - HTMX ATTRIBUTES ====================
-
-    @Test
-    void serversDefaultPage_formHasHxPost() throws Exception {
-        HtmlPage page = webClient.getPage(baseUrl + "/web/servers/commit");
-        HtmlForm form = page.getForms().get(0);
-        assertNotNull(form);
-        assertEquals("/web/servers/edit/1", form.getAttribute("hx-post"));
-    }
-
-    @Test
-    void serversDefaultPage_formHasHxTargetSelf() throws Exception {
-        HtmlPage page = webClient.getPage(baseUrl + "/web/servers/commit");
-        HtmlForm form = page.getForms().get(0);
-        assertNotNull(form);
-        assertEquals("this", form.getAttribute("hx-target"));
-    }
-
-    @Test
-    void serversDefaultPage_formHasHxSwapOuterHTML() throws Exception {
-        HtmlPage page = webClient.getPage(baseUrl + "/web/servers/commit");
-        HtmlForm form = page.getForms().get(0);
-        assertNotNull(form);
-        assertEquals("outerHTML", form.getAttribute("hx-swap"));
+        HtmlElement startBtn = page.getFirstByXPath("//button[contains(@hx-post, '/web/servers/')]");
+        assertNotNull(startBtn);
+        assertEquals("outerHTML", startBtn.getAttribute("hx-swap"));
     }
 
     // ==================== PROFILE PAGE - HTMX ATTRIBUTES ====================
 
     @Test
-    void profilePage_nicknameInput_exists() throws Exception {
+    void profilePage_usernameInput_exists() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/profile/details");
-        HtmlElement nicknameInput = page.getHtmlElementById("nickname");
-        assertNotNull(nicknameInput);
-        assertEquals("nickname", nicknameInput.getAttribute("name"));
+        HtmlElement usernameInput = page.getFirstByXPath("//input[@name='username']");
+        assertNotNull(usernameInput);
     }
 
     @Test
-    void profilePage_userRoleInput_exists() throws Exception {
+    void profilePage_passwordInput_exists() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/profile/details");
-        HtmlElement userRoleInput = page.getHtmlElementById("user-role");
-        assertNotNull(userRoleInput);
-        assertEquals("user-role", userRoleInput.getAttribute("name"));
-        assertTrue(userRoleInput.hasAttribute("disabled"));
+        HtmlElement passwordInput = page.getFirstByXPath("//input[@name='password']");
+        assertNotNull(passwordInput);
     }
 
     @Test
-    void profilePage_emailInput_exists() throws Exception {
+    void profilePage_roleSelect_exists() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/profile/details");
-        HtmlElement emailInput = page.getHtmlElementById("email");
-        assertNotNull(emailInput);
-        assertEquals("email", emailInput.getAttribute("name"));
-        assertTrue(emailInput.hasAttribute("disabled"));
+        HtmlElement roleSelect = page.getFirstByXPath("//select[@name='role']");
+        assertNotNull(roleSelect);
     }
 
     @Test
     void profilePage_submitButton_exists() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/profile/details");
-        HtmlElement submitBtn = page.getFirstByXPath("//button[contains(text(), 'Save Changes')]");
+        HtmlElement submitBtn = page.getFirstByXPath("//button[contains(., 'Create User')]");
         assertNotNull(submitBtn);
-        assertEquals("Save Changes", submitBtn.getTextContent().trim());
     }
 
     // ==================== MANAGEMENT PAGE - HTMX ATTRIBUTES ====================
@@ -937,16 +888,16 @@ public class HtmxBehaviorIT extends BaseIT {
     // ==================== CONFIGS ENDPOINT RESPONSES ====================
 
     @Test
-    void configsCreateEndpoint_returnsFragment() throws Exception {
-        String content = postContent(baseUrl + "/web/configs/create", java.util.Map.of("new-todo", "Test Task"));
-        assertTrue(content.contains("Test Task"));
+    void configsDeployEndpoint_returnsAlertBanner() throws Exception {
+        String content = postContent(baseUrl + "/web/configs/deploy", java.util.Map.of("eventId", "some-id", "instanceId", "test-instance"));
+        assertTrue(content.contains("Selected event preset") || content.contains("not found"));
     }
 
     @Test
     void configsDeleteEndpoint_returnsEmpty() throws Exception {
         java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
         java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
-                .uri(java.net.URI.create(baseUrl + "/web/configs/delete"))
+                .uri(java.net.URI.create(baseUrl + "/web/configs/delete/some-preset-id"))
                 .DELETE()
                 .build();
         java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
@@ -965,17 +916,15 @@ public class HtmxBehaviorIT extends BaseIT {
     // ==================== SERVERS ENDPOINT RESPONSES ====================
 
     @Test
-    void serversEditEndpoint_returnsFormView() throws Exception {
-        String content = postContent(baseUrl + "/web/servers/edit/1", java.util.Map.of("firstName", "John", "lastName", "Doe", "email", "john@example.com"));
-        assertTrue(content.contains("John"));
-        assertTrue(content.contains("Doe"));
+    void serversStartEndpoint_returnsRow() throws Exception {
+        String content = postContent(baseUrl + "/web/servers/test-instance/start", java.util.Map.of());
+        assertTrue(content.contains("server-row") || content.contains("Running"));
     }
 
     @Test
-    void serversCommitEndpoint_returnsDefaultView() throws Exception {
-        String content = postContent(baseUrl + "/web/servers/commit", java.util.Map.of("firstName", "Jane", "lastName", "Smith", "email", "jane@example.com"));
-        assertTrue(content.contains("Jane"));
-        assertTrue(content.contains("Smith"));
+    void serversStopEndpoint_returnsRow() throws Exception {
+        String content = postContent(baseUrl + "/web/servers/test-instance/stop", java.util.Map.of());
+        assertTrue(content.contains("server-row") || content.contains("Stopped"));
     }
 
     // ==================== HYPERSCRIPT ====================
@@ -992,15 +941,7 @@ public class HtmxBehaviorIT extends BaseIT {
         assertTrue(hyperscript.contains("navbar-default"));
     }
 
-    @Test
-    void configsPage_addButton_hasHyperscript() throws Exception {
-        HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement addBtn = page.getHtmlElementById("mon");
-        assertNotNull(addBtn);
-        String hyperscript = addBtn.getAttribute("_");
-        assertNotNull(hyperscript);
-        assertTrue(hyperscript.contains("htmx:afterRequest"));
-    }
+
 
     @Test
     void managementPage_eventDiv_exists() throws Exception {
@@ -1010,37 +951,30 @@ public class HtmxBehaviorIT extends BaseIT {
     }
 
     @Test
-    void managementPage_todoListDiv_exists() throws Exception {
+    void configsPage_notificationArea_exists() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement todoList = page.getHtmlElementById("todo-list");
-        assertNotNull(todoList);
+        HtmlElement notificationArea = page.getHtmlElementById("notification-area");
+        assertNotNull(notificationArea);
     }
 
     @Test
-    void managementPage_newTodoInput_exists() throws Exception {
-        HtmlPage page = webClient.getPage(baseUrl + "/web/configs");
-        HtmlElement newTodo = page.getHtmlElementById("new-todo");
-        assertNotNull(newTodo);
-    }
-
-    @Test
-    void managementPage_nicknameInput_exists() throws Exception {
+    void managementPage_usernameInput_exists() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/profile/details");
-        HtmlElement nicknameInput = page.getHtmlElementById("nickname");
-        assertNotNull(nicknameInput);
+        HtmlElement usernameInput = page.getFirstByXPath("//input[@name='username']");
+        assertNotNull(usernameInput);
     }
 
     @Test
-    void managementPage_userRoleInput_exists() throws Exception {
+    void managementPage_roleSelect_exists() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/profile/details");
-        HtmlElement userRoleInput = page.getHtmlElementById("user-role");
-        assertNotNull(userRoleInput);
+        HtmlElement roleSelect = page.getFirstByXPath("//select[@name='role']");
+        assertNotNull(roleSelect);
     }
 
     @Test
     void managementPage_submitButton_exists() throws Exception {
         HtmlPage page = webClient.getPage(baseUrl + "/web/profile/details");
-        HtmlElement submitBtn = page.getFirstByXPath("//button[contains(text(), 'Save Changes')]");
+        HtmlElement submitBtn = page.getFirstByXPath("//button[contains(., 'Create User')]");
         assertNotNull(submitBtn);
     }
 }

@@ -116,6 +116,11 @@ public class InstanceDaoService {
             instance.setId(instanceOptDB.get().getInstanceId());
             instance.setName(instanceOptDB.get().getInstanceName());
             instance.setContainerImage(instanceOptDB.get().getContainerImage());
+            if (instanceOptDB.get().getControlType() != null) {
+                instance.setControlType(Instance.ControlTypeEnum.fromValue(instanceOptDB.get().getControlType().toUpperCase()));
+            } else {
+                instance.setControlType(Instance.ControlTypeEnum.DOCKER);
+            }
             instance.setEvent(getAndBuildEventById(instanceOptDB.get().getEventId()));
             instance.setEventRules(getAndBuildEventRulesById(instanceOptDB.get().getEventRulesId()));
             instance.setEntriesList(getAndBuildEntriesListById(instanceOptDB));
@@ -127,14 +132,24 @@ public class InstanceDaoService {
         return Optional.of(instance);
     }
 
-    private Event getAndBuildEventById(String eventId) {
+    public Event getAndBuildEventById(String eventId) {
         if (!isEmpty(eventId)) {
             Optional<EventEntity> eventEntityOpt = eventRepository.findEventEntityByEventId(eventId);
             if (eventEntityOpt.isPresent()) {
                 Event event = new Event();
                 event.setId(eventEntityOpt.get().getEventId());
                 event.setName(eventEntityOpt.get().getEventName());
-                event.setTrack(Event.TrackEnum.valueOf(eventEntityOpt.get().getTrack()));
+                if (eventEntityOpt.get().getTrack() != null) {
+                    try {
+                        event.setTrack(Event.TrackEnum.fromValue(eventEntityOpt.get().getTrack()));
+                    } catch (Exception e) {
+                        try {
+                            event.setTrack(Event.TrackEnum.valueOf(eventEntityOpt.get().getTrack().toUpperCase()));
+                        } catch (Exception ex) {
+                            event.setTrack(Event.TrackEnum.values()[0]);
+                        }
+                    }
+                }
                 event.setPreRaceWaitingTimeSeconds(eventEntityOpt.get().getPreRaceWaitingTimeSec());
                 event.setSessionOverTimeSeconds(eventEntityOpt.get().getSessionOverTimeSec());
                 event.setAmbientTemp(eventEntityOpt.get().getAmbientTemp());
@@ -287,7 +302,17 @@ public class InstanceDaoService {
                 for (BopEntryEntity bopEntryEntity : bopEntryEntitiesOpt.get()) {
                     EntryBoP entryBop = new EntryBoP();
                     entryBop.setId(bopEntryEntity.getBopId());
-                    entryBop.setTrack(EntryBoP.TrackEnum.valueOf(bopEntryEntity.getTrack()));
+                    if (bopEntryEntity.getTrack() != null) {
+                        try {
+                            entryBop.setTrack(EntryBoP.TrackEnum.fromValue(bopEntryEntity.getTrack()));
+                        } catch (Exception e) {
+                            try {
+                                entryBop.setTrack(EntryBoP.TrackEnum.valueOf(bopEntryEntity.getTrack().toUpperCase()));
+                            } catch (Exception ex) {
+                                entryBop.setTrack(EntryBoP.TrackEnum.values()[0]);
+                            }
+                        }
+                    }
                     entryBop.setCarModel(bopEntryEntity.getCarModel());
                     entryBop.setBallastKg(bopEntryEntity.getBallest());
                     entryBop.setRestrictor(bopEntryEntity.getRestrictor());

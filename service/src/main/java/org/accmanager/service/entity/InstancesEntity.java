@@ -16,6 +16,7 @@ public class InstancesEntity {
     private String instanceId;
     private String instanceName;
     private String containerImage;
+    private String controlType;
     private String eventId;
     private String eventRulesId;
     private String entriesId;
@@ -25,7 +26,6 @@ public class InstancesEntity {
     private String settingsId;
 
     @Id
-    @GeneratedValue(strategy = UUID)
     @Column(name = "INSTANCE_ID")
     public String getInstanceId() {
         return instanceId;
@@ -123,5 +123,15 @@ public class InstancesEntity {
 
     public void setSettingsId(String settingsId) {
         this.settingsId = settingsId;
+    }
+
+    @Basic
+    @Column(name = "CONTROL_TYPE")
+    public String getControlType() {
+        return controlType;
+    }
+
+    public void setControlType(String controlType) {
+        this.controlType = controlType;
     }
 }

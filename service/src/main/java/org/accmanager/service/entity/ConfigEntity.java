@@ -29,7 +29,7 @@ public class ConfigEntity {
         return configId;
     }
 
-    public void setConfigId(Object String) {
+    public void setConfigId(String configId) {
         this.configId = configId;
     }
 

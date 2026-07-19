@@ -939,6 +939,10 @@ components:
           type: string
           example: "acc-server:1.8.18"
           default: "N/A"
+        controlType:
+          type: string
+          enum: [DOCKER, NATIVE]
+          default: DOCKER
         serverControl:
           $ref: "#/components/schemas/ServerControl"
         state:

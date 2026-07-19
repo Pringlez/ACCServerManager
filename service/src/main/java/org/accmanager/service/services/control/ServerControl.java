@@ -25,6 +25,8 @@ public abstract class ServerControl {
 
     public abstract String inspectInstance(String instanceId);
 
+    public abstract String getContainerStats(String instanceId);
+
     public InstanceDaoService getDaoService() {
         return instanceDaoService;
     }
