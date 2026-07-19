@@ -1,29 +1,10 @@
 package org.accmanager.service.api.web;
 
-import org.accmanager.model.Instance;
-import org.accmanager.model.Config;
-import org.accmanager.model.Settings;
-import org.accmanager.model.EventRules;
-import org.accmanager.model.EntriesList;
-import org.accmanager.model.Entry;
-import org.accmanager.model.Driver;
-import org.accmanager.model.EntryBoP;
-import org.accmanager.model.AssistRules;
-import org.accmanager.model.BoP;
-import org.accmanager.model.Event;
-import org.accmanager.service.entity.EventEntity;
-import org.accmanager.service.entity.ConfigEntity;
-import org.accmanager.service.entity.SettingsEntity;
-import org.accmanager.service.entity.AssistRulesEntity;
-import org.accmanager.service.entity.InstancesEntity;
-import org.accmanager.service.services.dao.InstanceDaoService;
-import org.accmanager.service.repository.EventRepository;
-import org.accmanager.service.repository.InstancesRepository;
-import org.accmanager.service.repository.ConfigRepository;
-import org.accmanager.service.repository.SettingsRepository;
-import org.accmanager.service.repository.AssistRulesRepository;
+import org.accmanager.model.*;
+import org.accmanager.service.repository.*;
 import org.accmanager.service.services.control.ServerControl;
 import org.accmanager.service.services.control.ServerControlManager;
+import org.accmanager.service.services.dao.InstanceDaoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller

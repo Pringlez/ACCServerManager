@@ -1,19 +1,15 @@
 package org.accmanager.service.integration.ui;
 
+import jakarta.servlet.RequestDispatcher;
 import org.accmanager.service.integration.BaseIT;
+import org.accmanager.service.repository.AssistRulesRepository;
+import org.accmanager.service.repository.ConfigRepository;
+import org.accmanager.service.repository.InstancesRepository;
+import org.accmanager.service.repository.SettingsRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.accmanager.service.repository.InstancesRepository;
-import org.accmanager.service.repository.ConfigRepository;
-import org.accmanager.service.repository.SettingsRepository;
-import org.accmanager.service.repository.AssistRulesRepository;
-import org.accmanager.service.entity.InstancesEntity;
-import org.accmanager.service.entity.SettingsEntity;
-import org.accmanager.service.entity.ConfigEntity;
-import org.accmanager.service.entity.AssistRulesEntity;
 import org.springframework.boot.test.context.SpringBootTest;
-import jakarta.servlet.RequestDispatcher;
 import org.springframework.http.MediaType;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;

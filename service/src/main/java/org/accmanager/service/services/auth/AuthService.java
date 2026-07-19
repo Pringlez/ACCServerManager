@@ -19,11 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import static org.accmanager.service.exception.IdentityServiceException.Reason.BAD_EMAIL;
-import static org.accmanager.service.exception.IdentityServiceException.Reason.BAD_LOGIN;
-import static org.accmanager.service.exception.IdentityServiceException.Reason.BAD_PASSWORD;
-import static org.accmanager.service.exception.IdentityServiceException.Reason.BAD_PASSWORD_RESET;
-import static org.accmanager.service.exception.IdentityServiceException.Reason.BAD_TOKEN;
+import static org.accmanager.service.exception.IdentityServiceException.Reason.*;
 
 @Service
 public class AuthService {

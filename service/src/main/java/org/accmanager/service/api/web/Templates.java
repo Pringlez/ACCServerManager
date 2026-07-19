@@ -2,8 +2,6 @@ package org.accmanager.service.api.web;
 
 import j2html.tags.ContainerTag;
 import j2html.tags.specialized.PTag;
-import org.accmanager.service.api.web.model.Contact;
-import org.intellij.lang.annotations.Language;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -16,11 +14,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import static j2html.TagCreator.*;
-import static j2html.TagCreator.br;
 
 /**
  * This demonstration uses HTML generated here (in the controller!) instead of just the HTML coming from Thymeleaf

@@ -6,13 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
@@ -22,10 +16,7 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.Map;
 
-import static j2html.TagCreator.br;
-import static j2html.TagCreator.join;
-import static j2html.TagCreator.p;
-import static j2html.TagCreator.span;
+import static j2html.TagCreator.*;
 
 @Controller
 @RequestMapping("/web/management")

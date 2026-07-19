@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
-import static org.accmanager.service.integration.cucumber.steps.common.CommonSteps.aHeaderParameterWithAValueIsIncludedInTheRequest;
-import static org.accmanager.service.integration.cucumber.steps.common.CommonSteps.aHeaderParameterWithAValueIsIncludedInTheRequestAndBase64Encoded;
-import static org.accmanager.service.integration.cucumber.steps.common.CommonSteps.aPOSTRequestBodyIsBuiltFromScaffoldingJsonFileInDirectory;
-import static org.accmanager.service.integration.cucumber.steps.common.CommonSteps.theEndpointIs;
+import static org.accmanager.service.integration.cucumber.steps.common.CommonSteps.*;
 
 public class UtilsSteps extends TestBase {
 

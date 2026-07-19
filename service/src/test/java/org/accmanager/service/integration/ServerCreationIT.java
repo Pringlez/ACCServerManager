@@ -3,13 +3,12 @@ package org.accmanager.service.integration;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerCmd;
 import com.github.dockerjava.api.command.CreateContainerResponse;
-import org.accmanager.model.Instance;
 import org.accmanager.service.repository.EventRepository;
 import org.accmanager.service.repository.InstancesRepository;
 import org.accmanager.service.services.control.ServerControl;
 import org.accmanager.service.services.dao.InstanceDaoService;
-import org.accmanager.service.services.files.FileReadWriteService;
 import org.accmanager.service.services.files.DirectoryReadWriteService;
+import org.accmanager.service.services.files.FileReadWriteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -29,8 +28,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc

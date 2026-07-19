@@ -5,12 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
-import com.github.dockerjava.api.model.Bind;
-import com.github.dockerjava.api.model.ExposedPort;
-import com.github.dockerjava.api.model.HostConfig;
-import com.github.dockerjava.api.model.RestartPolicy;
-import com.github.dockerjava.api.model.Statistics;
-import com.github.dockerjava.core.InvocationBuilder;
+import com.github.dockerjava.api.model.*;
 import com.github.dockerjava.core.async.ResultCallbackTemplate;
 import org.accmanager.model.Instance;
 import org.accmanager.service.services.control.ServerControl;
@@ -21,20 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.String.format;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_KILLING_CONTAINER_INSTANCE_ID;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_REMOVING_CONTAINER_INSTANCE_ID;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_RESTARTING_CONTAINER;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_STARTING_CONTAINER;
-import static org.accmanager.service.enums.ExceptionEnum.ERROR_STOPPING_CONTAINER;
+import static org.accmanager.service.enums.ExceptionEnum.*;
 import static org.accmanager.service.enums.PathsEnum.PATH_CONTAINER;
 import static org.accmanager.service.enums.PathsEnum.PATH_HOST_SERVER_INSTANCE;
 
