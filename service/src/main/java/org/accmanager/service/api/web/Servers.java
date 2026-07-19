@@ -5,6 +5,9 @@ import org.accmanager.model.Config;
 import org.accmanager.model.Settings;
 import org.accmanager.model.EventRules;
 import org.accmanager.model.EntriesList;
+import org.accmanager.model.Entry;
+import org.accmanager.model.Driver;
+import org.accmanager.model.EntryBoP;
 import org.accmanager.model.AssistRules;
 import org.accmanager.model.BoP;
 import org.accmanager.model.Event;
@@ -13,6 +16,7 @@ import org.accmanager.service.entity.ConfigEntity;
 import org.accmanager.service.entity.SettingsEntity;
 import org.accmanager.service.entity.AssistRulesEntity;
 import org.accmanager.service.entity.InstancesEntity;
+import org.accmanager.service.services.dao.InstanceDaoService;
 import org.accmanager.service.repository.EventRepository;
 import org.accmanager.service.repository.InstancesRepository;
 import org.accmanager.service.repository.ConfigRepository;
@@ -79,7 +83,9 @@ public class Servers {
     }
 
     @GetMapping
-    public String start(Model model) {
+    public String start(@RequestParam(required = false) String message,
+                        @RequestParam(required = false) String dbMessage,
+                        Model model) {
         List<InstanceViewModel> vms = serverControl.getDaoService().listOfInstances().stream()
                 .map(inst -> new InstanceViewModel(inst, isInstanceRunning(inst.getId()) ? "running" : "stopped"))
                 .collect(Collectors.toList());
@@ -87,6 +93,12 @@ public class Servers {
         model.addAttribute("instances", vms);
         model.addAttribute("now", new Date().toInstant());
         model.addAttribute(IS_DARK_MODE, darkMode);
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
+        if (dbMessage != null) {
+            model.addAttribute("dbMessage", dbMessage);
+        }
         return "pages/general/servers";
     }
 
@@ -318,101 +330,279 @@ public class Servers {
         instance.getEvent().setPostQualySeconds(postQualySeconds);
         instance.getEvent().setPostRaceSeconds(postRaceSeconds);
 
-        serverControl.getDaoService().writeInstanceConfiguration(instance);
+        boolean dbUpdated = ((InstanceDaoService) serverControl.getDaoService()).syncConfiguration(instance, persistToDb);
 
-        if (persistToDb) {
-            try {
-                InstancesEntity instancesEntity = instancesRepository.findById(id)
-                        .orElseGet(() -> {
-                            InstancesEntity n = new InstancesEntity();
-                            n.setInstanceId(id);
-                            n.setControlType(instance.getControlType() != null ? instance.getControlType().getValue() : "DOCKER");
-                            return n;
-                        });
-                instancesEntity.setInstanceName(serverName);
+        String message = "Configuration saved to file successfully.";
+        String dbMessage = dbUpdated ? "Existing database entry updated successfully." : null;
 
-                // Persist Settings
-                SettingsEntity settingsEntity;
-                if (instancesEntity.getSettingsId() != null) {
-                    settingsEntity = settingsRepository.findSettingsEntityBySettingsId(instancesEntity.getSettingsId()).orElse(new SettingsEntity());
-                } else {
-                    settingsEntity = new SettingsEntity();
-                }
-                settingsEntity.setServerInstanceName(serverName);
-                settingsEntity.setAdminPassword(adminPassword);
-                settingsEntity.setServerPassword(password);
-                settingsEntity.setSpectatorPassword(spectatorPassword);
-                settingsEntity.setMaxCarSlots(maxCarSlots);
-                settingsEntity.setCarGroup("FREE_FOR_ALL");
-                settingsEntity.setTrackMedalsRequirement(0);
-                settingsEntity.setSafetyRatingRequirement(-1);
-                settingsEntity.setRaceCraftRatingRequirement(-1);
-                settingsEntity.setDumpLeaderBoards(0);
-                settingsEntity.setIsRaceLocked(1);
-                settingsEntity.setIsPrepPhaseLocked(0);
-                settingsEntity.setRandomizeTrackWhenEmpty(0);
-                settingsEntity.setCentralEntryListPath("");
-                settingsEntity.setAllowAutoDq(0);
-                settingsEntity.setShortFormationLap(1);
-                settingsEntity.setDumpEntryList(0);
-                settingsEntity.setFormationLapType(3);
-                settingsEntity.setDoDriverSwapBroadcast(1);
-                settingsEntity.setConfigVersion(1);
-                settingsEntity = settingsRepository.save(settingsEntity);
-                instancesEntity.setSettingsId(settingsEntity.getSettingsId());
+        String redirectUrl = "redirect:/web/servers?message=" + java.net.URLEncoder.encode(message, java.nio.charset.StandardCharsets.UTF_8);
+        if (dbMessage != null) {
+            redirectUrl += "&dbMessage=" + java.net.URLEncoder.encode(dbMessage, java.nio.charset.StandardCharsets.UTF_8);
+        }
+        return redirectUrl;
+    }
 
-                // Persist Config
-                ConfigEntity configEntity;
-                if (instancesEntity.getConfigId() != null) {
-                    configEntity = configRepository.findConfigEntityByConfigId(instancesEntity.getConfigId()).orElse(new ConfigEntity());
-                } else {
-                    configEntity = new ConfigEntity();
-                }
-                configEntity.setTcpPort(tcpPort);
-                configEntity.setUdpPort(udpPort);
-                configEntity.setMaxConnections(maxConnections);
-                configEntity.setLanDiscovery(1);
-                configEntity.setRegisterToLobby(0);
-                configEntity.setPublicIP("0");
-                configEntity.setConfigVersion(1);
-                configEntity = configRepository.save(configEntity);
-                instancesEntity.setConfigId(configEntity.getConfigId());
+    // ==================== ENTRY LIST CRUD ====================
 
-                // Persist AssistRules
-                AssistRulesEntity assistRulesEntity;
-                if (instancesEntity.getAssistRulesId() != null) {
-                    assistRulesEntity = assistRulesRepository.findAssistsEntityByAssistsId(instancesEntity.getAssistRulesId()).orElse(new AssistRulesEntity());
-                } else {
-                    assistRulesEntity = new AssistRulesEntity();
-                }
-                assistRulesEntity.setStabilityControlLevelMax(stabilityControlLevelMax);
-                assistRulesEntity.setDisableAutoSteer(disableAutosteer);
-                assistRulesEntity.setDisableAutoLights(disableAutoLights);
-                assistRulesEntity.setDisableAutoWiper(disableAutoWiper);
-                assistRulesEntity.setDisableAutoEngineStart(disableAutoEngineStart);
-                assistRulesEntity.setDisableAutoPitLimiter(disableAutoPitLimiter);
-                assistRulesEntity.setDisableAutoGear(disableAutoGear);
-                assistRulesEntity.setDisableAutoClutch(disableAutoClutch);
-                assistRulesEntity.setDisableIdealLine(disableIdealLine);
-                assistRulesEntity = assistRulesRepository.save(assistRulesEntity);
-                instancesEntity.setAssistRulesId(assistRulesEntity.getAssistsId());
+    @GetMapping("/{id}/edit/entrylist")
+    public String editEntryList(@PathVariable("id") String id, Model model) {
+        Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+        model.addAttribute("instance", instance);
+        model.addAttribute("isDarkMode", darkMode);
+        model.addAttribute("now", new Date().toInstant());
+        return "pages/general/servers-entrylist";
+    }
 
-                instancesRepository.save(instancesEntity);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                instancesRepository.findById(id).ifPresent(entity -> {
-                    entity.setInstanceName(serverName);
-                    instancesRepository.save(entity);
-                });
-            } catch (Exception e) {
-                // Ignore
+    @GetMapping("/{id}/edit/entrylist/add")
+    public String addEntryForm(@PathVariable("id") String id, Model model) {
+        Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+        model.addAttribute("instance", instance);
+        model.addAttribute("index", -1);
+        model.addAttribute("entry", new Entry());
+        model.addAttribute("driver", new Driver());
+        model.addAttribute("isDarkMode", darkMode);
+        model.addAttribute("now", new Date().toInstant());
+        return "pages/general/servers-entrylist-form";
+    }
+
+    @GetMapping("/{id}/edit/entrylist/edit/{index}")
+    public String editEntryForm(@PathVariable("id") String id, @PathVariable("index") int index, Model model) {
+        Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+        model.addAttribute("instance", instance);
+        model.addAttribute("index", index);
+        
+        Entry entry = new Entry();
+        Driver driver = new Driver();
+        if (instance.getEntriesList() != null && instance.getEntriesList().getEntries() != null && index < instance.getEntriesList().getEntries().size()) {
+            entry = instance.getEntriesList().getEntries().get(index);
+            if (entry.getDrivers() != null && !entry.getDrivers().isEmpty()) {
+                driver = entry.getDrivers().get(0);
             }
         }
+        
+        model.addAttribute("entry", entry);
+        model.addAttribute("driver", driver);
+        model.addAttribute("isDarkMode", darkMode);
+        model.addAttribute("now", new Date().toInstant());
+        return "pages/general/servers-entrylist-form";
+    }
 
-        return "redirect:/web/servers";
+    @PostMapping("/{id}/edit/entrylist/save")
+    public String saveEntry(@PathVariable("id") String id,
+                            @RequestParam(required = false, defaultValue = "-1") int index,
+                            @RequestParam String firstName,
+                            @RequestParam String lastName,
+                            @RequestParam String shortName,
+                            @RequestParam String playerID,
+                            @RequestParam int driverCategory,
+                            @RequestParam String customCar,
+                            @RequestParam int raceNumber,
+                            @RequestParam int ballastKg,
+                            @RequestParam int restrictor,
+                            @RequestParam int isServerAdmin,
+                            Model model) {
+        // Enforce validations
+        if (firstName.length() > 64 || lastName.length() > 64 || customCar.length() > 64) {
+            model.addAttribute("error", "Input values exceed maximum length of 64 characters.");
+            Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+            model.addAttribute("instance", instance);
+            model.addAttribute("index", index);
+            Driver d = new Driver();
+            d.setFirstName(firstName); d.setLastName(lastName); d.setShortName(shortName); d.setPlayerID(playerID); d.setDriverCategory(driverCategory);
+            Entry e = new Entry();
+            e.setCustomCar(customCar); e.setRaceNumber(raceNumber); e.setBallastKg(ballastKg); e.setRestrictor(restrictor); e.setIsServerAdmin(isServerAdmin);
+            model.addAttribute("driver", d);
+            model.addAttribute("entry", e);
+            model.addAttribute("isDarkMode", darkMode);
+            model.addAttribute("now", new Date().toInstant());
+            return "pages/general/servers-entrylist-form";
+        }
+
+        if (raceNumber < 1 || raceNumber > 999 || ballastKg < 0 || ballastKg > 100 || restrictor < 0 || restrictor > 100) {
+            model.addAttribute("error", "Numeric values are out of allowed ranges.");
+            Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+            model.addAttribute("instance", instance);
+            model.addAttribute("index", index);
+            Driver d = new Driver();
+            d.setFirstName(firstName); d.setLastName(lastName); d.setShortName(shortName); d.setPlayerID(playerID); d.setDriverCategory(driverCategory);
+            Entry e = new Entry();
+            e.setCustomCar(customCar); e.setRaceNumber(raceNumber); e.setBallastKg(ballastKg); e.setRestrictor(restrictor); e.setIsServerAdmin(isServerAdmin);
+            model.addAttribute("driver", d);
+            model.addAttribute("entry", e);
+            model.addAttribute("isDarkMode", darkMode);
+            model.addAttribute("now", new Date().toInstant());
+            return "pages/general/servers-entrylist-form";
+        }
+
+        Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+        if (instance.getEntriesList() == null) {
+            instance.setEntriesList(new EntriesList());
+        }
+        if (instance.getEntriesList().getEntries() == null) {
+            instance.getEntriesList().setEntries(new java.util.ArrayList<>());
+        }
+
+        Driver driver = new Driver();
+        driver.setFirstName(firstName);
+        driver.setLastName(lastName);
+        driver.setShortName(shortName);
+        driver.setPlayerID(playerID);
+        driver.setDriverCategory(driverCategory);
+
+        Entry entry;
+        if (index >= 0 && index < instance.getEntriesList().getEntries().size()) {
+            entry = instance.getEntriesList().getEntries().get(index);
+        } else {
+            entry = new Entry();
+            instance.getEntriesList().getEntries().add(entry);
+        }
+
+        entry.getDrivers().clear();
+        entry.getDrivers().add(driver);
+        entry.setCustomCar(customCar);
+        entry.setRaceNumber(raceNumber);
+        entry.setBallastKg(ballastKg);
+        entry.setRestrictor(restrictor);
+        entry.setIsServerAdmin(isServerAdmin);
+
+        // Standard: Always keep filesystem and DB in sync if a DB entry already exists
+        boolean dbUpdated = ((InstanceDaoService) serverControl.getDaoService()).syncConfiguration(instance, false);
+
+        String message = "Driver entry saved successfully.";
+        String dbMessage = dbUpdated ? "Existing database entry updated successfully." : null;
+
+        String redirectUrl = "redirect:/web/servers?message=" + java.net.URLEncoder.encode(message, java.nio.charset.StandardCharsets.UTF_8);
+        if (dbMessage != null) {
+            redirectUrl += "&dbMessage=" + java.net.URLEncoder.encode(dbMessage, java.nio.charset.StandardCharsets.UTF_8);
+        }
+        return redirectUrl;
+    }
+
+    @PostMapping("/{id}/edit/entrylist/delete/{index}")
+    public String deleteEntry(@PathVariable("id") String id, @PathVariable("index") int index) {
+        Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+        if (instance.getEntriesList() != null && instance.getEntriesList().getEntries() != null && index >= 0 && index < instance.getEntriesList().getEntries().size()) {
+            instance.getEntriesList().getEntries().remove(index);
+        }
+
+        boolean dbUpdated = ((InstanceDaoService) serverControl.getDaoService()).syncConfiguration(instance, false);
+
+        String message = "Driver entry deleted successfully.";
+        String dbMessage = dbUpdated ? "Existing database entry updated successfully." : null;
+
+        String redirectUrl = "redirect:/web/servers?message=" + java.net.URLEncoder.encode(message, java.nio.charset.StandardCharsets.UTF_8);
+        if (dbMessage != null) {
+            redirectUrl += "&dbMessage=" + java.net.URLEncoder.encode(dbMessage, java.nio.charset.StandardCharsets.UTF_8);
+        }
+        return redirectUrl;
+    }
+
+    // ==================== BOP CRUD ====================
+
+    @GetMapping("/{id}/edit/bop")
+    public String editBop(@PathVariable("id") String id, Model model) {
+        Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+        model.addAttribute("instance", instance);
+        model.addAttribute("isDarkMode", darkMode);
+        model.addAttribute("now", new Date().toInstant());
+        return "pages/general/servers-bop";
+    }
+
+    @PostMapping("/{id}/edit/bop/save")
+    public String saveBopGlobal(@PathVariable("id") String id,
+                                @RequestParam int disableAutosteer,
+                                @RequestParam int disableAutoLights,
+                                @RequestParam int disableAutoWiper) {
+        Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+        if (instance.getBop() == null) {
+            instance.setBop(new BoP());
+        }
+        instance.getBop().setDisableAutosteer(disableAutosteer);
+        instance.getBop().setDisableAutoLights(disableAutoLights);
+        instance.getBop().setDisableAutoWiper(disableAutoWiper);
+
+        boolean dbUpdated = ((InstanceDaoService) serverControl.getDaoService()).syncConfiguration(instance, false);
+
+        String message = "Global BoP settings saved successfully.";
+        String dbMessage = dbUpdated ? "Existing database entry updated successfully." : null;
+
+        String redirectUrl = "redirect:/web/servers?message=" + java.net.URLEncoder.encode(message, java.nio.charset.StandardCharsets.UTF_8);
+        if (dbMessage != null) {
+            redirectUrl += "&dbMessage=" + java.net.URLEncoder.encode(dbMessage, java.nio.charset.StandardCharsets.UTF_8);
+        }
+        return redirectUrl;
+    }
+
+    @PostMapping("/{id}/edit/bop/add")
+    public String addBopEntry(@PathVariable("id") String id,
+                              @RequestParam String track,
+                              @RequestParam int carModel,
+                              @RequestParam int ballastKg,
+                              @RequestParam int restrictor,
+                              Model model) {
+        // Enforce validations
+        if (carModel < 0 || carModel > 100 || ballastKg < 0 || ballastKg > 100 || restrictor < 0 || restrictor > 100) {
+            model.addAttribute("error", "BoP override parameters are out of allowed ranges.");
+            Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+            model.addAttribute("instance", instance);
+            model.addAttribute("isDarkMode", darkMode);
+            model.addAttribute("now", new Date().toInstant());
+            return "pages/general/servers-bop";
+        }
+
+        Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+        if (instance.getBop() == null) {
+            instance.setBop(new BoP());
+        }
+        if (instance.getBop().getEntries() == null) {
+            instance.getBop().setEntries(new java.util.ArrayList<>());
+        }
+
+        EntryBoP bopEntry = new EntryBoP();
+        try {
+            bopEntry.setTrack(org.accmanager.model.EntryBoP.TrackEnum.fromValue(track));
+        } catch (Exception e) {
+            try {
+                bopEntry.setTrack(org.accmanager.model.EntryBoP.TrackEnum.valueOf(track.toUpperCase()));
+            } catch (Exception ex) {
+                bopEntry.setTrack(org.accmanager.model.EntryBoP.TrackEnum.values()[0]);
+            }
+        }
+        bopEntry.setCarModel(carModel);
+        bopEntry.setBallastKg(ballastKg);
+        bopEntry.setRestrictor(restrictor);
+
+        instance.getBop().getEntries().add(bopEntry);
+
+        boolean dbUpdated = ((InstanceDaoService) serverControl.getDaoService()).syncConfiguration(instance, false);
+
+        String message = "Track BoP override entry added successfully.";
+        String dbMessage = dbUpdated ? "Existing database entry updated successfully." : null;
+
+        String redirectUrl = "redirect:/web/servers?message=" + java.net.URLEncoder.encode(message, java.nio.charset.StandardCharsets.UTF_8);
+        if (dbMessage != null) {
+            redirectUrl += "&dbMessage=" + java.net.URLEncoder.encode(dbMessage, java.nio.charset.StandardCharsets.UTF_8);
+        }
+        return redirectUrl;
+    }
+
+    @PostMapping("/{id}/edit/bop/delete/{index}")
+    public String deleteBopEntry(@PathVariable("id") String id, @PathVariable("index") int index) {
+        Instance instance = serverControl.getDaoService().readInstanceConfiguration(id);
+        if (instance.getBop() != null && instance.getBop().getEntries() != null && index >= 0 && index < instance.getBop().getEntries().size()) {
+            instance.getBop().getEntries().remove(index);
+        }
+
+        boolean dbUpdated = ((InstanceDaoService) serverControl.getDaoService()).syncConfiguration(instance, false);
+
+        String message = "Track BoP override entry deleted successfully.";
+        String dbMessage = dbUpdated ? "Existing database entry updated successfully." : null;
+
+        String redirectUrl = "redirect:/web/servers?message=" + java.net.URLEncoder.encode(message, java.nio.charset.StandardCharsets.UTF_8);
+        if (dbMessage != null) {
+            redirectUrl += "&dbMessage=" + java.net.URLEncoder.encode(dbMessage, java.nio.charset.StandardCharsets.UTF_8);
+        }
+        return redirectUrl;
     }
 
     private boolean isInstanceRunning(String id) {

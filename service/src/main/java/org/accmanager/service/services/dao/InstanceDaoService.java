@@ -1,5 +1,6 @@
 package org.accmanager.service.services.dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.exception.DockerException;
 import org.accmanager.model.AssistRules;
 import org.accmanager.model.BoP;
@@ -84,6 +85,7 @@ public class InstanceDaoService {
     private final BopEntryRepository bopEntryRepository;
     private final DirectoryReadWriteService directoryReadWriteService;
     private final FileReadWriteService fileReadWriteService;
+    private final ObjectMapper objectMapper;
 
     @Value("${accserver.files.directory.override:}")
     private String accFileDirectoryOverride;
@@ -92,7 +94,8 @@ public class InstanceDaoService {
                               CarEntriesRepository carEntriesRepository, AssistRulesRepository assistRulesRepository, BopRepository bopRepository,
                               ConfigRepository configRepository, SettingsRepository settingsRepository, SessionsRepository sessionsRepository,
                               CarEntryRepository carEntryRepository, DriverRepository driverRepository, BopEntryRepository bopEntryRepository,
-                              DirectoryReadWriteService directoryReadWriteService, FileReadWriteService fileReadWriteService) {
+                              DirectoryReadWriteService directoryReadWriteService, FileReadWriteService fileReadWriteService,
+                              ObjectMapper objectMapper) {
         this.instancesRepository = instancesRepository;
         this.eventRepository = eventRepository;
         this.eventRulesRepository = eventRulesRepository;
@@ -107,6 +110,7 @@ public class InstanceDaoService {
         this.bopEntryRepository = bopEntryRepository;
         this.directoryReadWriteService = directoryReadWriteService;
         this.fileReadWriteService = fileReadWriteService;
+        this.objectMapper = objectMapper;
     }
 
     public Optional<Instance> retrieveById(String instanceId) {
@@ -125,7 +129,7 @@ public class InstanceDaoService {
             instance.setEventRules(getAndBuildEventRulesById(instanceOptDB.get().getEventRulesId()));
             instance.setEntriesList(getAndBuildEntriesListById(instanceOptDB));
             instance.setAssistRules(getAndBuildAssistRulesById(instanceOptDB.get().getAssistRulesId()));
-            instance.setBop(getAndBuildBopById(instanceOptDB.get().getBopId()));
+            instance.setBop(getAndBuildBopById(instanceOptDB.get()));
             instance.setConfig(getAndBuildConfigById(instanceOptDB.get().getConfigId()));
             instance.setSettings(getAndSettingsById(instanceOptDB.get().getSettingsId()));
         }
@@ -193,6 +197,14 @@ public class InstanceDaoService {
 
     private EntriesList getAndBuildEntriesListById(Optional<InstancesEntity> instanceOptDB) {
         if (instanceOptDB.isPresent()) {
+            String entryListData = instanceOptDB.get().getEntryListData();
+            if (entryListData != null && !entryListData.trim().isEmpty()) {
+                try {
+                    return objectMapper.readValue(entryListData, EntriesList.class);
+                } catch (Exception e) {
+                    // Ignore, fallback to relational DB tables
+                }
+            }
             Optional<CarEntriesEntity> carEntriesEntityOpt = carEntriesRepository.findCarEntriesEntityByCarEntriesId(instanceOptDB.get().getEntriesId());
             if (carEntriesEntityOpt.isPresent()) {
                 EntriesList entriesList = new EntriesList();
@@ -227,17 +239,28 @@ public class InstanceDaoService {
         return new AssistRules();
     }
 
-    private BoP getAndBuildBopById(String bopId) {
-        if (!isEmpty(bopId)) {
-            Optional<BopEntity> bopEntityOpt = bopRepository.findBopEntityByBopId(bopId);
-            if (bopEntityOpt.isPresent()) {
-                BoP bop = new BoP();
-                bop.setId(bopEntityOpt.get().getBopId());
-                bop.setEntries(getAndBuildBopEntries(bopEntityOpt.get().getBopEntryId()));
-                bop.setDisableAutosteer(bopEntityOpt.get().getDisableAutoSteer());
-                bop.setDisableAutoLights(bopEntityOpt.get().getDisableAutoLights());
-                bop.setDisableAutoWiper(bopEntityOpt.get().getDisableAutoWiper());
-                return bop;
+    private BoP getAndBuildBopById(InstancesEntity instancesEntity) {
+        if (instancesEntity != null) {
+            String bopData = instancesEntity.getBopData();
+            if (bopData != null && !bopData.trim().isEmpty()) {
+                try {
+                    return objectMapper.readValue(bopData, BoP.class);
+                } catch (Exception e) {
+                    // Ignore, fallback to relational DB tables
+                }
+            }
+            String bopId = instancesEntity.getBopId();
+            if (!isEmpty(bopId)) {
+                Optional<BopEntity> bopEntityOpt = bopRepository.findBopEntityByBopId(bopId);
+                if (bopEntityOpt.isPresent()) {
+                    BoP bop = new BoP();
+                    bop.setId(bopEntityOpt.get().getBopId());
+                    bop.setEntries(getAndBuildBopEntries(bopEntityOpt.get().getBopEntryId()));
+                    bop.setDisableAutosteer(bopEntityOpt.get().getDisableAutoSteer());
+                    bop.setDisableAutoLights(bopEntityOpt.get().getDisableAutoLights());
+                    bop.setDisableAutoWiper(bopEntityOpt.get().getDisableAutoWiper());
+                    return bop;
+                }
             }
         }
         return new BoP();
@@ -466,6 +489,117 @@ public class InstanceDaoService {
         fileReadWriteService.createNewDirectory(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_CFG, instance.getId()));
         fileReadWriteService.createNewDirectory(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_EXECUTABLE, instance.getId()));
         fileReadWriteService.createNewDirectory(format(accFileDirectoryOverride + PATH_HOST_SERVER_INSTANCE_LOGS, instance.getId()));
+    }
+
+    public boolean syncConfiguration(Instance instance, boolean persistToDb) {
+        // 1. Always write to filesystem
+        writeInstanceConfiguration(instance);
+
+        // 2. Check if a DB entry already exists OR persistToDb is true
+        Optional<InstancesEntity> instancesEntityOpt = instancesRepository.findById(instance.getId());
+        boolean shouldPersist = persistToDb || instancesEntityOpt.isPresent();
+
+        if (shouldPersist) {
+            try {
+                InstancesEntity instancesEntity = instancesEntityOpt.orElseGet(() -> {
+                    InstancesEntity n = new InstancesEntity();
+                    n.setInstanceId(instance.getId());
+                    n.setControlType(instance.getControlType() != null ? instance.getControlType().getValue() : "DOCKER");
+                    return n;
+                });
+                instancesEntity.setInstanceName(instance.getSettings() != null ? instance.getSettings().getServerName() : instance.getId());
+
+                // Persist Settings
+                if (instance.getSettings() != null) {
+                    SettingsEntity settingsEntity;
+                    if (instancesEntity.getSettingsId() != null) {
+                        settingsEntity = settingsRepository.findSettingsEntityBySettingsId(instancesEntity.getSettingsId()).orElse(new SettingsEntity());
+                    } else {
+                        settingsEntity = new SettingsEntity();
+                    }
+                    settingsEntity.setServerInstanceName(instance.getSettings().getServerName());
+                    settingsEntity.setAdminPassword(instance.getSettings().getAdminPassword());
+                    settingsEntity.setServerPassword(instance.getSettings().getPassword());
+                    settingsEntity.setSpectatorPassword(instance.getSettings().getSpectatorPassword());
+                    settingsEntity.setMaxCarSlots(instance.getSettings().getMaxCarSlots());
+                    settingsEntity.setCarGroup("FREE_FOR_ALL");
+                    settingsEntity.setTrackMedalsRequirement(0);
+                    settingsEntity.setSafetyRatingRequirement(-1);
+                    settingsEntity.setRaceCraftRatingRequirement(-1);
+                    settingsEntity.setDumpLeaderBoards(0);
+                    settingsEntity.setIsRaceLocked(1);
+                    settingsEntity.setIsPrepPhaseLocked(0);
+                    settingsEntity.setRandomizeTrackWhenEmpty(0);
+                    settingsEntity.setCentralEntryListPath("");
+                    settingsEntity.setAllowAutoDq(0);
+                    settingsEntity.setShortFormationLap(1);
+                    settingsEntity.setDumpEntryList(0);
+                    settingsEntity.setFormationLapType(3);
+                    settingsEntity.setDoDriverSwapBroadcast(1);
+                    settingsEntity.setConfigVersion(1);
+                    settingsEntity = settingsRepository.save(settingsEntity);
+                    instancesEntity.setSettingsId(settingsEntity.getSettingsId());
+                }
+
+                // Persist Config
+                if (instance.getConfig() != null) {
+                    ConfigEntity configEntity;
+                    if (instancesEntity.getConfigId() != null) {
+                        configEntity = configRepository.findConfigEntityByConfigId(instancesEntity.getConfigId()).orElse(new ConfigEntity());
+                    } else {
+                        configEntity = new ConfigEntity();
+                    }
+                    configEntity.setTcpPort(instance.getConfig().getTcpPort());
+                    configEntity.setUdpPort(instance.getConfig().getUdpPort());
+                    configEntity.setMaxConnections(instance.getConfig().getMaxConnections());
+                    configEntity.setLanDiscovery(1);
+                    configEntity.setRegisterToLobby(0);
+                    configEntity.setPublicIP("0");
+                    configEntity.setConfigVersion(1);
+                    configEntity = configRepository.save(configEntity);
+                    instancesEntity.setConfigId(configEntity.getConfigId());
+                }
+
+                // Persist AssistRules
+                if (instance.getAssistRules() != null) {
+                    AssistRulesEntity assistRulesEntity;
+                    if (instancesEntity.getAssistRulesId() != null) {
+                        assistRulesEntity = assistRulesRepository.findAssistsEntityByAssistsId(instancesEntity.getAssistRulesId()).orElse(new AssistRulesEntity());
+                    } else {
+                        assistRulesEntity = new AssistRulesEntity();
+                    }
+                    assistRulesEntity.setStabilityControlLevelMax(instance.getAssistRules().getStabilityControlLevelMax());
+                    assistRulesEntity.setDisableAutoSteer(instance.getAssistRules().getDisableAutosteer());
+                    assistRulesEntity.setDisableAutoLights(instance.getAssistRules().getDisableAutoLights());
+                    assistRulesEntity.setDisableAutoWiper(instance.getAssistRules().getDisableAutoWiper());
+                    assistRulesEntity.setDisableAutoEngineStart(instance.getAssistRules().getDisableAutoEngineStart());
+                    assistRulesEntity.setDisableAutoPitLimiter(instance.getAssistRules().getDisableAutoPitLimiter());
+                    assistRulesEntity.setDisableAutoGear(instance.getAssistRules().getDisableAutoGear());
+                    assistRulesEntity.setDisableAutoClutch(instance.getAssistRules().getDisableAutoClutch());
+                    assistRulesEntity.setDisableIdealLine(instance.getAssistRules().getDisableIdealLine());
+                    assistRulesEntity = assistRulesRepository.save(assistRulesEntity);
+                    instancesEntity.setAssistRulesId(assistRulesEntity.getAssistsId());
+                }
+
+                // Persist EntryList as JSON string blob
+                if (instance.getEntriesList() != null) {
+                    String json = objectMapper.writeValueAsString(instance.getEntriesList());
+                    instancesEntity.setEntryListData(json);
+                }
+
+                // Persist BoP as JSON string blob
+                if (instance.getBop() != null) {
+                    String json = objectMapper.writeValueAsString(instance.getBop());
+                    instancesEntity.setBopData(json);
+                }
+
+                instancesRepository.save(instancesEntity);
+                return true;
+            } catch (Exception e) {
+                LOGGER.error("Error synchronizing configuration to database", e);
+            }
+        }
+        return false;
     }
 
     public DirectoryReadWriteService getDirectoryReadWriteService() {

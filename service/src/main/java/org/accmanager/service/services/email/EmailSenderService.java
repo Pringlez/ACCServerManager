@@ -1,5 +1,6 @@
 package org.accmanager.service.services.email;
 
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,5 +36,22 @@ public class EmailSenderService {
                 logger.error(email.getText());
             }
         }
+    }
+
+    @PostConstruct
+    public void checkMailConnection() {
+        if (mailTest) {
+            return;
+        }
+        new Thread(() -> {
+            try {
+                if (javaMailSender instanceof org.springframework.mail.javamail.JavaMailSenderImpl) {
+                    ((org.springframework.mail.javamail.JavaMailSenderImpl) javaMailSender).testConnection();
+                }
+            } catch (Exception e) {
+                logger.warn("Mail server connection check failed on startup (Invalid credentials or SMTP server down). Mail sender will fall back to logging emails. Details: {}", e.getMessage());
+                mailTest = true;
+            }
+        }).start();
     }
 }

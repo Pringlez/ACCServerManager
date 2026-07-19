@@ -162,7 +162,9 @@ create table instances
     event_id        varchar(255),
     event_rules_id  varchar(255),
     instance_name   varchar(255),
-    settings_id     varchar(255)
+    settings_id     varchar(255),
+    entry_list_data text,
+    bop_data        text
 );
 
 alter table instances

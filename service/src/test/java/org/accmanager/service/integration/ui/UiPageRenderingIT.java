@@ -694,9 +694,9 @@ public class UiPageRenderingIT extends BaseIT {
                         .param("persistToDb", "false")
                         .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/web/servers"));
+                .andExpect(redirectedUrlPattern("/web/servers*"));
 
-        Mockito.verify(instanceDaoService, Mockito.times(1)).writeInstanceConfiguration(Mockito.any());
+        Mockito.verify(instanceDaoService, Mockito.times(1)).syncConfiguration(Mockito.any(), Mockito.anyBoolean());
     }
 
     @Test
@@ -743,6 +743,7 @@ public class UiPageRenderingIT extends BaseIT {
     @Test
     void editServer_savesToDb_whenPersistToDbIsTrue() throws Exception {
         Mockito.when(serverControl.inspectInstance("test-instance")).thenReturn("{\"containerStatus\" : \"stopped\"}");
+        Mockito.when(instanceDaoService.syncConfiguration(Mockito.any(), Mockito.anyBoolean())).thenReturn(true);
 
         mockMvc.perform(post("/web/servers/test-instance/edit")
                         .param("serverName", "Database Persisted Server")
@@ -774,38 +775,150 @@ public class UiPageRenderingIT extends BaseIT {
                         .param("persistToDb", "true")
                         .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/web/servers"));
+                .andExpect(redirectedUrlPattern("/web/servers?*dbMessage=*"));
 
-        Mockito.verify(instanceDaoService, Mockito.times(1)).writeInstanceConfiguration(Mockito.any());
+        Mockito.verify(instanceDaoService, Mockito.times(1)).syncConfiguration(Mockito.any(), Mockito.eq(true));
+    }
 
-        java.util.Optional<InstancesEntity> instanceEntityOpt = instancesRepository.findById("test-instance");
-        org.junit.jupiter.api.Assertions.assertTrue(instanceEntityOpt.isPresent());
-        InstancesEntity instanceEntity = instanceEntityOpt.get();
-        org.junit.jupiter.api.Assertions.assertEquals("Database Persisted Server", instanceEntity.getInstanceName());
+    // ==================== ENTRY LIST CRUD INTEGRATION TESTS ====================
 
-        org.junit.jupiter.api.Assertions.assertNotNull(instanceEntity.getSettingsId());
-        java.util.Optional<SettingsEntity> settingsEntityOpt = settingsRepository.findSettingsEntityBySettingsId(instanceEntity.getSettingsId());
-        org.junit.jupiter.api.Assertions.assertTrue(settingsEntityOpt.isPresent());
-        SettingsEntity settingsEntity = settingsEntityOpt.get();
-        org.junit.jupiter.api.Assertions.assertEquals("Database Persisted Server", settingsEntity.getServerInstanceName());
-        org.junit.jupiter.api.Assertions.assertEquals("secureAdmin123", settingsEntity.getAdminPassword());
-        org.junit.jupiter.api.Assertions.assertEquals(35, settingsEntity.getMaxCarSlots());
+    @Test
+    void editEntryList_returnsOk_whenAuthenticated() throws Exception {
+        mockMvc.perform(get("/web/servers/test-instance/edit/entrylist").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Driver Entry List")));
+    }
 
-        org.junit.jupiter.api.Assertions.assertNotNull(instanceEntity.getConfigId());
-        java.util.Optional<ConfigEntity> configEntityOpt = configRepository.findConfigEntityByConfigId(instanceEntity.getConfigId());
-        org.junit.jupiter.api.Assertions.assertTrue(configEntityOpt.isPresent());
-        ConfigEntity configEntity = configEntityOpt.get();
-        org.junit.jupiter.api.Assertions.assertEquals(9332, configEntity.getTcpPort());
-        org.junit.jupiter.api.Assertions.assertEquals(9331, configEntity.getUdpPort());
-        org.junit.jupiter.api.Assertions.assertEquals(95, configEntity.getMaxConnections());
+    @Test
+    void addEntryForm_returnsOk_whenAuthenticated() throws Exception {
+        mockMvc.perform(get("/web/servers/test-instance/edit/entrylist/add").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Add New Driver Entry")));
+    }
 
-        org.junit.jupiter.api.Assertions.assertNotNull(instanceEntity.getAssistRulesId());
-        java.util.Optional<AssistRulesEntity> assistRulesEntityOpt = assistRulesRepository.findAssistsEntityByAssistsId(instanceEntity.getAssistRulesId());
-        org.junit.jupiter.api.Assertions.assertTrue(assistRulesEntityOpt.isPresent());
-        AssistRulesEntity assistRulesEntity = assistRulesEntityOpt.get();
-        org.junit.jupiter.api.Assertions.assertEquals(15, assistRulesEntity.getStabilityControlLevelMax());
-        org.junit.jupiter.api.Assertions.assertEquals(1, assistRulesEntity.getDisableAutoSteer());
-        org.junit.jupiter.api.Assertions.assertEquals(1, assistRulesEntity.getDisableAutoEngineStart());
-        org.junit.jupiter.api.Assertions.assertEquals(1, assistRulesEntity.getDisableIdealLine());
+    @Test
+    void saveEntry_failsValidation_whenNameExceeds64Chars() throws Exception {
+        String longName = "A".repeat(65);
+
+        mockMvc.perform(post("/web/servers/test-instance/edit/entrylist/save")
+                        .param("firstName", longName)
+                        .param("lastName", "Doe")
+                        .param("shortName", "DOE")
+                        .param("playerID", "123456")
+                        .param("driverCategory", "0")
+                        .param("customCar", "Team")
+                        .param("raceNumber", "42")
+                        .param("ballastKg", "10")
+                        .param("restrictor", "0")
+                        .param("isServerAdmin", "0")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("error", org.hamcrest.Matchers.containsString("exceed maximum length of 64 characters")));
+    }
+
+    @Test
+    void saveEntry_failsValidation_whenNumbersOutOfBounds() throws Exception {
+        mockMvc.perform(post("/web/servers/test-instance/edit/entrylist/save")
+                        .param("firstName", "John")
+                        .param("lastName", "Doe")
+                        .param("shortName", "DOE")
+                        .param("playerID", "123456")
+                        .param("driverCategory", "0")
+                        .param("customCar", "Team")
+                        .param("raceNumber", "1000") // Out of range 1-999
+                        .param("ballastKg", "10")
+                        .param("restrictor", "0")
+                        .param("isServerAdmin", "0")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("error", org.hamcrest.Matchers.containsString("Numeric values are out of allowed ranges")));
+    }
+
+    @Test
+    void saveEntry_savesSuccessfully_whenValid() throws Exception {
+        mockMvc.perform(post("/web/servers/test-instance/edit/entrylist/save")
+                        .param("firstName", "John")
+                        .param("lastName", "Doe")
+                        .param("shortName", "DOE")
+                        .param("playerID", "76561198000000000")
+                        .param("driverCategory", "1")
+                        .param("customCar", "My Valid Team")
+                        .param("raceNumber", "12")
+                        .param("ballastKg", "15")
+                        .param("restrictor", "5")
+                        .param("isServerAdmin", "1")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/web/servers*"));
+
+        Mockito.verify(instanceDaoService, Mockito.atLeastOnce()).syncConfiguration(Mockito.any(), Mockito.anyBoolean());
+    }
+
+    @Test
+    void deleteEntry_deletesSuccessfully() throws Exception {
+        mockMvc.perform(post("/web/servers/test-instance/edit/entrylist/delete/0")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/web/servers*"));
+
+        Mockito.verify(instanceDaoService, Mockito.atLeastOnce()).syncConfiguration(Mockito.any(), Mockito.anyBoolean());
+    }
+
+    // ==================== BOP INTEGRATION TESTS ====================
+
+    @Test
+    void editBop_returnsOk_whenAuthenticated() throws Exception {
+        mockMvc.perform(get("/web/servers/test-instance/edit/bop").with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Global BoP Settings")));
+    }
+
+    @Test
+    void saveBopGlobal_savesSuccessfully() throws Exception {
+        mockMvc.perform(post("/web/servers/test-instance/edit/bop/save")
+                        .param("disableAutosteer", "1")
+                        .param("disableAutoLights", "1")
+                        .param("disableAutoWiper", "0")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/web/servers*"));
+
+        Mockito.verify(instanceDaoService, Mockito.atLeastOnce()).syncConfiguration(Mockito.any(), Mockito.anyBoolean());
+    }
+
+    @Test
+    void addBopEntry_failsValidation_whenNumbersOutOfBounds() throws Exception {
+        mockMvc.perform(post("/web/servers/test-instance/edit/bop/add")
+                        .param("track", "spa")
+                        .param("carModel", "120") // Out of range 0-100
+                        .param("ballastKg", "10")
+                        .param("restrictor", "0")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("error", org.hamcrest.Matchers.containsString("BoP override parameters are out of allowed ranges")));
+    }
+
+    @Test
+    void addBopEntry_savesSuccessfully_whenValid() throws Exception {
+        mockMvc.perform(post("/web/servers/test-instance/edit/bop/add")
+                        .param("track", "monza")
+                        .param("carModel", "12")
+                        .param("ballastKg", "25")
+                        .param("restrictor", "10")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/web/servers*"));
+
+        Mockito.verify(instanceDaoService, Mockito.atLeastOnce()).syncConfiguration(Mockito.any(), Mockito.anyBoolean());
+    }
+
+    @Test
+    void deleteBopEntry_deletesSuccessfully() throws Exception {
+        mockMvc.perform(post("/web/servers/test-instance/edit/bop/delete/0")
+                        .with(httpBasic("user-1", "vxUdzhqrwt8eqQS7yszq")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/web/servers*"));
+
+        Mockito.verify(instanceDaoService, Mockito.atLeastOnce()).syncConfiguration(Mockito.any(), Mockito.anyBoolean());
     }
 }

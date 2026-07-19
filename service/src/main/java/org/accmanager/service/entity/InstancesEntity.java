@@ -24,6 +24,8 @@ public class InstancesEntity {
     private String bopId;
     private String configId;
     private String settingsId;
+    private String entryListData;
+    private String bopData;
 
     @Id
     @Column(name = "INSTANCE_ID")
@@ -133,5 +135,25 @@ public class InstancesEntity {
 
     public void setControlType(String controlType) {
         this.controlType = controlType;
+    }
+
+    @Basic
+    @Column(name = "ENTRY_LIST_DATA", columnDefinition = "TEXT")
+    public String getEntryListData() {
+        return entryListData;
+    }
+
+    public void setEntryListData(String entryListData) {
+        this.entryListData = entryListData;
+    }
+
+    @Basic
+    @Column(name = "BOP_DATA", columnDefinition = "TEXT")
+    public String getBopData() {
+        return bopData;
+    }
+
+    public void setBopData(String bopData) {
+        this.bopData = bopData;
     }
 }
