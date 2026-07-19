@@ -32,7 +32,7 @@
                 <a th:href="@{/}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Home</a>
                 <a th:href="@{/web/servers}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Servers</a>
                 <a th:href="@{/web/configs}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Event Presets</a>
-                <a sec:authorize="isAuthenticated()" th:href="@{/web/profile/details}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Profile</a>
+                <a sec:authorize="hasAuthority('write.instance')" th:href="@{/web/profile/details}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Profile</a>
                 <a sec:authorize="isAuthenticated()" th:href="@{/web/logout}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</a>
                 <a sec:authorize="isAnonymous()" th:href="@{/web/sign-in}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Login</a>
             </div>

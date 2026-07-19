@@ -19,6 +19,7 @@ import java.util.Date;
 
 import static org.accmanager.service.exception.IdentityServiceException.Reason.BAD_PASSWORD_RESET;
 import static org.accmanager.service.exception.IdentityServiceException.Reason.BAD_TOKEN;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -57,11 +58,14 @@ public class WebController implements ErrorController {
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
         model.addAttribute(IS_DARK_MODE, darkMode);
+        model.addAttribute("now", new Date());
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         if (status != null) {
             int statusCode = Integer.parseInt(status.toString());
             if (statusCode == NOT_FOUND.value()) {
                 return "pages/errors/error-404";
+            } else if (statusCode == FORBIDDEN.value()) {
+                return "pages/errors/error-403";
             } else if (statusCode == INTERNAL_SERVER_ERROR.value()) {
                 return "pages/errors/error-500";
             }

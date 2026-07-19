@@ -6,6 +6,7 @@ import com.github.dockerjava.api.exception.NotFoundException;
 import org.accmanager.service.exception.FileReadException;
 import org.accmanager.service.exception.FileWriteException;
 import org.accmanager.service.exception.InstanceNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,10 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> handleForbidden(AccessDeniedException ex) {
+    public ResponseEntity<Object> handleForbidden(AccessDeniedException ex, HttpServletRequest request) {
+        if (request.getRequestURI().startsWith("/web")) {
+            throw ex;
+        }
         return new ResponseEntity<>(ex.getMessage(), FORBIDDEN);
     }
 
