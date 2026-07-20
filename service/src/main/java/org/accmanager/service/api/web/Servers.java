@@ -102,7 +102,7 @@ public class Servers {
         }
 
         Instance instance = new Instance();
-        instance.setId(name.toLowerCase().replaceAll("\\s+", "_"));
+        instance.setId(java.util.UUID.randomUUID().toString());
         instance.setName(name);
         instance.setControlType(controlType);
         

@@ -6,6 +6,7 @@ import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -13,6 +14,9 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("!prod")
 public class LocalDockerConfig {
+
+    @Value("${docker.host:}")
+    private String dockerHost;
 
     @Bean
     public DockerClient dockerClient(DockerClientConfig dockerClientConfig, DockerHttpClient dockerHttpClient) {
@@ -22,6 +26,11 @@ public class LocalDockerConfig {
     @Bean
     public DockerClientConfig dockerClientConfig() {
         DefaultDockerClientConfig.Builder configBuilder = DefaultDockerClientConfig.createDefaultConfigBuilder();
+        
+        if (dockerHost != null && !dockerHost.isEmpty()) {
+            configBuilder.withDockerHost(dockerHost);
+        }
+
         DockerClientConfig tempConfig = configBuilder.build();
         String currentHost = tempConfig.getDockerHost().toString();
 
